@@ -1,0 +1,29 @@
+{
+  "Home": "Главная",
+  "About": "О нас",
+  "Contact": "Контакты",
+  "Workspace": "Рабочее пространство",
+
+  "CONTACT US": "Свяжитесь с нами",
+  "Get In Touch": "Свяжитесь",
+  "With Our Agents": " с нашими агентами",
+  "Phone Number": "Номер телефона",
+  "Business Email": "Бизнес e-почта",
+
+  "Full name": "Полное имя",
+  "Email Address": "Адрес электронной почты",
+  "Subject": "Тема",
+  "Message": "Сообщение",
+  "Send Message": "Отправить сообщение",
+
+  "language": "Язык",
+  "en": "English",
+  "ru": "Русский",
+  "ka": "ქართული",
+  "home": "Главная",
+  "about": "О нас",
+  "contact": "Контакты",
+  "title": "Заголовок",
+  "description": "Описание",
+  "welcome": "Добро пожаловать"
+}
