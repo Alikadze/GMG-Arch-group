@@ -1,0 +1,96 @@
+<div class="overflow-x-hidden h-[2000px]">
+  {{'welcome' | translate}}
+
+  <div class="flex gap-5 mb-20">
+    <p-button icon="pi pi-check" />
+    <p-button label="Submit" icon="pi pi-check" />
+    <p-button label="Submit" icon="pi pi-check" iconPos="right" />
+    <p-button 
+      label="Search" 
+      icon="pi pi-check" 
+      [loading]="loading" 
+      (onClick)="load()" 
+    />
+  </div>
+  
+  <div class="w-full relative overflow-visible">
+    <img class="w-full blur-sm" src="assets/images/small-modern-homes-1200x800.jpeg" alt="HOME PHOTO"  h-700px>
+  
+    <div class="absolute top-5 left-5 flex justify-center w-full mt-36 overflow-visible">
+      <div class="flex flex-col items-center gap-7">
+        <div class="font-extrabold text-orange-600">
+          | {{'CONTACT US' | translate}}
+        </div>
+    
+        <div class="flex flex-col items-center text-4xl font-extrabold gap-2 text-white">
+          <div>
+            {{'Get In Touch' | translate}}
+          </div>
+
+          <div>
+            {{'With Our Agents' | translate}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="absolute top-[400px] left-28 flex gap-4">
+      <div>
+        <div class="rounded-xl overflow-hidden">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d589.1057203736538!2d41.636333519643415!3d41.646281016507345!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40678615b9146c25%3A0x86255d7f1f787f0c!2zNDgg4YOa4YOj4YOZ4YOQIOGDkOGDoeGDkOGDl-GDmOGDkOGDnOGDmOGDoSDhg6Xhg6Phg6nhg5AsIOGDkeGDkOGDl-GDo-GDm-GDmA!5e1!3m2!1ska!2sge!4v1722020116595!5m2!1ska!2sge" 
+            width="630" 
+            height="700" 
+            style="border: 30px;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="flex justify-between mt-16">
+          <div class="shadow shadow-slate-400 w-72 h-28 rounded-2xl flex justify-around items-center px-5 py-3">
+            <div>
+              <i class="pi pi-phone" style="color:orange; font-size: 3rem"></i>
+            </div>
+
+            <div class="flex flex-col">
+              <div class="text-xl font-bold">
+                555-555-5555
+              </div>
+
+              <div class="text-slate-500 font-medium">
+                {{'Phone Number' | translate}}
+              </div>
+            </div>
+
+          </div>
+
+          <div class="shadow shadow-slate-400 w-72 h-28 rounded-2xl flex justify-around items-center px-5 py-3">
+            <div>
+              <i class="pi pi-envelope" style="color:orange; font-size: 3rem"></i> 
+            </div>
+
+            <div class="flex flex-col">
+              <div class="text-xl font-bold">
+                test&commat;gmail.com
+              </div>
+
+              <div class="text-slate-500 font-medium break-words overflow-auto">
+                {{'Business Email' | translate}} 
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="absolute -right-[500px] w-[450px] h-full bg-white shadow shadow-slate-400 rounded-2xl">
+        <app-contact-us-form/>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,30 @@
+{
+  "Home": "Home",
+  "About": "About",
+  "Contact": "Contact",
+  "Workspace": "Workspace",
+
+  "CONTACT US": "CONTACT US",
+  "Get In Touch": "Get In Touch",
+  "With Our Agents": "With Our Agents",
+  "Phone Number": "Phone Number",
+  "Business Email": "Business Email",
+
+  "Full name": "Full name",
+  "Email Address": "Email Address",
+  "Subject": "Subject",
+  "Message": "Message",
+  "Send Message": "Send Message",
+
+  
+  "language": "English",
+  "home": "Home",
+  "en": "English",
+  "ru": "Русский",
+  "ka": "ქართული",
+  "about": "About",
+  "contact": "Contact",
+  "title": "Title",
+  "description": "Description",
+  "welcome": "Welcome"
+}
