@@ -1,0 +1,30 @@
+{
+  "Home": "მთავარი",
+  "About": "ჩვენს შესახებ",
+  "Contact": "კონტაქტი",
+  "Workspace": "სამუშაო სივრცე",
+
+  "CONTACT US": "დაგვიკავშირდით",
+  "Get In Touch": "დაუკავშირდით",
+  "With Our Agents": "ჩვენს წარმომადგენლებს",
+  "Phone Number": "ტელეფონის ნომერი",
+  "Business Email": "ბიზნეს ელ-ფოსტა",
+
+  "Full name": "სრული სახელი",
+  "Email Address": "ელ-ფოსტა",
+  "Subject": "თემა",
+  "Message": "შეტყობინება", 
+  "Send Message": "გაგზავნა",
+
+
+  "language": "ქართული",
+  "en": "English",
+  "ru": "Русский",
+  "ka": "ქართული",
+  "home": "მთავარი",
+  "about": "ჩვენს შესახებ",
+  "contact": "კონტაქტი",
+  "title": "სათაური",
+  "description": "აღწერა",
+  "welcome": "კეთილი იყოს თქვენი მობრძანება"
+}

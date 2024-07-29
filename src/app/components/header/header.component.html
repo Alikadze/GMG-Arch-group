@@ -1,0 +1,38 @@
+<div [@fadeInOut] class="w-full flex gap-8 items-center justify-between px-10 shadow-md h-[82px] bg-white transition-all duration-300">
+  <div routerLink="/" class="cursor-pointer">
+    <img
+      class="w-28 h-28 object-contain" 
+      src="assets/images/452377664_988691489496925_3438030518400011853_n-removebg-preview.png" 
+      alt="LOGO"
+    >
+  </div>
+
+  <div class="hidden md:flex">
+    <ul class="flex gap-x-5">
+      <li class='py-3 px-3 cursor-pointer'>
+        <a class='font-medium text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+          {{'Home'| translate}}
+        </a>
+      </li>
+      <li id="authed" class='py-3 px-3 cursor-pointer'>
+        <a class='font-medium text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+          {{'Workspace'| translate}}
+        </a>
+      </li>
+      <li class='py-3 px-3 cursor-pointer'>
+        <a class='font-medium text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+          {{'About'| translate}}
+        </a>
+      </li>
+      <li class='py-3 px-3 cursor-pointer'>
+        <a class='font-medium text-slate-600 transition-colors duration-300 hover:text-orange-500'>
+          {{'Contact'| translate}}
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  <div>
+    <app-select-language></app-select-language>
+  </div>
+</div>
