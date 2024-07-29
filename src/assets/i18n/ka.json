@@ -2,7 +2,7 @@
   "Home": "მთავარი",
   "About": "ჩვენს შესახებ",
   "Contact": "კონტაქტი",
-  "Workspace": "სამუშაო სივრცე",
+  "Projects": "პროექტები",
 
   "CONTACT US": "დაგვიკავშირდით",
   "Get In Touch": "დაუკავშირდით",
@@ -16,6 +16,16 @@
   "Message": "შეტყობინება", 
   "Send Message": "გაგზავნა",
 
+  "Error": "შეცდომა",
+  "Success": "შესრულდა",
+  "Name is required": "შეიყვანეთ სახელი",
+  "Mail is required": "შეიყვანეთ ელ-ფოსტა",
+  "Incorrect mail format": "არასწორი ელ-ფოსტის ფორმატი",
+  "Subject is required": "შეიყვანეთ თემა",
+  "Message is required": "შეიყვანეთ შეტყობინება",
+  "Failed to send message": "შეტყობინების გაგზავნა ვერ ხერხდება",
+  "Message sent successfully": "შეტყობინება წარმატებით გაიგზავნა",
+
 
   "language": "ქართული",
   "en": "English",
@@ -26,5 +36,15 @@
   "contact": "კონტაქტი",
   "title": "სათაური",
   "description": "აღწერა",
-  "welcome": "კეთილი იყოს თქვენი მობრძანება"
+  "welcome": "კეთილი იყოს თქვენი მობრძანება",
+
+  "Enter your Full name": "შეიყვანეთ თქვენი სრული სახელი",
+  "Enter your Email address": "შეიყვანეთ თქვენი ელექტრონული ფოსტა",
+  "Enter your subject of the text": "შეიყვანეთ ტექსტის თემა",
+  "Enter content of the message": "შეიყვანეთ შეტყობინებინება",
+
+  "All rights reserved": "ყველა უფლება დაცულია",
+  "48 of Luka Asatiani": "ლუკა ასათიანის 48",
+  "Developed by": "დეველოპერი",
+  "Rezo Alikadze": "რეზო ალიქაძე"
 }

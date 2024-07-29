@@ -2,7 +2,7 @@
   "Home": "Home",
   "About": "About",
   "Contact": "Contact",
-  "Workspace": "Workspace",
+  "Projects": "Projects",
 
   "CONTACT US": "CONTACT US",
   "Get In Touch": "Get In Touch",
@@ -16,6 +16,15 @@
   "Message": "Message",
   "Send Message": "Send Message",
 
+  "Error": "Error",
+  "Success": "Success",
+  "Name is required": "Name is required",
+  "Mail is required": "Mail is required",
+  "Incorrect mail format": "Incorrect mail format",
+  "Subject is required": "Subject is required",
+  "Message is required": "Message is required",
+  "Message sent successfully": "Message sent successfully",
+  "Failed to send message": "Failed to send message",
   
   "language": "English",
   "home": "Home",
@@ -26,5 +35,15 @@
   "contact": "Contact",
   "title": "Title",
   "description": "Description",
-  "welcome": "Welcome"
+  "welcome": "Welcome",
+
+  "Enter your Full name": "Enter your Full name",
+  "Enter your Email address": "Enter your Email address",
+  "Enter your subject of the text": "Enter your subject of the text",
+  "Enter content of the message": "Enter content of the message",
+
+  "All rights reserved": "All rights reserved",
+  "48 of Luka Asatiani": "48 of Luka Asatiani",
+  "Developed by": "Developed by",
+  "Rezo Alikadze": "Rezo Alikadze"
 }

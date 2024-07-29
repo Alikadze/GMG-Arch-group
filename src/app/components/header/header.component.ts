@@ -2,7 +2,7 @@ import { Component, inject, Inject, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SelectLanguageComponent } from '../select-language/select-language.component';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -27,5 +27,21 @@ import { RouterLink } from '@angular/router';
   ]
 })
 export class HeaderComponent {
- 
+  router = inject(Router);
+
+  navigateToHome() {
+    this.router.navigate(['/'])
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  navigateToContact() {
+    this.router.navigate(['/contact'])
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 }

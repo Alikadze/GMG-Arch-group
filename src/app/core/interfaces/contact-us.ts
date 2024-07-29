@@ -1,6 +1,7 @@
+import { Message } from "./message";
+
 export interface ContactUsPayload {
-  name: string,
-  mail: string,
-  subject: string,
-  message: string
+  to: Array<string>;
+  from: string;
+  message: Message;
 }

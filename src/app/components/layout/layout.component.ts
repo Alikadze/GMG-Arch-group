@@ -3,6 +3,7 @@ import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
 import { RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
+import { ScrollTopModule } from 'primeng/scrolltop';
 
 @Component({
   selector: 'app-layout',
@@ -11,7 +12,8 @@ import { NgClass } from '@angular/common';
     FooterComponent,
     HeaderComponent,
     RouterOutlet,
-    NgClass
+    NgClass,
+    ScrollTopModule
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
