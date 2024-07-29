@@ -1,11 +1,15 @@
-<div>
-  <div>
+<div class="relative">
+  <div class="fixed w-full z-50">
     <app-header/>
   </div>
 
-  <div class="h-auto">
+  <div class="h-auto pt-20">
     <router-outlet/>
   </div>
   
-  <app-footer/>
+  <div class="absolute bottom-0 w-full">
+    <app-footer/>
+  </div>
 </div>
+
+<p-scrollTop styleClass="bg-orange-500 size-11 right-10 transition-colors duration-300 hover:bg-orange-600">
