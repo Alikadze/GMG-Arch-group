@@ -1,15 +1,7 @@
-<div class="overflow-x-hidden h-[2000px]">
-  {{'welcome' | translate}}
+<div class="h-[1800px] mt-3"> 
+  <app-carousel/>
 
-  <div class="flex gap-5 mb-20">
-    <p-button icon="pi pi-check" />
-    <p-button label="Submit" icon="pi pi-check" />
-    <p-button label="Submit" icon="pi pi-check" iconPos="right" />
-    <p-button 
-      label="Search" 
-      icon="pi pi-check" 
-      [loading]="loading" 
-      (onClick)="load()" 
-    />
-  </div>
+  <app-featured/>
+  
+  <app-home-info/>
 </div>

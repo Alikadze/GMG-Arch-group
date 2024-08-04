@@ -1,0 +1,77 @@
+<div class="flex gap-10 h-[450px] w-full justify-around mt-40 pl-36 pr-32 overflow-visible">
+
+  <div class="relative h-full w-[500px]">
+    <div class="h-full rounded-lg overflow-hidden">
+      <img class="!h-full" src="/assets/images/featured.jpg" alt="Saxli">
+    </div>
+
+    <div class="cursor-pointer absolute -bottom-10 -left-10 flex justify-center items-center bg-orange-600 size-28 rounded-full ">
+      <img class="-mr-1" src="/assets/images/featured-icon.png" alt="Details">
+    </div>
+  </div>
+
+
+  <div class="flex flex-col h-full gap-10 w-[600px]">
+    <div class="font-extrabold text-orange-500 text-lg uppercase">
+      | {{'Featured' | translate}}
+    </div>
+
+    <div class="text-[40px] font-extrabold text-slate-900 " style="line-height: 55px;">
+      {{'Best' | translate}} <br> {{'Appartment &' | translate}} <br> {{'Sea view' | translate}}
+    </div>
+
+    <div>
+      <p-accordion>
+
+        <p-accordionTab header="{{'Where is the house located?' | translate}}">
+          <p>
+            {{'The house is...' | translate}}
+          </p>
+        </p-accordionTab>
+
+        <p-accordionTab header="{{'What`s the way home?' | translate}}">
+          <p>
+            {{'The way is...' | translate}}
+          </p>
+        </p-accordionTab>
+
+        <p-accordionTab header="{{'How long did it take to build?' | translate}}">
+          <p>
+            {{'The house was built in...' | translate}}
+          </p>
+        </p-accordionTab>
+
+      </p-accordion>      
+    </div>
+  </div>
+
+
+  <div class="self-center bg-white h-72 shadow-xl rounded-xl w-[500px] -mt-2">
+    <div class="flex gap-4 px-3 pt-4">
+      <img src="/assets/images/info-icon-01.png" alt="Icon">
+      <span>
+        <div class="text-neutral-700">{{'Total Flat Space' | translate}}</div>
+        <div class="text-lg font-bold ">550 <span class="-ml-0.5">{{'m' | translate}}<sup>2</sup></span></div>
+      </span>
+    </div>
+    
+    <p-divider/>
+    <div class="flex gap-4 px-3 pt-1">
+      <img src="/assets/images/info-icon-04.png" alt="Icon">    
+      <span>
+        <div class="text-neutral-700">{{'Number of floors' | translate}}</div>
+        <div class="text-lg font-bold ">4</div>
+      </span>
+    </div>
+
+    <p-divider/>
+    <div class="flex gap-4 px-3 pt-1">
+      <img src="/assets/images/info-icon-02.png" alt="Icon">
+      <span>
+        <div class="text-neutral-700">{{'Number of rooms' | translate}}</div>
+        <div class="text-lg font-bold ">8</div>
+      </span>
+    </div>
+  </div>
+
+</div>

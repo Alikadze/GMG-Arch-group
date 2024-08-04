@@ -1,6 +1,6 @@
 <p-toast [life]="1500"/>
 
-<form [formGroup]="form" class="flex flex-col gap-16 mx-6 my-14">
+<form [formGroup]="form" class="flex flex-col gap-11 mx-6 my-14">
   <p-floatLabel>
     <input
       pInputText
@@ -36,8 +36,44 @@
       {{'Email Address' | translate}}
     </label>
   </p-floatLabel>
+<!-- 
+  <p-floatLabel>
+    <input
+      pInputText
+      id="Phone Number"
+      class="w-full !rounded-2xl"
+      variant="filled"
+      formControlName="number"
+      pTooltip="{{'Enter your Phone Number' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+  
+    <label for="Phone Number" class="text-lg -mt-3.5 mb-2">
+      {{'Phone Number' | translate}}
+    </label>
+  </p-floatLabel> -->
   
   <p-floatLabel>
+    <p-inputMask 
+      mask="999-99-99-99"
+      id="Phone Number"
+      styleClass="w-full !rounded-2xl"
+      variant="filled"
+      formControlName="number"
+      pTooltip="{{'Enter your Phone Number' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+    
+    <label for="Phone Number" class="text-lg -mt-3.5 mb-2">
+      {{'Phone Number' | translate}}
+    </label>
+  </p-floatLabel>
+  
+  <!-- <p-floatLabel>
     <input
       pInputText
       id="Subject"
@@ -53,7 +89,24 @@
     <label for="Subject" class="text-lg -mt-3.5 mb-2">
       {{'Subject' | translate}}
     </label>
+  </p-floatLabel> -->
+
+  <p-floatLabel>
+    <p-dropdown 
+      [options]="subjects"
+      styleClass="w-full !rounded-2xl"
+      formControlName="subject"
+      variant="filled"
+      optionLabel="label" 
+      inputId="float-label" 
+    /> 
+  
+    <label class="text-lg -mt-3.5 mb-2" for="float-label">
+      {{'Subject' | translate}}
+    </label>
   </p-floatLabel>
+
+  
   
   <p-floatLabel>
     <textarea

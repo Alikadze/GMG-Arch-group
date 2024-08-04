@@ -15,7 +15,15 @@ export const routes: Routes = [
       {
         path: 'contact',
         component: ContactComponent
+      },
+      {
+        path: 'auth',
+        loadChildren: () => import('./pages/auth/auth.routes').then(m => m.AuthRoutes)
       }
     ]
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 ];
