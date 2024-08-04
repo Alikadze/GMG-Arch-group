@@ -1,29 +1,19 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
-import { ContactUsFormComponent } from "../../components/contact-us-form/contact-us-form.component";
+import { CarouselComponent } from "../../components/carousel/carousel.component";
+import { HomeInfoComponent } from "../../components/home-info/home-info.component";
+import { FeaturedComponent } from "../../components/featured/featured.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     TranslateModule,
-    ButtonModule,
-    DropdownModule,
-    ContactUsFormComponent
+    CarouselComponent,
+    FeaturedComponent,
+    HomeInfoComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
-  loading: boolean = false;
-
-  load() {
-      this.loading = true;
-
-      setTimeout(() => {
-          this.loading = false
-      }, 2000);
-  }
-}
+export class HomeComponent {}
