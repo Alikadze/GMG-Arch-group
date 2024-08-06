@@ -1,0 +1,39 @@
+<div class="w-full rounded-2xl overflow-hidden px-3">
+  <p-galleria 
+  [value]="images" 
+  [numVisible]="5" 
+  [circular]="true" 
+  [showItemNavigators]="true" 
+  [showThumbnails]="false" 
+  [responsiveOptions]="responsiveOptions"
+  [transitionInterval]="3000"
+  [containerStyle]="{ 'max-width': '100%', 'border-radius': '1rem' , 'overflow': 'hidden' }"
+  class="custom-galleria"
+>
+  <ng-template pTemplate="item" let-item>
+    <img [src]="item.itemImageSrc" style="width: 100%; display: block; max-height: 600px;" />
+
+    <div class="absolute top-[20%] left-[10%]">
+      <div class="mb-2 text-center bg-slate-50 h-auto py-2 w-auto px-4 rounded-md text-lg font-medium font-sans">
+       <span>{{ item.country | translate }}</span>,  <span class="text-orange-500">{{ item.city | translate }}</span>
+      </div>
+
+      <div class="w-auto bg-slate-100 rounded-md px-3 py-2 h-auto">
+        <div class="text-slate-800 font-medium text-lg"> 
+          {{'Total Flat Space' | translate}}
+          <span class="ml-1 text-xl text-black"> 
+            {{item.space}} <span class="-ml-1"> {{'m' | translate}}<sup>2</sup> </span>  
+          </span> 
+        </div>
+
+        <div class="text-slate-800 font-medium text-lg">
+          {{'Number of rooms' | translate}} 
+          <span class="ml-1 text-xl text-black">
+            {{item.rooms}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-galleria>
+</div>

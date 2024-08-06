@@ -2,7 +2,7 @@
   "Home": "Главная",
   "About": "О нас",
   "Contact": "Контакты",
-  "Workspace": "Рабочее пространство",
+  "Projects": "проекты",
 
   "CONTACT US": "Свяжитесь с нами",
   "Get In Touch": "Свяжитесь",
@@ -16,6 +16,18 @@
   "Message": "Сообщение",
   "Send Message": "Отправить сообщение",
 
+  "Error": "Ошибка",
+  "Success": "Сделано",
+  "Name is required": "Имя обязательно",
+  "Mail is required": "Электронная почта обязательна",
+  "Number is required": "Номер обязателен",
+  "Incorrect mail format": "Неверный формат почты",
+  "Subject is required": "Тема обязательна",
+  "Message is required": "Сообщение обязательно",
+  "Message sent successfully": "Сообщение успешно отправлено",
+  "Failed to send message": "Не удалось отправить сообщение",
+  "Enter your Phone Number": "Введите ваш номер телефона",
+
   "language": "Язык",
   "en": "English",
   "ru": "Русский",
@@ -25,5 +37,44 @@
   "contact": "Контакты",
   "title": "Заголовок",
   "description": "Описание",
-  "welcome": "Добро пожаловать"
+  "welcome": "Добро пожаловать",
+
+  "Enter your Full name": "Введите свое полное имя",
+  "Enter your Email address": "Введите ваш адрес электронной почты",
+  "Enter your subject of the text": "Введите тему текста",
+  "Enter content of the message": "Введите содержание сообщения",
+
+  "Georgia": "Грузия",
+  "Tbilisi": "Тбилиси",
+  "Batumi": "Батуми",
+  "Kutaisi": "Кутаиси",
+  "Total Flat Space": "Общая площадь квартиры",
+  "Number of rooms": "Количество комнат",
+  "Buildings": "Здания",
+  "Finished Now": "Закончено сейчас",
+  "Years": "Годы",
+  "Experience":"опыта",
+  "m": "м",
+
+  "Featured": "Рекомендуемые",
+  "Best": "Лучший",
+  "Appartment &": "Квартира &",
+  "Sea view": "Вид на море",
+  "Where is the house located?": "Где находится дом?",
+  "What`s the way home?" : "Как добраться домой?",
+  "How long did it take to build?": "Сколько времени заняло строительство?",
+  "The house is..." : "Дом находится...",
+  "The way is...": "Путь...",
+  "The house was built in...": "Дом был построен в...",
+  "Number of floors": "Количество этажей",
+
+  "Projecting": "Проектирование",
+  "Construction": "Строительство",
+  "Interior Design": "Дизайн интерьера",
+  "Other": "Другие",
+
+  "All rights reserved": "Все права защищены",
+  "48 of Luka Asatiani": "48 Лука Асатиани",
+  "Developed by": "девелопер",
+  "Rezo Alikadze": "Резо Аликадзе"
 }

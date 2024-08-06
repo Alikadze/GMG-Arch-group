@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { ContactUsPayload } from '../interfaces/contact-us';
-import { ContactUsService } from '../services/contact-us.service';
+import { ContactUsFirebaseService } from '../services/contact-us-firebase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContactUsFacade {
-  contactUsService = inject(ContactUsService);
+export class ContactUsFirebaseFacade {
+  contactUsFirebaseService = inject(ContactUsFirebaseService);
   
-  submitMessage(payload: ContactUsPayload): Promise<any> {
-    return this.contactUsService.submitContactMessage(payload)
+  submitContactUs(payload: ContactUsPayload) {
+    return this.contactUsFirebaseService.addContactMessage(payload);
   }
 }

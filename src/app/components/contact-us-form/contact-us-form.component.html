@@ -1,0 +1,140 @@
+<p-toast [life]="1500"/>
+
+<form [formGroup]="form" class="flex flex-col gap-11 mx-6 my-14">
+  <p-floatLabel>
+    <input
+      pInputText
+      id="username"
+      class="w-full !rounded-2xl"
+      variant="filled"
+      formControlName="name"
+      pTooltip="{{'Enter your Full name' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+  
+    <label for="username" class="text-lg -mt-3.5 mb-2">
+      {{'Full name' | translate}}
+    </label>
+  </p-floatLabel>
+  
+  <p-floatLabel>
+    <input
+      pInputText
+      id="Email Address"
+      class="w-full !rounded-2xl"
+      variant="filled"
+      formControlName="from"
+      pTooltip="{{'Enter your Email address' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+  
+    <label for="Email Address" class="text-lg -mt-3.5 mb-2">
+      {{'Email Address' | translate}}
+    </label>
+  </p-floatLabel>
+<!-- 
+  <p-floatLabel>
+    <input
+      pInputText
+      id="Phone Number"
+      class="w-full !rounded-2xl"
+      variant="filled"
+      formControlName="number"
+      pTooltip="{{'Enter your Phone Number' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+  
+    <label for="Phone Number" class="text-lg -mt-3.5 mb-2">
+      {{'Phone Number' | translate}}
+    </label>
+  </p-floatLabel> -->
+  
+  <p-floatLabel>
+    <p-inputMask 
+      mask="999-99-99-99"
+      id="Phone Number"
+      styleClass="w-full !rounded-2xl"
+      variant="filled"
+      formControlName="number"
+      pTooltip="{{'Enter your Phone Number' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+    
+    <label for="Phone Number" class="text-lg -mt-3.5 mb-2">
+      {{'Phone Number' | translate}}
+    </label>
+  </p-floatLabel>
+  
+  <!-- <p-floatLabel>
+    <input
+      pInputText
+      id="Subject"
+      class="w-full !rounded-2xl"
+      variant="filled"
+      formControlName="subject"
+      pTooltip="{{'Enter your subject of the text' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+  
+    <label for="Subject" class="text-lg -mt-3.5 mb-2">
+      {{'Subject' | translate}}
+    </label>
+  </p-floatLabel> -->
+
+  <p-floatLabel>
+    <p-dropdown 
+      [options]="subjects"
+      styleClass="w-full !rounded-2xl"
+      formControlName="subject"
+      variant="filled"
+      optionLabel="label" 
+      inputId="float-label" 
+    /> 
+  
+    <label class="text-lg -mt-3.5 mb-2" for="float-label">
+      {{'Subject' | translate}}
+    </label>
+  </p-floatLabel>
+
+  
+  
+  <p-floatLabel>
+    <textarea
+      class="w-full !rounded-2xl"
+      id="MessageInput"
+      rows="12"
+      cols="30"
+      [autoResize]="true"
+      pInputTextarea
+      variant="filled"
+      formControlName="message"
+      pTooltip="{{'Enter content of the message' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    >
+    </textarea>
+    <label for="MessageInput" class="text-lg -mt-3.5 mb-2">
+      {{'Message'| translate}}
+    </label>
+  </p-floatLabel>
+  
+  <p-button
+    label="{{'Send Message' | translate}}"
+    severity="contrast"
+    styleClass="w-auto px-8 rounded-3xl transition-colors duration-500 hover:bg-orange-400 hover:border-orange-500"
+    [loading]="loading"
+    (onClick)="submit()"
+  />
+</form>
+

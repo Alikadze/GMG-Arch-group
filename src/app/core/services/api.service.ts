@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  aipUrl = environment.firebaseUrl;
+  aipUrl = environment.firebase.databaseURL;
 
   http: HttpClient = inject(HttpClient);
 

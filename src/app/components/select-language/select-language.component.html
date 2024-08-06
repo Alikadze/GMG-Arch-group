@@ -1,19 +1,3 @@
-<!-- <div>
-  <section class="flex flex-col gap-5">
-    <select (change)="changeLanguage($event)">
-      @for (language of languages; track $index) {
-        <option [value]="language">
-          {{ language | translate }}
-        </option>
-      }
-    </select>
-  </section>
-  
-  <h1>
-    {{ 'welcome' | translate }}
-  </h1>
-</div> -->
-
 <form [formGroup]="formGroup">
   <p-dropdown 
     formControlName="selectedLanguage"
