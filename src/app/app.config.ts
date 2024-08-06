@@ -10,12 +10,16 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp, getApp } from '@angular/fire/app';
 import { MessageService } from 'primeng/api';
 
 import { environment } from '../environments/environment.development';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-// import { tokenInterceptor } from './core/interceptors/token.interceptor';
+import { tokenInterceptor } from './core/interceptors/token.interceptor';
+import { HttpCoreInterceptor } from './core/interceptors/http-core.interceptor';
+
+import { provideAuth, getAuth } from '@angular/fire/auth';
+
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -25,6 +29,7 @@ export function httpLoaderFactory(http: HttpClient) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth(getApp())),
     provideFirestore(() => getFirestore()),
 
     provideZoneChangeDetection({ eventCoalescing: true }), 
@@ -32,14 +37,21 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     provideAnimationsAsync(),
+    // provideFunctions(() => 
+    //   getFunctions(
+    //     getApp(),
+    //     'europe-west1'
+    //   )
+    // ),
 
     provideHttpClient(
-      // withInterceptors([
-      //   tokenInterceptor
-      // ]), 
+      withInterceptors([
+        tokenInterceptor,
+        HttpCoreInterceptor
+      ]), 
       withFetch()
     ),
-
+    
     MessageService,
 
     importProvidersFrom(

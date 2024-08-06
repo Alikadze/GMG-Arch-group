@@ -74,6 +74,11 @@
   "The house was built in...": "სახლი აშენდა...",
   "Number of floors": "სართულების რაოდენობა",
 
+  "Logged in successfully": "კეთილი იყოს თქვენი მობრძანება",
+  "Email is required": "შეიყვანეთ ელ-ფოსტა",
+  "Password is required": "შეიყვანეთ პაროლი",
+  "Invalid Email or Password": "არასწორი ელ-ფოსტა ან პაროლი",
+
   "All rights reserved": "ყველა უფლება დაცულია",
   "48 of Luka Asatiani": "ლუკა ასათიანის 48",
   "Developed by": "დეველოპერი",
