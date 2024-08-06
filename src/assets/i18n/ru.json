@@ -73,6 +73,12 @@
   "Interior Design": "Дизайн интерьера",
   "Other": "Другие",
 
+  "Logged in successfully": "Успешный вход",
+  "Email is required": "Электронная почта обязательна",
+  "Password is required": "Пароль обязателен",
+  "Failed to Login": "Не удалось войти",
+  "Invalid Email or Password": "Неверная электронная почта или пароль",
+
   "All rights reserved": "Все права защищены",
   "48 of Luka Asatiani": "48 Лука Асатиани",
   "Developed by": "девелопер",
