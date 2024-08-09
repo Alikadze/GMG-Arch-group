@@ -13,6 +13,14 @@ export class AuthFacade {
   storageService = inject(StorageService)
   router = inject(Router)
 
+  get isAuthenticated() {
+    return !!this.user
+  }
+
+  get user() {
+    return this.storageService.getItem('user')
+  }
+
   login(payload: AuthPayload) {
     return this.authSevice.login(payload)
     .pipe(
@@ -28,7 +36,9 @@ export class AuthFacade {
   }
 
   logOut() {
-    this.storageService.clear()
+    this.storageService.removeItem('user')
+    this.storageService.removeItem('refreshToken')
+    this.storageService.removeItem('token')
     this.router.navigate(['/'])
   }
 }

@@ -1,0 +1,10 @@
+@if (project) {
+  <h1>{{project.name}}</h1>
+  <p>{{project.description}}</p>
+  <p>{{'Start Date' | translate}}: {{project.startDate | date: 'MMM yyyy'}} </p>
+  <p>{{'End Date' | translate}}: {{project.endDate | date: 'MMM yyyy'}}</p>
+  <p>{{'Total Flat Space' | translate}}: {{project.flatSpace}} <span>{{'m' | translate }}<sup>2</sup></span></p>
+  @for (images of project.images; track $index) {
+    <img src="{{images}}" alt="{{project.name}}" class="w-full">
+  }
+}
