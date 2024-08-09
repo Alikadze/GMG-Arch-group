@@ -1,3 +1,5 @@
+<p-toast life="1500"/>
+
 <div [@fadeInOut] class="w-full flex gap-8 items-center justify-between px-10 shadow-md h-[82px] bg-white transition-all duration-300">
   <div (click)="navigateToHome()" class="cursor-pointer">
     <img
@@ -14,7 +16,7 @@
           {{'Home'| translate}}
         </a>
       </li>
-      <li id="authed" class='py-3 px-3 cursor-pointer  text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+      <li (click)="navigateToProject()" id="authed" class='py-3 px-3 cursor-pointer  text-slate-700 transition-colors duration-300 hover:text-orange-500'>
         <a class='font-medium '>
           {{'Projects'| translate}}
         </a>
@@ -31,8 +33,43 @@
       </li>
     </ul>
   </div>
+
   
-  <div>
+  <div class="flex gap-4 items-center">
+    
+    <div>
+      @if (isAuthenticated) {
+        <p-button
+         label="{{'Logout'| translate}}"
+          type="button"
+          styleClass="w-28 text-[15px] p-button-outlined p-button-rounded bg-red-500 text-white p-button-sm p-button-secondary transition-colors duration-300 hover:bg-red-600"
+          (onClick)="logout($event)" label="Save"
+        />
+      } @else {
+        <p-button
+        (onClick)="navigateToAuth()"
+        label="{{'Admin'| translate}}"
+        type="button"
+        styleClass="w-28 text-[15px] p-button-outlined p-button-rounded p-button-sm p-button-secondary transition-colors duration-300 hover:bg-orange-200"
+        />
+      }
+      
+    </div>
+
     <app-select-language></app-select-language>
   </div>
 </div>
+
+<p-confirmPopup #confirmPopup>
+  <ng-template pTemplate="headless" let-message let-test>
+      <div class="border-round p-3">
+          <span>{{ message.message }}</span>
+          <div class="flex align-items-center gap-2 mt-3">
+              <p-button (onClick)="accept()" label="{{'Confirm' | translate}}" size="small" />
+              <p-button (onClick)="reject()" label="{{'Cancel' | translate}}" [outlined]="true" size="small" />
+          </div>
+      </div>
+  </ng-template>
+</p-confirmPopup>
+<!-- 
+<p-button  /> -->

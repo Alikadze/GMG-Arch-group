@@ -1,15 +1,19 @@
 <p-toast [life]="2000"/>
 
-<form [formGroup]="form" class="h-auto bg-slate-400 pb-48">
+<form  [formGroup]="form" class="h-auto bg-slate-400 pb-48">
   <div class="flex justify-center items-center h-[100vh]">
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+    <div  @slideIn class="bg-white p-8 rounded-lg shadow-lg w-96">
 
-      <h1 class="text-2xl font-bold text-center mb-4">Login</h1>
+      <h1 class="text-xl font-mono text-slate-700 font-bold text-center mb-4">{{'Login for page administrator' | translate}}</h1>
 
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700"
-          >Email</label
+      <p-divider
+        styleClass="my-6"
+      />
+
+      <div class="mb-6">
+        <label for="email" class="block text-base font-medium text-gray-700"
+          >{{'Email' | translate}}</label
         >
         <input
           pInputText
@@ -20,9 +24,9 @@
         />
       </div>
 
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700"
-          >Password</label
+      <div class="mb-5">
+        <label for="password" class="block text-base font-medium text-gray-700"
+          >{{'Password' | translate}}</label
         >
         <input
           pInputText
@@ -35,10 +39,11 @@
 
       <div class="flex justify-between items-center">
         <p-button 
-          label="Submit" 
+          label="{{'Submit' | translate}}" 
           size="small"
           [loading]="loading" 
           (onClick)="login()"
+          styleClass="transition-colors rounded-lg duration-300 bg-orange-500 border-none hover:bg-orange-600"
         />
       </div>
 

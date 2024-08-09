@@ -11,7 +11,7 @@ import { HttpClient, HttpClientModule, provideHttpClient, withFetch, withInterce
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { provideFirebaseApp, initializeApp, getApp } from '@angular/fire/app';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { environment } from '../environments/environment.development';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -19,6 +19,8 @@ import { tokenInterceptor } from './core/interceptors/token.interceptor';
 import { HttpCoreInterceptor } from './core/interceptors/http-core.interceptor';
 
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideStorage } from '@angular/fire/storage';
+import { getStorage } from 'firebase/storage';
 
 
 export function httpLoaderFactory(http: HttpClient) {
@@ -30,6 +32,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth(getApp())),
+    provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore()),
 
     provideZoneChangeDetection({ eventCoalescing: true }), 
@@ -37,12 +40,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     provideAnimationsAsync(),
-    // provideFunctions(() => 
-    //   getFunctions(
-    //     getApp(),
-    //     'europe-west1'
-    //   )
-    // ),
 
     provideHttpClient(
       withInterceptors([
@@ -53,6 +50,7 @@ export const appConfig: ApplicationConfig = {
     ),
     
     MessageService,
+    ConfirmationService,
 
     importProvidersFrom(
       HttpClientModule,

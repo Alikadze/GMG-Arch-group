@@ -6,8 +6,10 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastModule } from 'primeng/toast';
+import { DividerModule } from 'primeng/divider';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +18,26 @@ import { ToastModule } from 'primeng/toast';
     ReactiveFormsModule,
     ButtonModule,
     InputTextModule,
-    ToastModule
+    ToastModule,
+    TranslateModule,
+    DividerModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('600ms ease-in', style({ opacity: 1 }))
+      ])
+    ]),
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)' }),
+        animate('600ms ease-out', style({ transform: 'translateX(0)' }))
+      ])
+    ])
+  ]
 })
 export class LoginComponent {
 
@@ -45,6 +63,10 @@ export class LoginComponent {
           this.translateService.get('Email is required').subscribe((res: string) => {
             this.messageService.add({ severity: 'error', summary: errorSummary, detail: res, life: 1500 });
           });
+        } else if (this.form.get('email')?.hasError('email')) {
+          this.translateService.get('Wrong Email format').subscribe((res: string) => {
+            this.messageService.add({ severity: 'error', summary: errorSummary, detail: res, life: 1500 });
+          })
         } else if (this.form.get('password')?.hasError('required')) {
           this.translateService.get('Password is required').subscribe((res: string) => {
             this.messageService.add({ severity: 'error', summary: errorSummary, detail: res, life: 1500 });
@@ -83,7 +105,7 @@ export class LoginComponent {
         });
         this.loading = false;
         setTimeout(() => {
-          this.router.navigate(['/'])
+          this.router.navigate(['/project/all'])
         }, 2000)
       }
     })
