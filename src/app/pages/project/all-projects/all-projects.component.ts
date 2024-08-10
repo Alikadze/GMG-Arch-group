@@ -8,6 +8,8 @@ import { DatePipe, JsonPipe, NgFor } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { TagModule } from 'primeng/tag';
+import { AuthFacade } from '../../../core/facades/auth.facade';
 
 @Component({
   selector: 'app-all-projects',
@@ -20,7 +22,8 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
     TranslateModule,
     DatePipe,
     JsonPipe,
-    PaginatorModule
+    PaginatorModule,
+    TagModule
 ],
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.scss'
@@ -29,6 +32,11 @@ export class AllProjectsComponent {
   projectFacade = inject(ProjectFacade);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  authFacade = inject(AuthFacade);
+
+  get isAuthenticated() {
+    return this.authFacade.isAuthenticated
+  }
 
   first: number = 1;
   rows: number = 6;
@@ -71,14 +79,12 @@ export class AllProjectsComponent {
     this.projectFacade.getProjects(first, rows).subscribe((response) => {
       this.projects = response.projects.map(project => ({
         ...project,
-        startDate: this.convertToDate(project.startDate),
-        endDate: this.convertToDate(project.endDate),
+        startDate: this.convertToDate(project.startDate as Date),
+        endDate: this.convertToDate(project.endDate as Date),
       }));
       this.totalRecords = response.totalRecords;
     });
   }
-
-  
 
 
   convertToDate(timestamp: {seconds: number, namoseconds: number} | Date): Date {
@@ -95,13 +101,32 @@ export class AllProjectsComponent {
   onProjectAdded(newProject: ProjectPayload) {
     this.projects.push(newProject);
     this.visible = false;
+    this.first = 1; // Go back to the first page
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        first: this.first,
+        rows: this.rows
+      },
+      queryParamsHandling: 'merge',
+    });
+    this.loadProjects(this.first, this.rows);
     return null;
   }
 
   visible: boolean = false;
 
   showDialog() {
-    this.visible = true;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        first: this.rows,  // This will navigate to the second page
+        rows: this.rows
+      },
+      queryParamsHandling: 'merge',
+    }).then(() => {
+      this.visible = true;  // Show the dialog after navigation
+    });
   }
 
   navigateToProject(projectId: string | undefined) {

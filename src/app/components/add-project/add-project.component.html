@@ -3,6 +3,21 @@
 </div>
 
 <div class="flex flex-col gap-10 mt-14">
+
+  <p-floatLabel>
+    <p-dropdown 
+      [options]="types"
+      styleClass="w-full !rounded-2xl"
+      [(ngModel)]="projectType"
+      optionLabel="label" 
+      inputId="float-label" 
+    /> 
+  
+    <label class="text-lg -mt-3.5 mb-2" for="float-label">
+      {{'Subject' | translate}}
+    </label>
+  </p-floatLabel>
+
   <p-floatLabel>
     <input
       pInputText
@@ -36,36 +51,57 @@
     </label>
   </p-floatLabel>
 
-  <p-floatLabel>
-    <p-calendar
-      styleClass="w-full !rounded-2xl"
-      [(ngModel)]="startDate"
-      view="month"
-      dateFormat="mm/yy"
-      id="StartDate"
-      [readonlyInput]="true"
-    />
+  @if (projectType.value === 'offered') {
+    <p-floatLabel>
+      <p-inputNumber
+        id="TotalFlatSpace"
+        styleClass="w-full !rounded-2xl"
+        [(ngModel)]="offeredPrice"
+        pTooltip="{{'Enter Total Flat Space' | translate}}"
+        [disabled]="projectType.value !== 'offered'"
+        showDelay="600" 
+        hideDelay="300"  
+        tooltipPosition="top"
+      />
+      <label for="TotalFlatSpace" class="text-lg -mt-3.5 mb-2">
+        {{'Offered Price' | translate}} ({{"Lari" | translate}})
+      </label>
+    </p-floatLabel>
+  } @else {
 
-    <label for="startDate" class="text-lg -mt-3.5 mb-2">
-      {{'Start Date' | translate}}
-    </label>
-  </p-floatLabel>
-
-  <p-floatLabel>
-    <p-calendar
-      styleClass="w-full !rounded-2xl"
-      [(ngModel)]="endDate"
-      [minDate]="startDate"
-      view="month"
-      dateFormat="mm/yy"
-      id="EndDate"
-      [readonlyInput]="true"
-    />
-
-    <label for="EndDate" class="text-lg -mt-3.5 mb-2">
-      {{'End Date' | translate}}
-    </label>
-  </p-floatLabel>
+    <p-floatLabel>
+      <p-calendar
+        styleClass="w-full !rounded-2xl"
+        [(ngModel)]="startDate"
+        view="month"
+        [disabled]="projectType.value !== 'ended'"
+        dateFormat="mm/yy"
+        id="StartDate"
+        [readonlyInput]="true"
+      />
+  
+      <label for="startDate" class="text-lg -mt-3.5 mb-2">
+        {{'Start Date' | translate}}
+      </label>
+    </p-floatLabel>
+  
+    <p-floatLabel>
+      <p-calendar
+        styleClass="w-full !rounded-2xl"
+        [(ngModel)]="endDate"
+        [minDate]="startDate"
+        view="month"
+        [disabled]="projectType.value !== 'ended'"
+        dateFormat="mm/yy"
+        id="EndDate"
+        [readonlyInput]="true"
+      />
+  
+      <label for="EndDate" class="text-lg -mt-3.5 mb-2">
+        {{'End Date' | translate}}
+      </label>
+    </p-floatLabel>
+  }
 
   <p-floatLabel>
     <p-inputNumber
@@ -141,7 +177,8 @@
     </ng-template>
   </p-fileUpload>
 
-  <div class="mt-4 flex justify-end">
-    <p-button [loading]="isLoading" label="{{'Submit' | translate}}" (onClick)="onSubmit()" [disabled]="isLoading"><div></div></p-button>
+  <div class="mt-4 w-full"> 
+    <p-button styleClass="w-full" [loading]="isLoading" label="{{'Submit' | translate}}" (onClick)="onSubmit()" [disabled]="isLoading"></p-button>
   </div>
+
 </div>
