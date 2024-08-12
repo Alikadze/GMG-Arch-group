@@ -1,11 +1,11 @@
 export interface ProjectPayload {
   id?: string;
-  name: string;
-  description: string;
+  name?: string;
+  description?: string;
   offeredPrice?: number;
   type: string;
   startDate?: Date;
   endDate?: Date;
-  flatSpace: number;
+  flatSpace?: number;
   images: string[];
 }

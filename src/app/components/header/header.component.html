@@ -11,22 +11,36 @@
 
   <div class="hidden md:flex">
     <ul class="flex gap-x-5">
-      <li (click)="navigateToHome()" class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+      <li 
+        (click)="navigateToHome()" 
+        class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
+        [ngClass]="{'active': isActive('/'), 'hover:text-orange-500': !isActive('/')}"
+      >
         <a class='font-medium'>
           {{'Home'| translate}}
         </a>
       </li>
-      <li (click)="navigateToProject()" id="authed" class='py-3 px-3 cursor-pointer  text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+      <li 
+        (click)="navigateToProject()" 
+        id="authed" 
+        class='py-3 px-3 cursor-pointer  text-slate-700 transition-colors duration-300 hover:text-orange-500'
+        [ngClass]="{'active': isActive('/project/all'), 'hover:text-orange-500': !isActive('/project/all')}"
+      >
         <a class='font-medium '>
           {{'Projects'| translate}}
         </a>
       </li>
-      <li class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+      <li 
+        class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
+      >
         <a class='font-medium '>
           {{'About'| translate}}
         </a>
       </li>
-      <li (click)="navigateToContact()" class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'>
+      <li 
+        (click)="navigateToContact()" class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
+        [ngClass]="{'active': isActive('/contact'), 'hover:text-orange-500': !isActive('/contact')}"
+      >
         <a class='font-medium '>
           {{'Contact'| translate}}
         </a>

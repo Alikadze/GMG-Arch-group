@@ -106,6 +106,20 @@
   "offered": "შეთავაზებული",
   "Offered": "შეთავაზებული",
   "Ended": "დასრულებული",
+  "All": "ყველა",
+  "Lari": "ლარი",
+  "Edit project": "პროექტის რედაქტირება",
+
+  "Please enter project name": "შეიყვანეთ პროექტის სახელი",
+  "Please enter project description": "შეიყვანეთ პროექტის აღწერა",
+  "Please select start and end date": "შეარჩიეთ დაწყების და დასრულების თარიღები",
+  "Please enter project price": "შეიყვანეთ პროექტის ფასი",
+  "Please enter project images": "შეიყვანეთ პროექტის სურათები",
+  "Please select project type": "შეარჩიეთ პროექტის ტიპი",
+  "Please enter total flat space": "შეიყვანეთ საერთო ფართობი",
+  "Please select at least one image": "შეარჩიეთ მინიმუმ ერთი სურათი",
+  "Project deleted successfully": "პროექტი წაიშალა წარმატებით",
+  "Project updated successfully": "პროექტი განახლდა წარმატებით",
 
 
   "All rights reserved": "ყველა უფლება დაცულია",

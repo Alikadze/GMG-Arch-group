@@ -4,12 +4,16 @@ import { DialogModule } from 'primeng/dialog';
 import { AddProjectComponent } from "../../../components/add-project/add-project.component";
 import { ProjectFacade } from '../../../core/facades/project.facade';
 import { ProjectPayload } from '../../../core/interfaces/project';
-import { DatePipe, JsonPipe, NgFor } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { DatePipe, JsonPipe, NgFor, NgIf } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { AuthFacade } from '../../../core/facades/auth.facade';
+import { FilterService } from 'primeng/api';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-all-projects',
@@ -23,7 +27,11 @@ import { AuthFacade } from '../../../core/facades/auth.facade';
     DatePipe,
     JsonPipe,
     PaginatorModule,
-    TagModule
+    TagModule,
+    DropdownModule,
+    FormsModule,
+    NgIf,
+    SkeletonModule
 ],
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.scss'
@@ -33,31 +41,76 @@ export class AllProjectsComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
   authFacade = inject(AuthFacade);
+  filterService = inject(FilterService);
+  translateService = inject(TranslateService);
+
 
   get isAuthenticated() {
     return this.authFacade.isAuthenticated
   }
 
+
   first: number = 1;
   rows: number = 6;
   totalRecords: number = 100;
 
+  selectedFilter: string = 'all';
+
+  filterOptions = [
+    { label: 'All', value: 'all' },
+    { label: 'Offered', value: 'offered' },
+    { label: 'Ended', value: 'ended' }
+  ];
+
+  areProjectsLoading = false;
+
+  private loadTranslations(): void {
+    this.translateService.get(['All', 'Offered', 'Ended']).subscribe((translations: any) => {
+      this.filterOptions = [
+        { label: translations['All'], value: 'all' },
+        { label: translations['Offered'], value: 'offered' },
+        { label: translations['Ended'], value: 'ended' },
+      ];
+    });
+  }
+  
+
+  onFilterChange() {
+    this.first = 1; // Reset to the first page when filter changes
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        first: this.first,
+        rows: this.rows,
+        filter: this.selectedFilter
+      },
+      queryParamsHandling: 'merge',
+    });
+    this.loadProjects(this.first, this.rows);
+
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
 
   onPageChange(event: PaginatorState) {
     const totalPages = Math.ceil(this.totalRecords / this.rows);
-    this.first = Math.min(event.first as number, (totalPages - 1) * this.rows); // Ensure `first` doesn't exceed total pages
+    this.first = Math.min(event.first as number, (totalPages - 1) * this.rows);
   
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         first: this.first,
-        rows: this.rows
+        rows: this.rows,
+        filter: this.selectedFilter
       },
       queryParamsHandling: 'merge',
     });
   
     this.loadProjects(this.first, this.rows);
-  
+
     window.scroll({
       top: 0,
       behavior: 'smooth'
@@ -69,20 +122,30 @@ export class AllProjectsComponent {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      this.first = +params['first'] || 1;
+      this.first = +params['first'] || 0; // Changed to 0-based index
       this.rows = +params['rows'] || 6;
+      this.selectedFilter = params['filter'] || 'all';
       this.loadProjects(this.first, this.rows);
     });
+
+    this.translateService.onLangChange.subscribe(() => {
+      this.loadTranslations()
+    });
+
+    this.loadTranslations();
   }
 
   loadProjects(first: number, rows: number) {
-    this.projectFacade.getProjects(first, rows).subscribe((response) => {
-      this.projects = response.projects.map(project => ({
-        ...project,
-        startDate: this.convertToDate(project.startDate as Date),
-        endDate: this.convertToDate(project.endDate as Date),
-      }));
-      this.totalRecords = response.totalRecords;
+    this.areProjectsLoading = true;
+
+    this.projectFacade.getProjects(first, rows, this.selectedFilter).subscribe((response) => {
+        this.projects = response.projects.map(project => ({
+            ...project,
+            startDate: this.convertToDate(project.startDate as Date),
+            endDate: this.convertToDate(project.endDate as Date),
+        }));
+        this.totalRecords = response.totalRecords;
+        this.areProjectsLoading = false;
     });
   }
 
@@ -101,7 +164,7 @@ export class AllProjectsComponent {
   onProjectAdded(newProject: ProjectPayload) {
     this.projects.push(newProject);
     this.visible = false;
-    this.first = 1; // Go back to the first page
+    this.first = 1;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {

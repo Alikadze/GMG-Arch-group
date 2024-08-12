@@ -1,0 +1,104 @@
+<form [formGroup]="form" class="flex flex-col gap-10 h-auto pt-10 px-2 overflow-y-auto">
+  <p-floatLabel>
+    <input
+      pInputText
+      id="projectName"
+      class="w-full !rounded-2xl"
+      formControlName="projectName"
+      pTooltip="{{ 'Enter the name of the project' | translate }}"
+      showDelay="600"
+      hideDelay="300"
+      tooltipPosition="top"
+    />
+
+    <label for="projectName" class="text-lg -mt-3.5 mb-2">
+      {{ "Project Name" | translate }}
+    </label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input
+      pInputText
+      id="projectDescription"
+      class="w-full !rounded-2xl"
+      formControlName="projectDescription"
+      pTooltip="{{ 'Enter the description of the project' | translate }}"
+      showDelay="600"
+      hideDelay="300"
+      tooltipPosition="top"
+    />
+
+    <label for="projectDescription" class="text-lg -mt-3.5 mb-2">
+      {{ "Project Description" | translate }}
+    </label>
+  </p-floatLabel>
+
+  @if (project.type === 'offered') {
+    <div class="w-full">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="projectOfferedPrice"
+          formControlName="projectOfferedPrice"
+          class="!w-full !rounded-2xl"
+          pTooltip="{{ 'Enter Total Flat Space' | translate }}"
+          showDelay="600"
+          hideDelay="300"
+          tooltipPosition="top"
+        />
+        <label for="projectOfferedPrice" class="text-lg -mt-3.5 mb-2">
+          {{ "Offered Price" | translate }} ({{ "Lari" | translate }})
+        </label>
+      </p-floatLabel>
+    </div>
+  } @else {
+    <p-floatLabel>
+      <p-calendar
+        styleClass="w-full !rounded-2xl"
+        formControlName="projectStartDate"
+        view="month"
+        dateFormat="mm/yy"
+        id="StartDate"
+        [readonlyInput]="true"
+      />
+  
+      <label for="startDate" class="text-lg -mt-3.5 mb-2">
+        {{ "Start Date" | translate }}
+      </label>
+    </p-floatLabel>
+  
+    <p-floatLabel>
+      <p-calendar
+        styleClass="w-full !rounded-2xl"
+        formControlName="projectEndDate"
+        view="month"
+        dateFormat="mm/yy"
+        id="EndDate"
+        [readonlyInput]="true"
+      />
+  
+      <label for="EndDate" class="text-lg -mt-3.5 mb-2">
+        {{ "End Date" | translate }}
+      </label>
+    </p-floatLabel>
+  }
+
+  <p-floatLabel>
+    <input
+      pInputText
+      id="projectFlatSpace"
+      formControlName="projectTotalFlatSpace"
+      class="w-full !rounded-2xl"
+      pTooltip="{{ 'Enter the total flat space' | translate }}"
+      showDelay="600"
+      hideDelay="300"
+      tooltipPosition="top"
+    />
+
+    <label for="projectFlatSpace" class="text-lg -mt-3.5 mb-2">
+      {{ "Total Flat Space" | translate }} (m<sup>2</sup>)
+    </label>
+  </p-floatLabel>
+
+  <p-button severity="primary" label="{{'Submit' | translate}}" (onClick)="onSubmit()"/>
+</form>

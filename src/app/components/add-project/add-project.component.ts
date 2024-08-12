@@ -45,7 +45,7 @@ import { map, switchMap } from 'rxjs';
     CalendarModule,
     InputNumberModule,
     DatePipe,
-    DropdownModule,
+    DropdownModule
   ],
   templateUrl: './add-project.component.html',
   styleUrl: './add-project.component.scss'
@@ -72,10 +72,20 @@ export class AddProjectComponent implements OnInit {
   ngOnInit() {
     this.clearForm();
     
-    this.types = [
-      { label: 'Ended', value: 'ended' },
-      { label: 'Offered', value: 'offered' },
-    ];
+    this.translateService.onLangChange.subscribe(() => {
+      this.loadTranslations();
+    });
+  
+    this.loadTranslations();
+  }
+
+  private loadTranslations(): void {
+    this.translateService.get(['Ended', 'Offered']).subscribe((translations: any) => {
+      this.types = [
+        { label: translations['Ended'], value: 'ended' },
+        { label: translations['Offered'], value: 'offered' },
+      ];
+    });
   }
 
 
@@ -83,6 +93,7 @@ export class AddProjectComponent implements OnInit {
   files: File[] | undefined = [];
 
   isLoading = false;
+  areProjectsLoading = false;
   totalSize: number = 0;
   totalSizePercent = this.totalSize / 10;
 
@@ -95,8 +106,34 @@ export class AddProjectComponent implements OnInit {
 
 
   onSubmit() {
+
+    this.translateService.get(['Error', 'Please enter project name', 'Please enter project description', 'Please select project type', 'Please enter offered price', 'Please select start and end date', 'Please enter total flat space', 'Please select at least one image']).subscribe((translations: any) => {
+      if (this.projectType.value === '') {
+        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select project type'] });
+        return;
+      } else if (this.projectName === '') {
+        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter project name'] });
+        return;
+      } else if (this.projectDesc === '') {
+        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter project description']});
+        return; 
+      } else if (this.projectType.value === 'offered' && this.offeredPrice === undefined) {
+        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter offered price'] });
+        return;
+      } else if (this.projectType.value === 'ended' && (this.startDate === undefined || this.endDate === undefined)) {
+        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select start and end date'] });
+        return;
+      } else if (this.totalFlatSpace === undefined) {
+        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter total flat space'] });
+        return;
+      } else if (this.files?.length === 0) {
+        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select at least one image'] });
+        return;
+      }
+    });
+   
+
     if (typeof this.files === 'undefined') {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please select at least one image' });
       return;
     }
 
@@ -118,14 +155,14 @@ export class AddProjectComponent implements OnInit {
       const projectId = project.id;
 
       this.projectFacade.addProject(project, this.files as File[]).subscribe(() => {
-        this.translateService.get('Success', 'Project added successfully').subscribe((translation: string) => {
-          this.messageService.add({ severity: 'success', summary: translation, detail: 'Project added successfully', life: 1500 });
+        this.translateService.get(['Success', 'Project added successfully']).subscribe((translations: any) => {
+          this.messageService.add({  severity: 'success', summary: translations['Success'], detail: translations['Project added successfully'], life: 1500 });
         });
         this.isLoading = false;
         this.clearForm();
         this.projectAdded.emit(project);
       }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+        this.messageService.add({key:'addProject',  severity: 'error', summary: 'Error', detail: error.message });
         this.isLoading = false;
       })
 

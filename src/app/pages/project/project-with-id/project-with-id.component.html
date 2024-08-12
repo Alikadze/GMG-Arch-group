@@ -5,6 +5,7 @@
         <app-project-carousel/>
       </div>
 
+      
 
       <div class="relative group flex flex-col gap-16 mt-14 mb-36 h-fit pr-3 min-w-[600px]">
 
@@ -12,7 +13,21 @@
         <!-- Orange line (animated) -->
         <div class="absolute left-0 bottom-0 h-0  w-[10px] bg-orange-400 rounded-3xl transition-all duration-1000 group-hover:h-full z-40"></div>
 
-        <div class="ml-6 text-5xl cursor-default text-slate-800 font-semibold font-sans max-w-[516px] break-words">{{project.name}}</div>
+        <div class="ml-6 text-5xl cursor-default text-slate-800 font-semibold font-sans max-w-[516px] pr-5 break-words">{{project.name}}</div>
+
+        @if (isAuthecticated) {
+          <div class="absolute top-0 right-20">
+            <p-speedDial 
+              [model]="items" 
+              direction="down"
+              transitionDelay="80"
+              showIcon="pi pi-bars" 
+              hideIcon="pi pi-times" 
+              buttonClassName="p-button-outlined"
+            />
+          </div>
+        }
+        
 
         <div class="ml-6 text-3xl font-semibold font-mono uppercase transition-all w-fit px-2 py-1 rounded-xl duration-700 group-hover:text-orange-400 group-hover:bg-slate-200">
          {{project.type | translate}}
@@ -46,4 +61,19 @@
       </div>
     </div>
   </div>
+
 }
+
+<p-dialog 
+  header="{{'Edit project' | translate}}" 
+  [modal]="true" 
+  [(visible)]="visible" 
+  styleClass="w-[600px]"
+  [draggable]="false">
+  
+  <app-edit-project
+    *ngIf="project"
+    [project]="project"
+    (projectUpdated)="onProjectEditted($event)"
+  />
+</p-dialog>
