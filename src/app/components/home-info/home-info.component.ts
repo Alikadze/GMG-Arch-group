@@ -1,12 +1,14 @@
 import { Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IntersectionObserverService } from '../../core/services/intersection-observer.service';
+import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 
 @Component({
   selector: 'app-home-info',
   standalone: true,
   imports: [
-    TranslateModule
+    TranslateModule,
+    AnimateOnScrollModule
   ],
   templateUrl: './home-info.component.html',
   styleUrl: './home-info.component.scss'

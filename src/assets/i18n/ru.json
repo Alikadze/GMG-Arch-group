@@ -106,6 +106,21 @@
   "offered": "предлагается",
   "Ended": "Закончился",
   "Offered": "Предлагается",
+  "All": "Все",
+  "Lari": "Лари",
+  "Edit project": "Редактировать проект",
+
+  "Please enter project name": "Пожалуйста, введите название проекта",
+  "Please enter project description": "Пожалуйста, введите описание проекта",
+  "Please select start and end date": "Пожалуйста, выберите дату начала и окончания",
+  "Please enter project price": "Пожалуйста, введите цену проекта",
+  "Please enter project images": "Пожалуйста, введите изображения проекта",
+  "Please select project type": "Пожалуйста, выберите тип проекта",
+  "Please enter total flat space": "Пожалуйста, введите общую площадь квартиры",
+  "Please select at least one image": "Пожалуйста, выберите хотя бы одно изображение",
+  "Project deleted successfully": "Проект успешно удален",
+  "Project updated successfully": "Проект успешно обновлен",
+
 
   "All rights reserved": "Все права защищены",
   "48 of Luka Asatiani": "48 Лука Асатиани",

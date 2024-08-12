@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, docSnapshots, query, limit, getDocs, startAfter, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, docSnapshots, query, limit, getDocs, startAfter, doc, getDoc, where, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, Storage } from '@angular/fire/storage';
 import { from, Observable } from 'rxjs';
 import { finalize, map, switchMap } from 'rxjs/operators';
@@ -49,42 +49,39 @@ export class ProjectService extends ApiService {
   }
 
 
-  getProjects(first: number, rows: number): Observable<{ projects: ProjectPayload[], totalRecords: number }> {
-    const totalRecordsPromise = getDocs(this.projectsCollection).then(snapshot => snapshot.size);
-  
-    // Create a base query with a limit
-    let projectQuery = query(this.projectsCollection, limit(rows));
-  
-    if (first > 0) {
-      // Handle pagination: retrieve the last document of the previous page
-      return from(getDocs(query(this.projectsCollection, limit(first)))).pipe(
-        switchMap(previousPageSnapshot => {
-          const lastVisible = previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
-          projectQuery = query(this.projectsCollection, startAfter(lastVisible), limit(rows));
-  
-          return from(Promise.all([totalRecordsPromise, getDocs(projectQuery)]));
-        }),
-        map(([totalRecords, snapshot]) => {
-          const projects = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data() as ProjectPayload
-          }));
-          return { projects, totalRecords };
-        })
-      );
+  getProjects(first: number, rows: number, filter: string): Observable<{ projects: ProjectPayload[], totalRecords: number }> {
+    let projectQuery;
+
+    // Apply filter if selected
+    if (filter !== 'all') {
+        projectQuery = query(this.projectsCollection, where('type', '==', filter));
+    } else {
+        projectQuery = query(this.projectsCollection);
     }
-  
-    return from(Promise.all([totalRecordsPromise, getDocs(projectQuery)])).pipe(
-      map(([totalRecords, snapshot]) => {
-        const projects = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data() as ProjectPayload
-        }));
-        return { projects, totalRecords };
-      })
+
+    return from(getDocs(projectQuery)).pipe(
+        switchMap(snapshot => {
+            const totalRecords = snapshot.size;
+
+            // Paginate the filtered results
+            let paginatedQuery = query(projectQuery, limit(rows));
+            if (first > 0) {
+                const lastVisible = snapshot.docs[first - 1];
+                paginatedQuery = query(projectQuery, startAfter(lastVisible), limit(rows));
+            }
+
+            return from(getDocs(paginatedQuery)).pipe(
+                map(paginatedSnapshot => {
+                    const projects = paginatedSnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data() as ProjectPayload
+                    }));
+                    return { projects, totalRecords };
+                })
+            );
+        })
     );
-  }
-  
+  }  
 
   getProject(): Observable<ProjectPayload[]> {
     return docSnapshots(this.projectsCollection).pipe(
@@ -95,5 +92,15 @@ export class ProjectService extends ApiService {
         })) 
       )
     );
+  }
+
+  updateProject(projectId: string, updatedFields: Partial<ProjectPayload>): Observable<void> {
+    const docRef = doc(this.firestore, `projects/${projectId}`);
+    return from(updateDoc(docRef, updatedFields));
+  }
+  
+  deleteProject(projectId: string): Observable<void> {
+    const docRef = doc(this.firestore, `projects/${projectId}`);
+    return from(deleteDoc(docRef));
   }
 }

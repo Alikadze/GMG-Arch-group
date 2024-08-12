@@ -8,6 +8,7 @@ import { AuthFacade } from '../../core/facades/auth.facade';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopup, ConfirmPopupModule } from 'primeng/confirmpopup';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,8 @@ import { ConfirmPopup, ConfirmPopupModule } from 'primeng/confirmpopup';
     RouterLink,
     ButtonModule,
     ToastModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    NgClass
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -43,6 +45,13 @@ export class HeaderComponent {
 
   get isAuthenticated() {
     return this.authFacade.isAuthenticated
+  }
+
+  isActive(route: string): boolean {
+    if (route === '/') {
+      return this.router.url === route; // Exact match for Home
+    }
+    return this.router.url.startsWith(route); // Match for other routes
   }
 
   @ViewChild(ConfirmPopup) confirmPopup!: ConfirmPopup;

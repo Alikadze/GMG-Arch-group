@@ -20,11 +20,20 @@ export class ProjectFacade {
     );
   }
 
-  getProjects(first: number, rows: number): Observable<{ projects: ProjectPayload[], totalRecords: number }> {
-    return this.projectService.getProjects(first, rows);
+  getProjects(first: number, rows: number, filter: string): Observable<{ projects: ProjectPayload[], totalRecords: number }> {
+    return this.projectService.getProjects(first, rows, filter);
   }
+
 
   getProjectById(id: string) {
     return this.projectService.getProjectWithId(id);
+  }
+
+  updateProject(projectId: string, updatedFields: Partial<ProjectPayload>): Observable<void> {
+    return this.projectService.updateProject(projectId, updatedFields);
+  }
+  
+  deleteProject(projectId: string): Observable<void> {
+    return this.projectService.deleteProject(projectId);
   }
 }
