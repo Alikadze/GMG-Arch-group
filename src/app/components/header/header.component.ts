@@ -1,8 +1,14 @@
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SelectLanguageComponent } from '../select-language/select-language.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router, RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { AuthFacade } from '../../core/facades/auth.facade';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmPopup, ConfirmPopupModule } from 'primeng/confirmpopup';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +16,11 @@ import { Router, RouterLink } from '@angular/router';
   imports: [
     TranslateModule,
     SelectLanguageComponent,
-    RouterLink
+    RouterLink,
+    ButtonModule,
+    ToastModule,
+    ConfirmPopupModule,
+    NgClass
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -28,6 +38,51 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class HeaderComponent {
   router = inject(Router);
+  authFacade = inject(AuthFacade);
+  messageService = inject(MessageService);
+  translateService = inject(TranslateService);
+  confirmationService = inject(ConfirmationService);
+
+  get isAuthenticated() {
+    return this.authFacade.isAuthenticated
+  }
+
+  isActive(route: string): boolean {
+    if (route === '/') {
+      return this.router.url === route; // Exact match for Home
+    }
+    return this.router.url.startsWith(route); // Match for other routes
+  }
+
+  @ViewChild(ConfirmPopup) confirmPopup!: ConfirmPopup;
+
+
+  accept() {
+    this.confirmPopup.accept();
+  }
+
+  reject() {
+    this.confirmPopup.reject();
+  }
+
+
+  logout(event: Event) {
+    this.translateService.get(['Are you sure you want to log out?', 'Success', 'Logged out successfully', 'Error', 'You have rejected'])
+      .subscribe((translations: any) => {
+        this.confirmationService.confirm({
+          target: event.target as EventTarget,
+          message: translations['Are you sure you want to log out?'],
+          accept: () => {
+            this.messageService.add({ severity: 'success', summary: translations['Success'], detail: translations['Logged out successfully'], life: 1500 });
+            this.authFacade.logOut();
+          },
+          reject: () => {
+            this.messageService.add({ severity: 'error', summary: translations['Error'], detail: translations['You have rejected'], life: 1500 });
+          }
+        });
+      });
+  }
+  
 
   navigateToHome() {
     this.router.navigate(['/'])
@@ -39,6 +94,22 @@ export class HeaderComponent {
 
   navigateToContact() {
     this.router.navigate(['/contact'])
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  navigateToAuth() {
+    this.router.navigate(['/auth'])
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  navigateToProject() {
+    this.router.navigate(['/project/all'])
     window.scroll({
       top: 0,
       behavior: 'smooth'

@@ -1,0 +1,79 @@
+@if (project) {
+  <div class="flex flex-col gap-12 pb-40 bg-slate-50">
+    <div class="flex gap-16 h-fit justify-between">
+      <div class="w-[55%] h-full">
+        <app-project-carousel/>
+      </div>
+
+      
+
+      <div class="relative group flex flex-col gap-16 mt-14 mb-36 h-fit pr-3 min-w-[600px]">
+
+        <div class="absolute left-0 top-0 h-full w-[10px] bg-gray-300 z-30 rounded-3xl"></div>
+        <!-- Orange line (animated) -->
+        <div class="absolute left-0 bottom-0 h-0  w-[10px] bg-orange-400 rounded-3xl transition-all duration-1000 group-hover:h-full z-40"></div>
+
+        <div class="ml-6 text-5xl cursor-default text-slate-800 font-semibold font-sans max-w-[516px] pr-5 break-words">{{project.name}}</div>
+
+        @if (isAuthecticated) {
+          <div class="absolute top-0 right-20">
+            <p-speedDial 
+              [model]="items" 
+              direction="down"
+              transitionDelay="80"
+              showIcon="pi pi-bars" 
+              hideIcon="pi pi-times" 
+              buttonClassName="p-button-outlined"
+            />
+          </div>
+        }
+        
+
+        <div class="ml-6 text-3xl font-semibold font-mono uppercase transition-all w-fit px-2 py-1 rounded-xl duration-700 group-hover:text-orange-400 group-hover:bg-slate-200">
+         {{project.type | translate}}
+        </div>
+
+        @if (project.type === 'ended') {
+          <div class="ml-6 cursor-default">
+            <p class="text-lg text-slate-600">{{'Start Date' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.startDate | date: 'MMM yyyy'}}</span></p>
+            <p class="text-lg text-slate-600">{{'End Date' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.endDate | date: 'MMM yyyy'}}</span> </p>
+          </div>
+        } @else {
+          <div class="ml-6 cursor-default">
+            <p class="text-lg text-slate-600">{{'Offered Price' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.offeredPrice}} <span>₾</span></span> </p>
+          </div>
+        }
+
+        <div class="ml-6">
+          <p class="text-lg text-slate-600">{{'Total Flat Space' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.flatSpace}} <span>{{'m' | translate }}<sup>2</sup></span></span> </p>
+        </div>
+      </div>
+    </div>
+
+    <div (click)="navToContact()" class="self-end mr-[405px]  mb-16 -mt-40">
+      <p-button styleClass="max-w-48 w-48" label="{{'Contact Us' | translate}}" severity="contrast" />
+    </div>
+    
+  
+    <div class="bg-white border-2 cursor-default  border-slate-200 mx-5 h-auto rounded-2xl p-2">
+      <div class="cursor-default">
+        {{project.description}}
+      </div>
+    </div>
+  </div>
+
+}
+
+<p-dialog 
+  header="{{'Edit project' | translate}}" 
+  [modal]="true" 
+  [(visible)]="visible" 
+  styleClass="w-[600px]"
+  [draggable]="false">
+  
+  <app-edit-project
+    *ngIf="project"
+    [project]="project"
+    (projectUpdated)="onProjectEditted($event)"
+  />
+</p-dialog>

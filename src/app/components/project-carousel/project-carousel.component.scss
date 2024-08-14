@@ -1,0 +1,16 @@
+::ng-deep .p-galleria .p-galleria-item-nav {
+  color: #334155; /* Set the color of the arrows to black */
+
+  // &:hover{
+  //   background-color: #cbd5e1;
+  // }
+
+}
+
+::ng-deep .p-galleria .p-galleria-item-nav.p-disabled {
+  color: #334155; /* Set a slightly lighter black for disabled arrows */
+
+  // &:hover{
+  //   background-color: #f0f0f1;
+  // }
+}

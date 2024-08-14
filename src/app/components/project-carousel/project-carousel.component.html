@@ -1,0 +1,25 @@
+<div class="w-full h-full rounded-2xl overflow-hidden ml-6 mr-3 mt-10 border border-black">
+  <p-galleria 
+    [value]="images" 
+    [numVisible]="5" 
+    [circular]="true" 
+    [showItemNavigators]="true" 
+    [showThumbnails]="true" 
+    [responsiveOptions]="responsiveOptions"
+    [transitionInterval]="3000"
+    [containerStyle]="{ 'max-width': '100%', 'border-radius': '1rem' , 'overflow': 'hidden' }"
+    class="font-black"
+  >
+  
+    <ng-template pTemplate="item" let-item>
+      <img [src]="item.itemImageSrc" class="w-full h-[500px] object-cover bg-slate-700" />
+    </ng-template>
+
+    <ng-template pTemplate="thumbnail" let-item>
+      <div class="grid grid-nogutter justify-content-center">
+        <img class="w-full h-14 object-cover" [src]="item.itemImageSrc" />
+      </div>
+    </ng-template>
+
+  </p-galleria>
+</div>

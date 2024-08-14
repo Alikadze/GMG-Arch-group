@@ -1,4 +1,10 @@
-<p-toast [life]="1500"/>
+<div class="z-50">
+  <p-toast 
+    [life]="1500"
+    styleClass="z-50"
+    autoZIndex="true"  
+  />
+</div>
 
 <form [formGroup]="form" class="flex flex-col gap-11 mx-6 my-14">
   <p-floatLabel>
@@ -36,24 +42,6 @@
       {{'Email Address' | translate}}
     </label>
   </p-floatLabel>
-<!-- 
-  <p-floatLabel>
-    <input
-      pInputText
-      id="Phone Number"
-      class="w-full !rounded-2xl"
-      variant="filled"
-      formControlName="number"
-      pTooltip="{{'Enter your Phone Number' | translate}}"
-      showDelay="600" 
-      hideDelay="300"  
-      tooltipPosition="top"
-    />
-  
-    <label for="Phone Number" class="text-lg -mt-3.5 mb-2">
-      {{'Phone Number' | translate}}
-    </label>
-  </p-floatLabel> -->
   
   <p-floatLabel>
     <p-inputMask 
@@ -72,24 +60,6 @@
       {{'Phone Number' | translate}}
     </label>
   </p-floatLabel>
-  
-  <!-- <p-floatLabel>
-    <input
-      pInputText
-      id="Subject"
-      class="w-full !rounded-2xl"
-      variant="filled"
-      formControlName="subject"
-      pTooltip="{{'Enter your subject of the text' | translate}}"
-      showDelay="600" 
-      hideDelay="300"  
-      tooltipPosition="top"
-    />
-  
-    <label for="Subject" class="text-lg -mt-3.5 mb-2">
-      {{'Subject' | translate}}
-    </label>
-  </p-floatLabel> -->
 
   <p-floatLabel>
     <p-dropdown 
@@ -110,12 +80,11 @@
   
   <p-floatLabel>
     <textarea
+      pInputTextarea
       class="w-full !rounded-2xl"
       id="MessageInput"
       rows="12"
       cols="30"
-      [autoResize]="true"
-      pInputTextarea
       variant="filled"
       formControlName="message"
       pTooltip="{{'Enter content of the message' | translate}}"

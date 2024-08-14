@@ -10,12 +10,18 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { MessageService } from 'primeng/api';
+import { provideFirebaseApp, initializeApp, getApp } from '@angular/fire/app';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { environment } from '../environments/environment.development';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-// import { tokenInterceptor } from './core/interceptors/token.interceptor';
+import { tokenInterceptor } from './core/interceptors/token.interceptor';
+import { HttpCoreInterceptor } from './core/interceptors/http-core.interceptor';
+
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideStorage } from '@angular/fire/storage';
+import { getStorage } from 'firebase/storage';
+
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -25,6 +31,8 @@ export function httpLoaderFactory(http: HttpClient) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth(getApp())),
+    provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore()),
 
     provideZoneChangeDetection({ eventCoalescing: true }), 
@@ -34,13 +42,15 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
 
     provideHttpClient(
-      // withInterceptors([
-      //   tokenInterceptor
-      // ]), 
+      withInterceptors([
+        tokenInterceptor,
+        HttpCoreInterceptor
+      ]), 
       withFetch()
     ),
-
+    
     MessageService,
+    ConfirmationService,
 
     importProvidersFrom(
       HttpClientModule,

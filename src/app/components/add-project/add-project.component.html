@@ -1,0 +1,191 @@
+<div class="-mt-2 fixed z-50 w-[94%] -ml-2 bg-white">
+  <p-divider></p-divider>    
+</div>
+
+<p-toast 
+  life="2000"
+  autoZIndex="true"
+  key="addProject"
+/>
+
+<div class="flex flex-col gap-10 mt-14">
+
+  <p-floatLabel>
+    <p-dropdown 
+      [options]="types"
+      styleClass="w-full !rounded-2xl"
+      [(ngModel)]="projectType"
+      optionLabel="label" 
+      inputId="float-label" 
+    /> 
+  
+    <label class="text-lg -mt-3.5 mb-2" for="float-label">
+      {{'Subject' | translate}}
+    </label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input
+      pInputText
+      id="ProjectName"
+      class="w-full !rounded-2xl"
+      [(ngModel)]="projectName"
+      pTooltip="{{'Enter Project Name' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+    <label for="ProjectName" class="text-lg -mt-3.5 mb-2">
+      {{'Project Name' | translate}}
+    </label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <textarea
+      pInputTextarea
+      id="Description"
+      rows="8"
+      class="w-full !rounded-2xl border border-1 pl-2"
+      [(ngModel)]="projectDesc"
+      pTooltip="{{'Enter your Full name' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    ></textarea>
+    <label for="Description" class="text-lg -mt-3.5 mb-2">
+      {{'Description' | translate}}
+    </label>
+  </p-floatLabel>
+
+  @if (projectType.value === 'offered') {
+    <p-floatLabel>
+      <p-inputNumber
+        id="TotalFlatSpace"
+        styleClass="w-full !rounded-2xl"
+        [(ngModel)]="offeredPrice"
+        pTooltip="{{'Enter Total Flat Space' | translate}}"
+        [disabled]="projectType.value !== 'offered'"
+        showDelay="600" 
+        hideDelay="300"  
+        tooltipPosition="top"
+      />
+      <label for="TotalFlatSpace" class="text-lg -mt-3.5 mb-2">
+        {{'Offered Price' | translate}} ({{"Lari" | translate}})
+      </label>
+    </p-floatLabel>
+  } @else {
+
+    <p-floatLabel>
+      <p-calendar
+        styleClass="w-full !rounded-2xl"
+        [(ngModel)]="startDate"
+        view="month"
+        [maxDate]="endDate"
+        [disabled]="projectType.value !== 'ended'"
+        dateFormat="mm/yy"
+        id="StartDate"
+        [readonlyInput]="true"
+      />
+  
+      <label for="startDate" class="text-lg -mt-3.5 mb-2">
+        {{'Start Date' | translate}}
+      </label>
+    </p-floatLabel>
+  
+    <p-floatLabel>
+      <p-calendar
+        styleClass="w-full !rounded-2xl"
+        [(ngModel)]="endDate"
+        [minDate]="startDate"
+        view="month"
+        [disabled]="projectType.value !== 'ended'"
+        dateFormat="mm/yy"
+        id="EndDate"
+        [readonlyInput]="true"
+      />
+  
+      <label for="EndDate" class="text-lg -mt-3.5 mb-2">
+        {{'End Date' | translate}}
+      </label>
+    </p-floatLabel>
+  }
+
+  <p-floatLabel>
+    <p-inputNumber
+      id="TotalFlatSpace"
+      styleClass="w-full !rounded-2xl"
+      [(ngModel)]="totalFlatSpace"
+      pTooltip="{{'Enter Total Flat Space' | translate}}"
+      showDelay="600" 
+      hideDelay="300"  
+      tooltipPosition="top"
+    />
+    <label for="TotalFlatSpace" class="text-lg -mt-3.5 mb-2">
+      {{'Total Flat Space' | translate}} ({{"m" | translate}}<sup>2</sup>)
+    </label>
+  </p-floatLabel>
+
+  <label for="myfile" class="text-lg mt-4 -mb-8 ml-1 text-slate-500">{{'Add images' | translate}}</label>
+  <p-fileUpload 
+    #fileUpload
+    id="myfile"
+    name="myfile[]" 
+    url="https://www.primefaces.org/cdn/api/upload.php" 
+    [multiple]="true" 
+    accept="image/*" 
+    maxFileSize="1000000" 
+    (onSelect)="onSelectedFiles($event)">
+    <ng-template pTemplate="header" let-files let-chooseCallback="chooseCallback" let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
+      <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+        <div class="flex gap-2">
+          <p-button (onClick)="chooseCallback()" icon="pi pi-images" [rounded]="true" [outlined]="true"></p-button>
+          <p-button (onClick)="clearCallback()" icon="pi pi-times" [rounded]="true" [outlined]="true" severity="danger" [disabled]="!files || files.length === 0"></p-button>
+        </div>
+        <p-progressBar [value]="totalSizePercent" [showValue]="false" styleClass="md:w-20rem h-1rem w-full md:ml-auto">
+          <span class="white-space-nowrap">{{ totalSize }}B / 1Mb</span>
+        </p-progressBar>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="content" let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback" let-removeUploadedFileCallback="removeUploadedFileCallback">
+      <div *ngIf="files?.length > 0">
+        <h5>Pending</h5>
+        <div class="flex flex-wrap p-0 sm:p-5 gap-5">
+          <div *ngFor="let file of files; let i = index" class="card m-0 px-3 min-w-[470px] max-w-fit overflow-auto flex justify-between border-1 surface-border items-center gap-3 border py-3 border-gray-500 rounded-xl">
+            <div>
+              <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+            </div>
+            <span class="font-semibold">{{ file.name }}</span>
+            <p-badge value="Pending" severity="warning"></p-badge>
+            <p-button icon="pi pi-times" (onClick)="removeFileCallback(i)" [outlined]="true" [rounded]="true" severity="danger"></p-button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="uploadedFiles?.length > 0">
+        <h5>Completed</h5>
+        <div class="flex flex-wrap p-0 sm:p-5 gap-5">
+          <div *ngFor="let file of uploadedFiles; let i = index" class="card m-0 px-6 flex flex-column border-1 surface-border align-items-center gap-3 border border-black border-b-2">
+            <div>
+              <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+            </div>
+            <span class="font-semibold">{{ file.name }}</span>
+            <div>{{ file.size }}B</div>
+            <p-badge value="Completed" class="mt-3" severity="success"></p-badge>
+            <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(i)" [outlined]="true" [rounded]="true" severity="danger"></p-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="file"></ng-template>
+    <ng-template pTemplate="empty">
+      <div class="flex align-items-center justify-content-center flex-column">
+        <i class="pi pi-cloud-upload border-2 border-circle p-5 text-8xl text-400 border-400"></i>
+        <p class="mt-4 mb-0 ml-4">{{'Drag and drop files here to upload or choose from blue icon.' | translate}}</p>
+      </div>
+    </ng-template>
+  </p-fileUpload>
+
+  <div class="mt-4 w-full"> 
+    <p-button styleClass="w-full" [loading]="isLoading" label="{{'Submit' | translate}}" (onClick)="onSubmit()" [disabled]="isLoading"></p-button>
+  </div>
+
+</div>

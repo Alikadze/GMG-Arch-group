@@ -1,5 +1,5 @@
 export const environment = {
-  prod: false,
+  firebaseAuthUrl: 'https://identitytoolkit.googleapis.com/v1',
   firebase: {
     apiKey: "AIzaSyDOIGg3-pj3uJhUeUDGdzIfKTXj_W8-zw8",
     authDomain: "gmgarch-1.firebaseapp.com",
