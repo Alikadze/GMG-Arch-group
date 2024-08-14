@@ -5,10 +5,11 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthFacade } from '../../core/facades/auth.facade';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopup, ConfirmPopupModule } from 'primeng/confirmpopup';
 import { NgClass } from '@angular/common';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,8 @@ import { NgClass } from '@angular/common';
     ButtonModule,
     ToastModule,
     ConfirmPopupModule,
-    NgClass
+    NgClass,
+    TieredMenuModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -43,15 +45,52 @@ export class HeaderComponent {
   translateService = inject(TranslateService);
   confirmationService = inject(ConfirmationService);
 
+  items: MenuItem[] | undefined;
+    
+  ngOnInit() {
+    this.translateService.onLangChange.subscribe(() => {
+      this.translateService.get(['Home', 'Projects', 'About', 'Contact', 'Admin']).subscribe((translations: any) => {
+        this.items = [
+          {
+            label: translations['Home'],
+            icon: 'pi pi-home',
+            command: () => this.navigateToHome()
+          },
+          {
+            label: translations['Projects'],
+            icon: 'pi pi-shop',
+            command: () => this.navigateToProject()
+          },
+          {
+            label: translations['About'],
+            icon: 'pi pi-address-book',
+            command: () => this.navigateToAbout()
+          },
+          {
+            label: translations['Contact'],
+            icon: 'pi pi-envelope',
+            command: () => this.navigateToContact()
+          },
+          {
+            label: translations['Admin'],
+            icon: 'pi pi-user',
+            command: () => this.navigateToAuth(),
+          }
+        ]
+      });
+  });
+
+  }
+
   get isAuthenticated() {
     return this.authFacade.isAuthenticated
   }
 
   isActive(route: string): boolean {
     if (route === '/') {
-      return this.router.url === route; // Exact match for Home
+      return this.router.url === route;
     }
-    return this.router.url.startsWith(route); // Match for other routes
+    return this.router.url.startsWith(route);
   }
 
   @ViewChild(ConfirmPopup) confirmPopup!: ConfirmPopup;
@@ -110,6 +149,14 @@ export class HeaderComponent {
 
   navigateToProject() {
     this.router.navigate(['/project/all'])
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  navigateToAbout() {
+    this.router.navigate(['/about'])
     window.scroll({
       top: 0,
       behavior: 'smooth'
