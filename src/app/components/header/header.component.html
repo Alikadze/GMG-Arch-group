@@ -31,14 +31,18 @@
         </a>
       </li>
       <li 
+        (click)="navigateToAbout()"
         class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
+        [ngClass]="{'active': isActive('/about'), 'hover:text-orange-500': !isActive('/about')}"
+
       >
         <a class='font-medium '>
           {{'About'| translate}}
         </a>
       </li>
       <li 
-        (click)="navigateToContact()" class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
+        (click)="navigateToContact()" 
+        class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
         [ngClass]="{'active': isActive('/contact'), 'hover:text-orange-500': !isActive('/contact')}"
       >
         <a class='font-medium '>
@@ -51,7 +55,7 @@
   
   <div class="flex gap-4 items-center">
     
-    <div>
+    <div class="hidden md:block">
       @if (isAuthenticated) {
         <p-button
          label="{{'Logout'| translate}}"
@@ -72,6 +76,14 @@
 
     <app-select-language></app-select-language>
   </div>
+
+  <div class="card flex md:hidden justify-content-center">
+    <p-button (onClick)="menu.toggle($event)" >
+      <i class="pi pi-bars"></i>
+    </p-button>
+    <p-tieredMenu #menu [model]="items" [popup]="true" />
+  </div>
+
 </div>
 
 <p-confirmPopup #confirmPopup>
@@ -85,5 +97,3 @@
       </div>
   </ng-template>
 </p-confirmPopup>
-<!-- 
-<p-button  /> -->
