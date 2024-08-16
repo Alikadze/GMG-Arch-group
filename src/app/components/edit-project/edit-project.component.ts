@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectFacade } from '../../core/facades/project.facade';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +9,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CalendarModule } from 'primeng/calendar';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-edit-project',
@@ -25,7 +26,7 @@ import { CalendarModule } from 'primeng/calendar';
   templateUrl: './edit-project.component.html',
   styleUrl: './edit-project.component.scss'
 })
-export class EditProjectComponent implements OnInit {
+export class EditProjectComponent implements OnInit, OnDestroy {
   projectFacade = inject(ProjectFacade);
   route = inject(ActivatedRoute);
   translateService = inject(TranslateService);
@@ -35,15 +36,20 @@ export class EditProjectComponent implements OnInit {
   @Input() project!: ProjectPayload;
   @Output() projectUpdated = new EventEmitter<ProjectPayload>();
 
+  destroy$ = new Subject<void>();
+
 
    ngOnInit(): void {
     if (this.project) {
       this.loadProjectData(this.project);
     }
 
-    this.translateService.onLangChange.subscribe(() => {
-      this.loadTranslations();
-    });
+    this.translateService.onLangChange.pipe(
+      tap(() => {
+        this.loadTranslations();
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
 
     this.loadTranslations();
   }
@@ -108,5 +114,10 @@ export class EditProjectComponent implements OnInit {
 
   clearForm(): void {
     this.form.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

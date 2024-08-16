@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { GalleriaModule } from 'primeng/galleria';
 import { ProjectImageService } from '../../core/services/project-image.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-project-carousel',
@@ -14,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './project-carousel.component.html',
   styleUrl: './project-carousel.component.scss'
 })
-export class ProjectCarouselComponent {
+export class ProjectCarouselComponent implements OnDestroy, OnInit {
   projectImageService = inject(ProjectImageService);
   route = inject(ActivatedRoute);
 
@@ -35,11 +36,21 @@ export class ProjectCarouselComponent {
     }
   ];
 
+  destroy$ = new Subject<void>();
+
   projectId: string = this.route.snapshot.paramMap.get('projectId') as string;
 
   ngOnInit() {
-    this.projectImageService.getProjectImages(this.projectId).subscribe(images => {
-      this.images = images;
-    });
+    this.projectImageService.getProjectImages(this.projectId).pipe(
+      tap(images => {
+        this.images = images;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe()
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

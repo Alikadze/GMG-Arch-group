@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, forkJoin, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { ProjectPayload } from '../interfaces/project';
 import { ProjectService } from '../services/project.service';
 
@@ -8,11 +8,10 @@ import { ProjectService } from '../services/project.service';
   providedIn: 'root'
 })
 export class ProjectFacade {
-  projectService = inject(ProjectService)
+  private projectService = inject(ProjectService);
 
   addProject(project: ProjectPayload, files: File[]): Observable<string> {
-    const uploadTasks = files.map(file => this.projectService.uploadImage(file));
-    return forkJoin(uploadTasks).pipe(
+    return forkJoin(files.map(file => this.projectService.uploadImage(file))).pipe(
       switchMap(imageUrls => {
         project.images = imageUrls;
         return this.projectService.addProject(project);
@@ -24,8 +23,7 @@ export class ProjectFacade {
     return this.projectService.getProjects(first, rows, filter);
   }
 
-
-  getProjectById(id: string) {
+  getProjectById(id: string): Observable<ProjectPayload> {
     return this.projectService.getProjectWithId(id);
   }
 

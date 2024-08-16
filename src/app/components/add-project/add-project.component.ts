@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AddProjectImagesComponent } from "../add-project-images/add-project-images.component";
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TooltipModule } from 'primeng/tooltip';
@@ -21,7 +21,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { Router } from '@angular/router';
-import { map, switchMap } from 'rxjs';
+import { map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-add-project',
@@ -50,7 +50,7 @@ import { map, switchMap } from 'rxjs';
   templateUrl: './add-project.component.html',
   styleUrl: './add-project.component.scss'
 })
-export class AddProjectComponent implements OnInit {
+export class AddProjectComponent implements OnInit, OnDestroy {
   projectFacade = inject(ProjectFacade);
   messageService = inject(MessageService);
   translateService = inject(TranslateService);
@@ -72,10 +72,13 @@ export class AddProjectComponent implements OnInit {
   ngOnInit() {
     this.clearForm();
     
-    this.translateService.onLangChange.subscribe(() => {
-      this.loadTranslations();
-    });
-  
+    this.translateService.onLangChange.pipe(
+      tap(() => {
+        this.loadTranslations();
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
+    
     this.loadTranslations();
   }
 
@@ -97,6 +100,8 @@ export class AddProjectComponent implements OnInit {
   totalSize: number = 0;
   totalSizePercent = this.totalSize / 10;
 
+  destroy$ = new Subject<void>();
+
   @Output() projectAdded = new EventEmitter<ProjectPayload>();
   @ViewChild('fileUpload') fileUpload!: FileUpload;
 
@@ -107,31 +112,33 @@ export class AddProjectComponent implements OnInit {
 
   onSubmit() {
 
-    this.translateService.get(['Error', 'Please enter project name', 'Please enter project description', 'Please select project type', 'Please enter offered price', 'Please select start and end date', 'Please enter total flat space', 'Please select at least one image']).subscribe((translations: any) => {
-      if (this.projectType.value === '') {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select project type'] });
-        return;
-      } else if (this.projectName === '') {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter project name'] });
-        return;
-      } else if (this.projectDesc === '') {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter project description']});
-        return; 
-      } else if (this.projectType.value === 'offered' && this.offeredPrice === undefined) {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter offered price'] });
-        return;
-      } else if (this.projectType.value === 'ended' && (this.startDate === undefined || this.endDate === undefined)) {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select start and end date'] });
-        return;
-      } else if (this.totalFlatSpace === undefined) {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter total flat space'] });
-        return;
-      } else if (this.files?.length === 0) {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select at least one image'] });
-        return;
-      }
-    });
-   
+    this.translateService.get(['Error', 'Please enter project name', 'Please enter project description', 'Please select project type', 'Please enter offered price', 'Please select start and end date', 'Please enter total flat space', 'Please select at least one image']).pipe(
+      tap((translations: any) => {
+        if (this.projectType.value === '') {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select project type'] });
+          return;
+        } else if (this.projectName === '') {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter project name'] });
+          return;
+        } else if (this.projectDesc === '') {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter project description']});
+          return; 
+        } else if (this.projectType.value === 'offered' && this.offeredPrice === undefined) {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter offered price'] });
+          return;
+        } else if (this.projectType.value === 'ended' && (this.startDate === undefined || this.endDate === undefined)) {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select start and end date'] });
+          return;
+        } else if (this.totalFlatSpace === undefined) {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please enter total flat space'] });
+          return;
+        } else if (this.files?.length === 0) {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: translations['Error'], detail: translations['Please select at least one image'] });
+          return;
+        }
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
 
     if (typeof this.files === 'undefined') {
       return;
@@ -154,18 +161,24 @@ export class AddProjectComponent implements OnInit {
 
       const projectId = project.id;
 
-      this.projectFacade.addProject(project, this.files as File[]).subscribe(() => {
-        this.translateService.get(['Success', 'Project added successfully']).subscribe((translations: any) => {
-          this.messageService.add({  severity: 'success', summary: translations['Success'], detail: translations['Project added successfully'], life: 1500 });
-        });
-        this.isLoading = false;
-        this.clearForm();
-        this.projectAdded.emit(project);
-      }, error => {
-        this.messageService.add({key:'addProject',  severity: 'error', summary: 'Error', detail: error.message });
-        this.isLoading = false;
-      })
-
+      this.projectFacade.addProject(project, this.files as File[]).pipe(
+        tap(() => {
+          this.translateService.get(['Success', 'Project added successfully']).pipe(
+            tap((translations: any) => {
+              this.messageService.add({  severity: 'success', summary: translations['Success'], detail: translations['Project added successfully'], life: 1500 });
+            }),
+            takeUntil(this.destroy$)
+          ).subscribe();
+          
+          this.isLoading = false;
+          this.clearForm();
+          this.projectAdded.emit(project);
+        }, error => {
+          this.messageService.add({key:'addProject',  severity: 'error', summary: 'Error', detail: error.message });
+          this.isLoading = false;
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe()
       return;
     }
   }
@@ -181,5 +194,10 @@ export class AddProjectComponent implements OnInit {
     if (this.fileUpload) {
       this.fileUpload.clear();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
