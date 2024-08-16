@@ -10,7 +10,7 @@ export class ContactUsFirebaseService {
   private firestore: Firestore = inject(Firestore);
   private contactUsCollection = collection(this.firestore, 'mail');
 
-  addContactMessage(payload: ContactUsPayload) {
+  addContactMessage(payload: ContactUsPayload): Observable<string> {
     const contactUsMessage = {
       to: payload.to,
       from: payload.from,

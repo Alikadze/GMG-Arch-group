@@ -4,6 +4,7 @@ import { CarouselComponent } from "../../components/carousel/carousel.component"
 import { HomeInfoComponent } from "../../components/home-info/home-info.component";
 import { FeaturedComponent } from "../../components/featured/featured.component";
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
+import { PartnerCompaniesComponent } from "../../components/partner-companies/partner-companies.component";
 
 
 @Component({
@@ -14,8 +15,9 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
     CarouselComponent,
     FeaturedComponent,
     HomeInfoComponent,
-    AnimateOnScrollModule
-  ],
+    AnimateOnScrollModule,
+    PartnerCompaniesComponent
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

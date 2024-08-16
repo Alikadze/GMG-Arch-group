@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthFacade } from '../../../core/facades/auth.facade';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, finalize, Subject, switchMap, take, takeUntil, tap, throwError } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
@@ -39,8 +39,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ])
   ]
 })
-export class LoginComponent {
-
+export class LoginComponent implements OnDestroy {
   authFacade = inject(AuthFacade);
   router = inject(Router);
   messageService = inject(MessageService);
@@ -53,63 +52,55 @@ export class LoginComponent {
   });
 
   loading: boolean = false;
+  destroy$ = new Subject<void>();
 
   login() {
     this.loading = true;
-
+  
     if (!this.form.valid) {
-      this.translateService.get('Error').subscribe((errorSummary: string) => {
-        if (this.form.get('email')?.hasError('required')) {
-          this.translateService.get('Email is required').subscribe((res: string) => {
-            this.messageService.add({ severity: 'error', summary: errorSummary, detail: res, life: 1500 });
-          });
-        } else if (this.form.get('email')?.hasError('email')) {
-          this.translateService.get('Wrong Email format').subscribe((res: string) => {
-            this.messageService.add({ severity: 'error', summary: errorSummary, detail: res, life: 1500 });
-          })
-        } else if (this.form.get('password')?.hasError('required')) {
-          this.translateService.get('Password is required').subscribe((res: string) => {
-            this.messageService.add({ severity: 'error', summary: errorSummary, detail: res, life: 1500 });
-          });
-        }
-      });
-
-      this.loading = false;
+      this.translateService.get(['Error', 'Email is required', 'Wrong Email format', 'Password is required']).pipe(
+        tap(translations => {
+          if (this.form.get('email')?.hasError('required')) {
+            this.messageService.add({ severity: 'error', summary: translations['Error'], detail: translations['Email is required'], life: 1500 });
+          } else if (this.form.get('email')?.hasError('email')) {
+            this.messageService.add({ severity: 'error', summary: translations['Error'], detail: translations['Wrong Email format'], life: 1500 });
+          } else if (this.form.get('password')?.hasError('required')) {
+            this.messageService.add({ severity: 'error', summary: translations['Error'], detail: translations['Password is required'], life: 1500 });
+          }
+        }),
+        finalize(() => this.loading = false),
+        takeUntil(this.destroy$)
+      ).subscribe();
       return;
     }
-
-    
-
-    const {email, password} = this.form.value as {email: string, password: string};
-
-    const payload = {
-      email,
-      password
-    }
-
-    this.authFacade.login(payload)
-    .pipe(
-      catchError(err => {
-        this.translateService.get(['Error', 'Invalid Email or Password']).subscribe((translations: any) => {
-          this.messageService.add({ severity: 'error', summary: translations['Error'], detail: translations['Invalid Email or Password'], life: 1500 });
-        });
-
-        this.loading = false;
-        return throwError(() => err);
-      })
-    )
-    .subscribe( res => {
-      if (res) {
-        this.translateService.get(['Success','Logged in successfully']).subscribe((translations: any) => {
-          this.messageService.add({ severity: 'success', summary: translations['Success'], detail: translations['Logged in successfully'], life: 1500 });
-        });
-        this.loading = false;
-        setTimeout(() => {
-          this.router.navigate(['/project/all'])
-        }, 2000)
-      }
-    })
+  
+    const { email, password } = this.form.value as { email: string, password: string };
+    const payload = { email, password };
+  
+    this.authFacade.login(payload).pipe(
+      switchMap(() => 
+        this.translateService.get(['Success', 'Logged in successfully']).pipe(
+          tap(translations => {
+            this.messageService.add({ severity: 'success', summary: translations['Success'], detail: translations['Logged in successfully'], life: 1500 });
+          }),
+          tap(() => setTimeout(() => this.router.navigate(['/project/all']), 0))
+        )
+      ),
+      catchError(() => 
+        this.translateService.get(['Error', 'Invalid Email or Password']).pipe(
+          tap(translations => {
+            this.messageService.add({ severity: 'error', summary: translations['Error'], detail: translations['Invalid Email or Password'], life: 1500 });
+          }),
+          finalize(() => this.loading = false)
+        )
+      ),
+      finalize(() => this.loading = false),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
-
-
+  
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
