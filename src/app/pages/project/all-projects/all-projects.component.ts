@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AddProjectComponent } from "../../../components/add-project/add-project.component";
@@ -14,6 +14,7 @@ import { FilterService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { SkeletonModule } from 'primeng/skeleton';
+import { Subject, take, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-all-projects',
@@ -36,7 +37,7 @@ import { SkeletonModule } from 'primeng/skeleton';
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.scss'
 })
-export class AllProjectsComponent {
+export class AllProjectsComponent implements OnDestroy {
   projectFacade = inject(ProjectFacade);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -63,6 +64,7 @@ export class AllProjectsComponent {
   ];
 
   areProjectsLoading = false;
+  destroy$ = new Subject<void>();
 
   private loadTranslations(): void {
     this.translateService.get(['All', 'Offered', 'Ended']).subscribe((translations: any) => {
@@ -76,7 +78,7 @@ export class AllProjectsComponent {
   
 
   onFilterChange() {
-    this.first = 1; // Reset to the first page when filter changes
+    this.first = 1;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
@@ -121,16 +123,21 @@ export class AllProjectsComponent {
   projects: ProjectPayload[] = [];
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.first = +params['first'] || 0; // Changed to 0-based index
-      this.rows = +params['rows'] || 6;
-      this.selectedFilter = params['filter'] || 'all';
-      this.loadProjects(this.first, this.rows);
-    });
+    this.route.queryParams.pipe(
+      tap(params => {
+        this.first = +params['first'] || 0; // Changed to 0-based index
+        this.rows = +params['rows'] || 6;
+        this.selectedFilter = params['filter'] || 'all';
+        this.loadProjects(this.first, this.rows);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
 
-    this.translateService.onLangChange.subscribe(() => {
-      this.loadTranslations()
-    });
+    this.translateService.onLangChange.pipe(
+      tap(() => this.loadTranslations()),
+      takeUntil(this.destroy$)
+    ).subscribe();
+    
 
     this.loadTranslations();
   }
@@ -138,15 +145,18 @@ export class AllProjectsComponent {
   loadProjects(first: number, rows: number) {
     this.areProjectsLoading = true;
 
-    this.projectFacade.getProjects(first, rows, this.selectedFilter).subscribe((response) => {
+    this.projectFacade.getProjects(first, rows, this.selectedFilter).pipe(
+      tap(response => {
         this.projects = response.projects.map(project => ({
-            ...project,
-            startDate: this.convertToDate(project.startDate as Date),
-            endDate: this.convertToDate(project.endDate as Date),
+          ...project,
+          startDate: this.convertToDate(project.startDate as Date),
+          endDate: this.convertToDate(project.endDate as Date),
         }));
         this.totalRecords = response.totalRecords;
         this.areProjectsLoading = false;
-    });
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
 
@@ -183,12 +193,12 @@ export class AllProjectsComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        first: this.rows,  // This will navigate to the second page
+        first: this.rows,
         rows: this.rows
       },
       queryParamsHandling: 'merge',
     }).then(() => {
-      this.visible = true;  // Show the dialog after navigation
+      this.visible = true;
     });
   }
 
@@ -196,5 +206,10 @@ export class AllProjectsComponent {
     if (projectId) {
       this.router.navigate([`/project/${projectId}`]);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

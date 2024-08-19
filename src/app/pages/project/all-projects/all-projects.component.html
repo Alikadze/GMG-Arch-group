@@ -1,9 +1,5 @@
-<!-- <pre>
-  {{projects | json}}
-</pre> -->
-
-<div class="h-auto pb-40 pt-24 px-32 bg-slate-100 relative">
-  <div class="grid grid-cols-2 gap-x-28 gap-y-16">
+<div class="h-[3950px] md:h-auto pb-40 pt-24 px-3 md:px-32 bg-slate-100 relative overflow-x-hidden">
+  <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-28 gap-y-16">
 
 
     @if (areProjectsLoading) {
@@ -137,7 +133,7 @@
       [totalRecords]="totalRecords"
     />
 
-    <div class="absolute top-2 right-36">
+    <div class="absolute -top-14 right-2 md:top-2 md:right-32">
       <p-dropdown 
         [options]="filterOptions"
         [(ngModel)]="selectedFilter" 

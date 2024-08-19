@@ -1,22 +1,20 @@
 @if (project) {
-  <div class="flex flex-col gap-12 pb-40 bg-slate-50">
-    <div class="flex gap-16 h-fit justify-between">
-      <div class="w-[55%] h-full">
+  <div class="flex  overflow-x-hidden flex-col gap-12 pb-96 md:pb-40 bg-slate-50">
+    <div class="grid grid-cols-1 gap-10 lg:flex lg:gap-16 h-fit justify-between">
+      <div class="w-[95%] lg:w-[55%] h-full">
         <app-project-carousel/>
       </div>
 
-      
-
-      <div class="relative group flex flex-col gap-16 mt-14 mb-36 h-fit pr-3 min-w-[600px]">
+      <div class="ml-6 lg:ml-0 relative group flex flex-col gap-16 mt-14 mb-36 h-fit pr-3 w-fit lg:min-w-[600px]">
 
         <div class="absolute left-0 top-0 h-full w-[10px] bg-gray-300 z-30 rounded-3xl"></div>
         <!-- Orange line (animated) -->
         <div class="absolute left-0 bottom-0 h-0  w-[10px] bg-orange-400 rounded-3xl transition-all duration-1000 group-hover:h-full z-40"></div>
 
-        <div class="ml-6 text-5xl cursor-default text-slate-800 font-semibold font-sans max-w-[516px] pr-5 break-words">{{project.name}}</div>
+        <div class="ml-6 text-5xl pr-36 cursor-default text-slate-800 font-semibold font-sans max-w-[516px] md:pr-5 break-words">{{project.name}}</div>
 
         @if (isAuthecticated) {
-          <div class="absolute top-0 right-20">
+          <div class="absolute top-0 right-[22%] md:right-[0%] lg:right-[15%]">
             <p-speedDial 
               [model]="items" 
               direction="down"
@@ -50,7 +48,7 @@
       </div>
     </div>
 
-    <div (click)="navToContact()" class="self-end mr-[405px]  mb-16 -mt-40">
+    <div (click)="navToContact()" class="md:self-end ml-7 md:ml-0 self-start md:mr-[350px] lg:mr-[405px]  mb-16 -mt-40">
       <p-button styleClass="max-w-48 w-48" label="{{'Contact Us' | translate}}" severity="contrast" />
     </div>
     
