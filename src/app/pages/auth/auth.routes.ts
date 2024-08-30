@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 export const AuthRoutes: Routes = [
   {
     path: '',
-    component: LoginComponent
+    component: LoginComponent,
+    title: 'GMG Arch group | Login'
   }
 ];

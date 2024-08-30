@@ -14,7 +14,8 @@ import { DialogModule } from 'primeng/dialog';
 import { EditProjectComponent } from '../../../components/edit-project/edit-project.component';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { AuthFacade } from '../../../core/facades/auth.facade';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class ProjectWithIdComponent implements OnDestroy {
   messageService = inject(MessageService);
   router = inject(Router);
   translateService = inject(TranslateService);
-  authFacade = inject(AuthFacade)
+  authFacade = inject(AuthFacade);
+  titleService = inject(Title);
 
   get isAuthecticated() {
     return this.authFacade.isAuthenticated
@@ -62,6 +64,16 @@ export class ProjectWithIdComponent implements OnDestroy {
     if (this.projectId) {
       this.loadProject(this.projectId);
     }
+
+    this.route.params.pipe(
+      switchMap(params => this.projectFacade.getProjectById(params['projectId'])),
+      map(project => project.name)
+    ).pipe(
+      tap(projectName => {
+        this.titleService.setTitle(`GMG Arch group | ${projectName}`);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
 
     this.items = [
       {
