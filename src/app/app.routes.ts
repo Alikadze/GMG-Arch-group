@@ -11,11 +11,13 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
+        title: 'GMG Arch group | Home'
       },
       {
         path: 'contact',
-        component: ContactComponent
+        component: ContactComponent,
+        title: 'GMG Arch group | Contact'
       },
       {
         path: 'auth',
@@ -27,7 +29,8 @@ export const routes: Routes = [
       },
       {
         path: 'about',
-        component: AboutComponent
+        component: AboutComponent,
+        title: 'GMG Arch group | About'
       }
     ]
   },

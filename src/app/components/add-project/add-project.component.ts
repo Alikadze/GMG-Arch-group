@@ -61,7 +61,7 @@ export class AddProjectComponent implements OnInit, OnDestroy {
   projectName: string = '';
   projectDesc: string = '';
   projectType:  { label: string, value: string } = { label: '', value: '' };
-  offeredPrice!: number;
+  offeredPrice!: number | undefined;
   startDate: Date | undefined = new Date();
   endDate: Date | undefined = new Date();
   totalFlatSpace!: number | undefined;
@@ -189,6 +189,8 @@ export class AddProjectComponent implements OnInit, OnDestroy {
     this.startDate = undefined;
     this.endDate = undefined;
     this.totalFlatSpace = undefined;
+    this.offeredPrice = undefined;
+    this.projectType = { label: '', value: '' };
     this.files = new Array<File>();
 
     if (this.fileUpload) {
