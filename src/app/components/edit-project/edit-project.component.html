@@ -17,16 +17,17 @@
   </p-floatLabel>
 
   <p-floatLabel>
-    <input
-      pInputText
+    <textarea
+      pInputTextarea
       id="projectDescription"
       class="w-full !rounded-2xl"
+      rows="7"
       formControlName="projectDescription"
       pTooltip="{{ 'Enter the description of the project' | translate }}"
       showDelay="600"
       hideDelay="300"
       tooltipPosition="top"
-    />
+    ></textarea>
 
     <label for="projectDescription" class="text-lg -mt-3.5 mb-2">
       {{ "Project Description" | translate }}
@@ -100,5 +101,5 @@
     </label>
   </p-floatLabel>
 
-  <p-button severity="primary" label="{{'Submit' | translate}}" (onClick)="onSubmit()"/>
+  <p-button severity="primary" label="{{'Submit' | translate}}" (onClick)="onSubmit()" [disabled]="loading"/>
 </form>

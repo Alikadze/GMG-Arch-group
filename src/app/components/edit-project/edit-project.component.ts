@@ -10,6 +10,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CalendarModule } from 'primeng/calendar';
 import { Subject, takeUntil, tap } from 'rxjs';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @Component({
   selector: 'app-edit-project',
@@ -21,7 +22,8 @@ import { Subject, takeUntil, tap } from 'rxjs';
     DropdownModule,
     TooltipModule,
     TranslateModule,
-    CalendarModule
+    CalendarModule,
+    InputTextareaModule
   ],
   templateUrl: './edit-project.component.html',
   styleUrl: './edit-project.component.scss'
@@ -37,9 +39,10 @@ export class EditProjectComponent implements OnInit, OnDestroy {
   @Output() projectUpdated = new EventEmitter<ProjectPayload>();
 
   destroy$ = new Subject<void>();
+  loading = false;
 
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     if (this.project) {
       this.loadProjectData(this.project);
     }
@@ -91,6 +94,7 @@ export class EditProjectComponent implements OnInit, OnDestroy {
 
 
   onSubmit(): void {
+    this.loading = true;
 
     if (!this.form.valid) {
       return;
@@ -110,6 +114,10 @@ export class EditProjectComponent implements OnInit, OnDestroy {
     };
 
     this.projectUpdated.emit(updatedProject);
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000);
   }
 
   clearForm(): void {
