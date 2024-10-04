@@ -1,0 +1,61 @@
+.bg-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* Gradient Background */
+  min-height: 100vh; /* Ensure it takes enough height */
+}
+
+/* Background Geometric Shape */
+.bg-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  width: 120%;
+  height: 200%;
+  background: rgba(255, 215, 0, 0.2); /* Gold translucent color */
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  z-index: -1; /* Ensure it's behind other elements */
+  animation: float 10s ease-in-out infinite;
+}
+
+/* Floating animation for background */
+@keyframes float {
+  0%, 100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-45%, -5%);
+  }
+}
+
+.hover-effect {
+  position: relative;
+  display: inline-block;
+  transition: color 0.5s ease, letter-spacing 0.5s ease, transform 0.5s ease;
+  letter-spacing: 0.01em;
+}
+
+/* Underline Effects */
+.hover-effect::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #f4af00; /* Elegant gold color */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.5s ease;
+  bottom: 0; /* Bottom underline */
+}
+
+/* Hover Changes */
+.hover-effect:hover {
+  color: #f4af00; /* Gold on hover */
+  letter-spacing: 0.1em; /* Subtle expansion */
+  transform: translateY(-5px); /* Small upward movement */
+}
+
+.hover-effect:hover::before {
+  transform: scaleX(1); /* Animate the lines on hover */
+}

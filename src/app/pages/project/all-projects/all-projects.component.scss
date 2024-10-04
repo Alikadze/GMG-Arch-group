@@ -7,8 +7,7 @@ img {
 
 
 .card-container {
-  height: 490px; 
-  overflow: hidden;
+  height: auto;
 }
 
 
@@ -16,6 +15,7 @@ img {
   position: relative;
   width: 100%;
   padding-top: 56.25%;
+  max-height: 10px !important;
 }
 
 .card-image {

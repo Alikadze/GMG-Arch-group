@@ -1,4 +1,18 @@
-<div class="w-full rounded-2xl overflow-hidden px-3">
+@if (platformId) {
+  <div class="carousel swiper-container shadow-none my-8 h-auto md:!h-[550px] !mx-auto w-[95%] relative overflow-hidden rounded-lg">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" *ngFor="let image of images">
+        <img [src]="image.src" [alt]="image.alt" class="w-full h-auto rounded-lg shadow-md" />
+      </div>
+    </div>
+    <!-- Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+}
+<!-- <div class="w-full rounded-2xl overflow-hidden px-3">
   <p-galleria 
   [value]="images" 
   [numVisible]="5" 
@@ -11,7 +25,7 @@
   class="custom-galleria"
 >
   <ng-template pTemplate="item" let-item>
-    <img [src]="item.itemImageSrc" class="w-full block max-h-[220px] md:max-h-[600px]" />
+    <img [src]="item.itemImageSrc" class="w-full block max-h-[220px]  md:max-h-[600px]"/>
 
     <div class="absolute md:top-[20%] top-[5%] md:left-[10%] left-[2%]">
       <div class="mb-2 text-center bg-slate-50 h-auto py-2 w-auto px-4 rounded-md text-lg font-medium font-sans">
@@ -36,4 +50,4 @@
     </div>
   </ng-template>
 </p-galleria>
-</div>
+</div> -->

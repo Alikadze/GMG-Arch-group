@@ -14,3 +14,20 @@
   //   background-color: #f0f0f1;
   // }
 }
+
+.swiper-button-prev, .swiper-button-next {
+  color: #e5e7eb; /* text-gray-200 */
+  transition: color 0.3s ease-in-out;
+}
+
+.swiper-button-prev:hover, .swiper-button-next:hover {
+  color: #6b7280; /* hover:text-gray-500 */
+}
+
+.swiper-pagination-bullet {
+  background-color: #e5e7eb; /* bg-gray-200 */
+  opacity: 0.75;
+}
+.swiper-pagination-bullet-active {
+  background-color: #f59e0b; /* bg-yellow-500 */
+}

@@ -12,7 +12,8 @@ export const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
-        title: 'GMG Arch group | Home'
+        title: 'GMG Arch group | Home',
+        runGuardsAndResolvers: 'always',
       },
       {
         path: 'contact',

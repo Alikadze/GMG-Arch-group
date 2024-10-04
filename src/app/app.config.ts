@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, inject, Injector, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -21,6 +21,15 @@ import { HttpCoreInterceptor } from './core/interceptors/http-core.interceptor';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideStorage } from '@angular/fire/storage';
 import { getStorage } from 'firebase/storage';
+import { DatePipe } from '@angular/common';
+
+import { LOCALE_ID } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import Swiper from 'swiper';
+
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 
 
 export function httpLoaderFactory(http: HttpClient) {
@@ -40,6 +49,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     provideAnimationsAsync(),
+    
 
     provideHttpClient(
       withInterceptors([
@@ -48,12 +58,15 @@ export const appConfig: ApplicationConfig = {
       ]), 
       withFetch()
     ),
+    Swiper,
+
     
     MessageService,
     ConfirmationService,
 
     importProvidersFrom(
       HttpClientModule,
+
       
       TranslateModule.forRoot({
         loader: {

@@ -47,7 +47,12 @@ export class SelectLanguageComponent implements OnInit {
   changeLanguage() {
     const lang = this.formGroup.get('selectedLanguage')?.value;
     if (lang) {
-      this.translateService.use(lang);
+      window.location.reload();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      setTimeout(() => {this.translateService.use(lang)}, 1000);
       this.storageService.setItem('language', lang);
     }
   }

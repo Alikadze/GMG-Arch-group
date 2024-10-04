@@ -1,9 +1,9 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy } from '@angular/core';
 import { ProjectFacade } from '../../../core/facades/project.facade';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ProjectPayload } from '../../../core/interfaces/project';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe, isPlatformBrowser, NgIf } from '@angular/common';
 import { ProjectCarouselComponent } from "../../../components/project-carousel/project-carousel.component";
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
@@ -14,8 +14,11 @@ import { DialogModule } from 'primeng/dialog';
 import { EditProjectComponent } from '../../../components/edit-project/edit-project.component';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { AuthFacade } from '../../../core/facades/auth.facade';
-import { map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { filter, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { Title } from '@angular/platform-browser';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
+import { PLATFORM_ID } from '@angular/core';
 
 
 @Component({
@@ -46,6 +49,63 @@ export class ProjectWithIdComponent implements OnDestroy {
   translateService = inject(TranslateService);
   authFacade = inject(AuthFacade);
   titleService = inject(Title);
+  platformId = inject(PLATFORM_ID);
+
+
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.applyGSAPAnimations();
+      }, 200);
+    }
+  }
+
+  applyGSAPAnimations(): void {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".projectInfoCarousel", {
+      x: -900,
+      // opacity: 0,
+      duration: 2,
+      ease: "power4.out"
+    });
+
+    gsap.from(".projectInfo", {
+      x: 900,
+      // opacity: 0,
+      duration: 2,
+      ease: "power4.out"
+    });
+    
+    gsap.from(".contact", {
+      x: 900,
+      // opacity: 0,
+      duration: 2,
+      ease: "power4.out"
+    });
+
+    gsap.to(".contact", {
+      opacity: 1,
+    });
+
+    gsap.to(".projectInfo", {
+      opacity: 1,
+    });
+
+    gsap.to(".projectInfoCarousel", {
+      opacity: 1,
+    });
+
+    gsap.from(".projectInfoDescription", {
+      x: 2000,
+      scrollTrigger: {
+        trigger: ".projectInfodescription",
+        start: "top 100%",
+        end: "bottom 90%",
+        scrub: 1,
+      }
+    });
+  }
 
   get isAuthecticated() {
     return this.authFacade.isAuthenticated
@@ -60,6 +120,8 @@ export class ProjectWithIdComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.projectId = this.route.snapshot.paramMap.get('projectId');
+
+    ScrollTrigger.refresh();
 
     if (this.projectId) {
       this.loadProject(this.projectId);
@@ -89,6 +151,17 @@ export class ProjectWithIdComponent implements OnDestroy {
         }
       }
     ]
+
+    // this.router.events.pipe(
+    //   filter(event => event instanceof NavigationEnd),
+    //   takeUntil(this.destroy$)
+    // ).subscribe(() => {
+    //   this.applyGSAPAnimations();
+    // });
+  }
+
+  ngAfterViewChecked(): void {
+    ScrollTrigger.refresh(); // Refresh ScrollTrigger after each view check to make sure elements are correctly targeted.
   }
 
   loadProject(projectId: string): void {
@@ -159,6 +232,7 @@ export class ProjectWithIdComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    ScrollTrigger.killAll();
     this.destroy$.next();
     this.destroy$.complete();
   }

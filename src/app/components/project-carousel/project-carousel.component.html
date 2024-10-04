@@ -1,4 +1,22 @@
-<div class="w-full h-full rounded-2xl overflow-hidden ml-6 mr-3 mt-10 border border-black">
+
+@if (projectId) {
+  <div id="" class="carousel swiper-container shadow-none my-8 h-auto md:!h-[550px] !mx-auto w-[95%] relative overflow-hidden rounded-lg">
+    <div class="swiper-wrapper">
+      @for (image of images; track $index) {
+        <div class="swiper-slide">
+          <img [src]="image.itemImageSrc" [alt]="image.alt" class="w-full h-[550px] object-cover" />
+        </div>
+      }
+    </div>
+    <!-- Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+}
+
+<!-- <div class="w-full h-full rounded-2xl overflow-hidden ml-6 mr-3 mt-10 border border-black">
   <p-galleria 
     [value]="images" 
     [numVisible]="5" 
@@ -12,8 +30,11 @@
   >
   
     <ng-template pTemplate="item" let-item>
-      <img [src]="item.itemImageSrc" class="w-full h-[500px] object-cover bg-slate-700" />
+      <div class="grid grid-nogutter justify-center">
+        <img class="w-full h-96 object-cover" [src]="item.itemImageSrc" />
+      </div>
     </ng-template>
+
 
     <ng-template pTemplate="thumbnail" let-item>
       <div class="grid grid-nogutter justify-content-center">
@@ -22,4 +43,4 @@
     </ng-template>
 
   </p-galleria>
-</div>
+</div> -->
