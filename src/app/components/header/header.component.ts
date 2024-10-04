@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   inject,
   Inject,
@@ -15,9 +16,11 @@ import { AuthFacade } from '../../core/facades/auth.facade';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopup, ConfirmPopupModule } from 'primeng/confirmpopup';
-import { NgClass } from '@angular/common';
+import { isPlatformBrowser, NgClass } from '@angular/common';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { Subject, takeUntil, tap } from 'rxjs';
+import gsap from 'gsap';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -44,15 +47,42 @@ import { Subject, takeUntil, tap } from 'rxjs';
     ]),
   ],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   router = inject(Router);
   authFacade = inject(AuthFacade);
   messageService = inject(MessageService);
   translateService = inject(TranslateService);
   confirmationService = inject(ConfirmationService);
+  platformId = inject(PLATFORM_ID);
 
   items: MenuItem[] | undefined;
   destroy$ = new Subject<void>();
+
+  ngAfterViewInit(): void {
+    if(isPlatformBrowser(this.platformId)){
+      gsap.to('.mainContainer', {
+        y: 0,  // Animate to its original position
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power1.out',  // Smooth deceleration
+      });
+
+      const letters = document.querySelectorAll('.reveal');
+
+      letters.forEach((letter, index) => {
+        gsap.to(letter, {
+          y: 10,
+          duration: 0.5,
+          ease: 'sine.inOut',
+          yoyo: false,
+          repeat: -1,
+          delay: index * 0.1,
+          repeatDelay: 2,
+        });
+      });
+    }
+  }
+
 
   ngOnInit() {
     this.translateService.onLangChange

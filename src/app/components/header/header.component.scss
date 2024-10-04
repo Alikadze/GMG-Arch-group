@@ -6,3 +6,8 @@
 .hover\:text-orange-500:hover {
   color: #f97316;
 }
+
+.mainContainer {
+  transform: translateY(-100px); /* Start off the screen */
+  opacity: 0; /* Invisible at first */
+}

@@ -1,7 +1,10 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IntersectionObserverService } from '../../core/services/intersection-observer.service';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
+import gsap from 'gsap';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home-info',
@@ -13,15 +16,35 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
   templateUrl: './home-info.component.html',
   styleUrl: './home-info.component.scss'
 })
-export class HomeInfoComponent implements OnInit, OnDestroy {
+export class HomeInfoComponent implements AfterViewInit {
   elementRef = inject(ElementRef);
   intersectionObserverService = inject(IntersectionObserverService);
+  platformId = inject(PLATFORM_ID);
 
-  ngOnInit() {
-    this.intersectionObserverService.observe(this.elementRef);
+  ngAfterViewInit(): void {
+    if(isPlatformBrowser(this.platformId)) {
+      gsap.from(".firstCard", {
+        x: -600,
+        opacity: 0,
+        duration: 3,
+        ease: "power4.out"
+      });
+
+      gsap.from(".secondCard", {
+        x: 600,
+        opacity: 0,
+        duration: 3,
+        ease: "power4.out"
+      });
+    }
   }
 
-  ngOnDestroy(): void {
-    this.intersectionObserverService.unobserve(this.elementRef);
-  }
+  // ngOnInit() {
+  //   this.intersectionObserverService.observe(this.elementRef);
+  // }
+  
+
+  // ngOnDestroy(): void {
+  //   this.intersectionObserverService.unobserve(this.elementRef);
+  // }
 }

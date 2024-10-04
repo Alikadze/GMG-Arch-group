@@ -1,10 +1,10 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AddProjectComponent } from "../../../components/add-project/add-project.component";
 import { ProjectFacade } from '../../../core/facades/project.facade';
 import { ProjectPayload } from '../../../core/interfaces/project';
-import { DatePipe, JsonPipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, isPlatformBrowser, JsonPipe, NgFor, NgIf } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
@@ -15,6 +15,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Subject, take, takeUntil, tap } from 'rxjs';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
+import { PLATFORM_ID } from '@angular/core';
+
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
 
 @Component({
   selector: 'app-all-projects',
@@ -44,7 +50,7 @@ export class AllProjectsComponent implements OnDestroy {
   authFacade = inject(AuthFacade);
   filterService = inject(FilterService);
   translateService = inject(TranslateService);
-
+  platformId = inject(PLATFORM_ID);
 
   get isAuthenticated() {
     return this.authFacade.isAuthenticated

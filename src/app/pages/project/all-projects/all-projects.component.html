@@ -1,4 +1,4 @@
-<div class="h-[3950px] md:h-auto pb-40 pt-24 px-3 md:px-32 bg-slate-100 relative overflow-x-hidden">
+<div class="h-auto md:h-auto pb-80 md:pb-40 pt-24 px-3 md:px-32 bg-slate-100 relative overflow-x-hidden">
   <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-28 gap-y-16">
 
 
@@ -60,9 +60,9 @@
       </div>
     }
 
-    @for (project of projects; track $index) {
+    @for (project of projects; track project.id) {
       <div 
-        class="card-container bg-transparent rounded-xl overflow-hidden group relative cursor-pointer pb-3"
+        class="card-container bg-transparent rounded-xl flex flex-col justify-around overflow-hidden group relative cursor-pointer pb-3"
         (click)="navigateToProject(project.id)"
       >
 
@@ -101,7 +101,7 @@
           }
         </div>
 
-        <div class="ml-3 text-slate-800 text-3xl font-bold mt-8">
+        <div class="ml-3 text-slate-800 text-3xl font-bold mt-8 break-words">
           <h3>{{project.name}}</h3>
         </div>
 

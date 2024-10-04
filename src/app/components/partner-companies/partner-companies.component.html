@@ -1,10 +1,10 @@
-<div class="p-6 md:p-10 md:mx-14 mt-40 bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-300 rounded-xl shadow-lg">
+<div class="mainContainerCompany !overflow-hidden p-6 mx-4 md:p-10 md:mx-14 mt-40 bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-300 rounded-xl shadow-lg">
   <div class="text-2xl font-bold mb-6 text-gray-800">
     <h2>{{'Partner Companies' | translate}}</h2>
   </div>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  <div class="company grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     @for (company of companies; track $index) {
-      <div class="transition-transform duration-[400ms] transform hover:scale-105  hover:bg-orange-200 p-6 border border-orange-300 rounded-lg shadow-lg hover:shadow-xl">
+      <div class=" transition-transform duration-[400ms] transform hover:scale-105  hover:bg-orange-200 p-6 border border-orange-300 rounded-lg shadow-lg hover:shadow-xl">
         <div class="text-xl cursor-default font-semibold text-gray-900 mb-3">{{ company.name }}</div>
         <div class="text-gray-700 cursor-default">{{ company.description }}</div>
       </div>
