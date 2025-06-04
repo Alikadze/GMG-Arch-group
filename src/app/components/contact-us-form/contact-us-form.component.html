@@ -6,7 +6,7 @@
   />
 </div>
 
-<form [formGroup]="form" class="flex flex-col md:h-auto gap-11 mx-6 mt-14 md:mb-14">
+<form [formGroup]="form" class="flex flex-col md:h-auto gap-11 mx-6 mt-14 mb-14">
   <p-floatLabel>
     <input
       pInputText
@@ -48,6 +48,7 @@
       mask="999-99-99-99"
       id="Phone Number"
       styleClass="w-full !rounded-2xl"
+      class="input-mask"
       variant="filled"
       formControlName="number"
       pTooltip="{{'Enter your Phone Number' | translate}}"
@@ -65,6 +66,7 @@
     <p-dropdown 
       [options]="subjects"
       styleClass="w-full !rounded-2xl"
+      class="dropdown"
       formControlName="subject"
       variant="filled"
       optionLabel="label" 
@@ -81,7 +83,7 @@
   <p-floatLabel>
     <textarea
       pInputTextarea
-      class="w-full !rounded-2xl"
+      class="w-full !rounded-2xl textarea resize-none"
       id="MessageInput"
       rows="12"
       cols="30"

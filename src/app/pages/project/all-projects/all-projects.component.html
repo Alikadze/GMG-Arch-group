@@ -124,16 +124,17 @@
     }
   </div>
 
-  <div class="mt-24 relative">  
+  <div class="mt-24 flex flex-col-reverse items-end gap-2">  
     <p-paginator
       styleClass="rounded-2xl"
+      class="w-full"
       (onPageChange)="onPageChange($event)"
       [rows]="rows"
       [first]="first"
       [totalRecords]="totalRecords"
     />
 
-    <div class="absolute -top-14 right-2 md:top-2 md:right-32">
+    <div class="">
       <p-dropdown 
         [options]="filterOptions"
         [(ngModel)]="selectedFilter" 
@@ -144,7 +145,7 @@
     </div>
   </div>
   
-  @if (isAuthenticated) {
+  @if (isAuth$ | async) {
     <div class="absolute top-7 right-5">
       <p-button 
         (onClick)="showDialog()" 

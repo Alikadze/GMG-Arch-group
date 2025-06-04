@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
@@ -10,9 +10,8 @@ import { ScrollTrigger } from 'gsap/all';
   imports: [RouterOutlet],
   template: '<router-outlet/>'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   ngOnInit() {
     gsap.registerPlugin(ScrollTrigger);
   }
-  
 }

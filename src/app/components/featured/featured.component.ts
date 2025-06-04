@@ -25,7 +25,6 @@ export class FeaturedComponent implements OnInit, OnDestroy, AfterViewInit {
   platformId = inject(PLATFORM_ID);
 
   ngAfterViewInit(): void {
-    // console.log("Initializing Scroll Animations");
     setTimeout(() => {
       if (isPlatformBrowser(this.platformId)) {
         gsap.registerPlugin(ScrollTrigger);

@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { IntersectionObserverService } from '../../core/services/intersection-observer.service';
 import { TranslateModule } from '@ngx-translate/core';
 import gsap from 'gsap';
@@ -27,8 +27,6 @@ export class PartnerCompaniesComponent implements OnInit, OnDestroy, AfterViewIn
   platformId = inject(PLATFORM_ID);
 
   ngAfterViewInit(): void {
-    // ScrollTrigger.refresh();
-    // console.log("Initializing Scroll Animations");
     setTimeout(() => {
       if (isPlatformBrowser(this.platformId)) {
         ScrollTrigger.refresh(true);
@@ -43,20 +41,7 @@ export class PartnerCompaniesComponent implements OnInit, OnDestroy, AfterViewIn
             end: "bottom 80%",
             toggleActions: 'play none none none',
             scrub: 1,
-            // markers: true
           }     
-        });
-  
-        gsap.from(".company", {
-          y: 200,
-          scrollTrigger: {
-            trigger: ".company",
-            start: "top 120%",
-            toggleActions: 'play none none none',
-            end: "bottom 100%",
-            scrub: 1,
-            // markers: true
-          }
         });
       }
     }, 10);
@@ -68,6 +53,5 @@ export class PartnerCompaniesComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnDestroy(): void {
     this.intersectionObserverService.unobserve(this.elementRef);
-    // ScrollTrigger.getAll().forEach(t => t.kill());
   }
 }

@@ -1,24 +1,23 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   inject,
-  Inject,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SelectLanguageComponent } from '../select-language/select-language.component';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthFacade } from '../../core/facades/auth.facade';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopup, ConfirmPopupModule } from 'primeng/confirmpopup';
-import { isPlatformBrowser, NgClass } from '@angular/common';
+import { AsyncPipe, isPlatformBrowser, NgClass, NgIf } from '@angular/common';
 import { TieredMenuModule } from 'primeng/tieredmenu';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import gsap from 'gsap';
 import { PLATFORM_ID } from '@angular/core';
 
@@ -28,63 +27,32 @@ import { PLATFORM_ID } from '@angular/core';
   imports: [
     TranslateModule,
     SelectLanguageComponent,
-    RouterLink,
     ButtonModule,
     ToastModule,
     ConfirmPopupModule,
     NgClass,
     TieredMenuModule,
+    AsyncPipe
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('500ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [animate('500ms', style({ opacity: 0 }))]),
-    ]),
-  ],
 })
-export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   router = inject(Router);
   authFacade = inject(AuthFacade);
   messageService = inject(MessageService);
   translateService = inject(TranslateService);
   confirmationService = inject(ConfirmationService);
   platformId = inject(PLATFORM_ID);
+  cdr = inject(ChangeDetectorRef);
 
   items: MenuItem[] | undefined;
   destroy$ = new Subject<void>();
-
-  ngAfterViewInit(): void {
-    if(isPlatformBrowser(this.platformId)){
-      gsap.to('.mainContainer', {
-        y: 0,  // Animate to its original position
-        opacity: 1,
-        duration: 1.2,
-        ease: 'power1.out',  // Smooth deceleration
-      });
-
-      const letters = document.querySelectorAll('.reveal');
-
-      letters.forEach((letter, index) => {
-        gsap.to(letter, {
-          y: 10,
-          duration: 0.5,
-          ease: 'sine.inOut',
-          yoyo: false,
-          repeat: -1,
-          delay: index * 0.1,
-          repeatDelay: 2,
-        });
-      });
-    }
-  }
-
+  isAuthenticated!: Observable<boolean>;
 
   ngOnInit() {
+    this.isAuthenticated = this.authFacade.authState;
+
     this.translateService.onLangChange
       .pipe(
         tap(() => {
@@ -129,9 +97,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe();
   }
 
-  get isAuthenticated() {
-    return this.authFacade.isAuthenticated;
-  }
+ 
 
   isActive(route: string): boolean {
     if (route === '/') {

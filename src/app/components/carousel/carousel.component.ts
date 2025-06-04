@@ -1,5 +1,5 @@
-import { isPlatformBrowser, NgClass, NgFor } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { HomeImageService } from '../../core/services/home-image.service';
 import { GalleriaModule } from 'primeng/galleria';
 import { TranslateModule } from '@ngx-translate/core';
@@ -39,26 +39,12 @@ export class CarouselComponent implements OnDestroy, OnInit {
 
 
   ngAfterViewInit() {
-    // ScrollTrigger.enable();
-    // console.log("Initializing Scroll Animations");
     setTimeout(() => {
       if (isPlatformBrowser(this.platformId)) {
         ScrollTrigger.refresh(true);
   
         this.initializeSwiper();
         gsap.registerPlugin(ScrollTrigger);
-  
-        gsap.from(".carousel", {
-          x: 2000,
-          scrollTrigger: {
-            trigger: ".carousel",
-            toggleActions: 'play none none none',
-            start: "top 100%",
-            end: "bottom 100%",
-            scrub: 1,
-            // markers: true
-          }
-        })
       }
     }, 10);
   }
@@ -107,18 +93,15 @@ export class CarouselComponent implements OnDestroy, OnInit {
     ScrollTrigger.refresh();
     if (isPlatformBrowser(this.platformId)) {
       this.images = [
-        { src: 'https://picsum.photos/1500/600', alt: 'Image 1' },
-        { src: 'https://picsum.photos/1500/601', alt: 'Image 2' },
-        { src: 'https://picsum.photos/1500/602', alt: 'Image 3' }
+        { src: 'assets/images/Most-Beautiful-House-in-the-World_0_1200.jpg', alt: 'Image 1' },
+        { src: 'assets/images/Most-Beautiful-House-in-the-World_0_1200.jpg', alt: 'Image 2' },
+        { src: 'assets/images/Most-Beautiful-House-in-the-World_0_1200.jpg', alt: 'Image 3' }
       ]  
     }
-
-    
   }
 
 
   ngOnDestroy(): void {
     this.intersectionObserverService.unobserve(this.elementRef);
-    // ScrollTrigger.getAll().forEach(st => st.kill());
   }
 }

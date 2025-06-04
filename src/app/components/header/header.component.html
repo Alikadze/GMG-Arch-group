@@ -3,7 +3,7 @@
 <div class="w-full mainContainer flex gap-8 items-center justify-between px-10 shadow-md h-[82px] bg-white transition-all duration-300">
   <div (click)="navigateToHome()" class="cursor-pointer">
     <img
-      class="size-[130px] object-contain" 
+      class="size-28 object-contain" 
       src="assets/images/452377664_988691489496925_3438030518400011853_n-removebg-preview.png" 
       alt="LOGO"
     >
@@ -56,22 +56,24 @@
   <div class="flex gap-4 items-center">
     
     <div class="hidden md:block">
-      @if (isAuthenticated) {
+      @if(isAuthenticated | async) {
         <p-button
-         label="{{'Logout'| translate}}"
-          type="button"
-          styleClass="w-28 text-[15px] p-button-outlined p-button-rounded bg-red-500 text-white p-button-sm p-button-secondary transition-colors duration-300 hover:bg-red-600"
-          (onClick)="logout($event)" label="Save"
-        />
+        id="authed"
+        label="{{'Logout'| translate}}"
+        type="button"
+        styleClass="w-28 text-[15px] p-button-outlined p-button-rounded bg-red-500 text-white p-button-sm p-button-secondary transition-colors duration-300 hover:bg-red-600"
+        (onClick)="logout($event)"
+      />
       } @else {
         <p-button
-        (onClick)="navigateToAuth()"
-        label="{{'Admin'| translate}}"
-        type="button"
-        styleClass="w-28 text-[15px] p-button-outlined p-button-rounded p-button-sm p-button-secondary transition-colors duration-300 hover:bg-orange-200"
+          id="!authed"
+          label="{{'Admin'| translate}}"
+          type="button"
+          styleClass="w-28 text-[15px] p-button-outlined p-button-rounded p-button-sm p-button-secondary transition-colors duration-300 hover:bg-orange-200"
+          (onClick)="navigateToAuth()"
         />
       }
-      
+        
     </div>
 
     <app-select-language></app-select-language>
@@ -91,8 +93,8 @@
       <div class="border-round p-3">
           <span>{{ message.message }}</span>
           <div class="flex align-items-center gap-2 mt-3">
-              <p-button (onClick)="accept()" label="{{'Confirm' | translate}}" size="small" />
-              <p-button (onClick)="reject()" label="{{'Cancel' | translate}}" [outlined]="true" size="small" />
+              <p-button id="confirm" (onClick)="accept()" label="{{'Confirm' | translate}}" size="small" />
+              <p-button id="cancel" (onClick)="reject()" label="{{'Cancel' | translate}}" [outlined]="true" size="small" />
           </div>
       </div>
   </ng-template>

@@ -1,6 +1,6 @@
 <p-toast [life]="2000"></p-toast>
 
-<form [formGroup]="form" class="h-auto bg-slate-400 pb-48">
+<form [formGroup]="form" class="h-auto bg-slate-400 pb-48" (ngSubmit)="login()">
   <div class="flex justify-center items-center h-[100vh]">
     <div @slideIn class="bg-white p-8 rounded-lg shadow-lg w-96">
       <h1 class="text-xl font-mono text-slate-700 font-bold text-center mb-4">{{ 'Login for page administrator' | translate }}</h1>
@@ -34,7 +34,7 @@
           label="{{ 'Submit' | translate }}"
           size="small"
           [loading]="loading"
-          (onClick)="login()"
+          type="submit"
           styleClass="transition-colors rounded-lg duration-300 bg-orange-500 border-none hover:bg-orange-600"
         ></p-button>
       </div>

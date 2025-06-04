@@ -21,21 +21,12 @@ import { HttpCoreInterceptor } from './core/interceptors/http-core.interceptor';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideStorage } from '@angular/fire/storage';
 import { getStorage } from 'firebase/storage';
-import { DatePipe } from '@angular/common';
 
-import { LOCALE_ID } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import Swiper from 'swiper';
-
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,30 +35,29 @@ export const appConfig: ApplicationConfig = {
     provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore()),
 
-    provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes), 
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
     provideClientHydration(),
     provideAnimations(),
     provideAnimationsAsync(),
-    
+
 
     provideHttpClient(
       withInterceptors([
         tokenInterceptor,
         HttpCoreInterceptor
-      ]), 
+      ]),
       withFetch()
     ),
     Swiper,
 
-    
     MessageService,
     ConfirmationService,
 
     importProvidersFrom(
       HttpClientModule,
 
-      
+
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,

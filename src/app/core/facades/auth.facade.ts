@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 import { AuthPayload } from '../interfaces/auth';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -12,9 +12,10 @@ export class AuthFacade {
   private authService: AuthService = inject(AuthService);
   private storageService: StorageService = inject(StorageService);
   private router: Router = inject(Router);
+  private authState$ = new BehaviorSubject<boolean>(false);
 
-  get isAuthenticated(): boolean {
-    return !!this.user;
+  get authState(): Observable<boolean> {
+    return this.authState$.asObservable();
   }
 
   get user(): any {
@@ -25,6 +26,7 @@ export class AuthFacade {
     return this.authService.login(payload).pipe(
       tap(res => {
         const token = res.user.getIdToken();
+        this.authState$.next(true);
         const refreshToken = res.user.refreshToken;
         const user = {
           email: res.user.email,
@@ -42,6 +44,7 @@ export class AuthFacade {
     this.storageService.removeItem('user');
     this.storageService.removeItem('refreshToken');
     this.storageService.removeItem('token');
+    this.authState$.next(false);
     this.router.navigate(['/']);
   }
 }

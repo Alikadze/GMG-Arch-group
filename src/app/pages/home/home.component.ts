@@ -36,27 +36,27 @@ export class HomeComponent {
     ScrollTrigger.refresh();
     if (isPlatformBrowser(this.platformId)) {
       // GSAP reveal effect for each word
-      gsap.from(".reveal", { 
-        y: 100, 
-        opacity: 0, 
-        duration: 1.5, 
-        ease: "power4.out", 
-        stagger: 0.2 
-      });
+      // gsap.from(".reveal", { 
+      //   y: 100, 
+      //   opacity: 0, 
+      //   duration: 1.5, 
+      //   ease: "power4.out", 
+      //   stagger: 0.2 
+      // });
 
       const letters = document.querySelectorAll('.reveal');
 
-      letters.forEach((letter, index) => {
-        gsap.to(letter, {
-          y: 10,
-          duration: 0.5,
-          ease: "sine.inOut",
-          yoyo: false, /* Yoyo effect for continuous bounce */
-          repeat: -1,
-          delay: index * 0.1,
-          repeatDelay: 2
-        });
-      });
+      // letters.forEach((letter, index) => {
+      //   gsap.to(letter, {
+      //     y: 10,
+      //     duration: 0.5,
+      //     ease: "sine.inOut",
+      //     yoyo: false, /* Yoyo effect for continuous bounce */
+      //     repeat: -1,
+      //     delay: index * 0.1,
+      //     repeatDelay: 2
+      //   });
+      // });
     }
   }
 }

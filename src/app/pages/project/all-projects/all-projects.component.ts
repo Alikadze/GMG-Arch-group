@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AddProjectComponent } from "../../../components/add-project/add-project.component";
 import { ProjectFacade } from '../../../core/facades/project.facade';
 import { ProjectPayload } from '../../../core/interfaces/project';
-import { DatePipe, isPlatformBrowser, JsonPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
@@ -14,13 +14,9 @@ import { FilterService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { SkeletonModule } from 'primeng/skeleton';
-import { Subject, take, takeUntil, tap } from 'rxjs';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
 
-import { registerLocaleData } from '@angular/common';
-import localeRu from '@angular/common/locales/ru';
 
 @Component({
   selector: 'app-all-projects',
@@ -29,16 +25,14 @@ import localeRu from '@angular/common/locales/ru';
     ButtonModule,
     DialogModule,
     AddProjectComponent,
-    NgFor,
     TranslateModule,
     DatePipe,
-    JsonPipe,
     PaginatorModule,
     TagModule,
     DropdownModule,
     FormsModule,
-    NgIf,
-    SkeletonModule
+    SkeletonModule,
+    AsyncPipe
 ],
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.scss'
@@ -52,9 +46,7 @@ export class AllProjectsComponent implements OnDestroy {
   translateService = inject(TranslateService);
   platformId = inject(PLATFORM_ID);
 
-  get isAuthenticated() {
-    return this.authFacade.isAuthenticated
-  }
+  isAuth$!: Observable<boolean>;
 
 
   first: number = 1;
@@ -84,7 +76,7 @@ export class AllProjectsComponent implements OnDestroy {
   
 
   onFilterChange() {
-    this.first = 1;
+    this.first = 0; // Reset to 0-based index
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
@@ -99,14 +91,13 @@ export class AllProjectsComponent implements OnDestroy {
     window.scroll({
       top: 0,
       behavior: 'smooth'
-    })
+    });
   }
 
 
   onPageChange(event: PaginatorState) {
-    const totalPages = Math.ceil(this.totalRecords / this.rows);
-    this.first = Math.min(event.first as number, (totalPages - 1) * this.rows);
-  
+    this.first = event.first as number; // PrimeNG uses 0-based indexing
+    
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
@@ -116,22 +107,25 @@ export class AllProjectsComponent implements OnDestroy {
       },
       queryParamsHandling: 'merge',
     });
-  
+
     this.loadProjects(this.first, this.rows);
 
-    window.scroll({
-      top: 0,
-      behavior: 'smooth'
-    })
+    if (typeof window !== 'undefined') {
+      window.scroll({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   }
   
 
   projects: ProjectPayload[] = [];
 
   ngOnInit() {
+    this.isAuth$ = this.authFacade.authState;
     this.route.queryParams.pipe(
       tap(params => {
-        this.first = +params['first'] || 0; // Changed to 0-based index
+        this.first = +params['first'] || 0; // Ensure 0-based
         this.rows = +params['rows'] || 6;
         this.selectedFilter = params['filter'] || 'all';
         this.loadProjects(this.first, this.rows);
@@ -143,9 +137,25 @@ export class AllProjectsComponent implements OnDestroy {
       tap(() => this.loadTranslations()),
       takeUntil(this.destroy$)
     ).subscribe();
-    
 
     this.loadTranslations();
+    }
+
+    onProjectAdded(newProject: ProjectPayload) {
+    this.visible = false;
+    this.first = 0; // Reset to first page
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        first: this.first,
+        rows: this.rows,
+        filter: this.selectedFilter // Keep current filter
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    this.loadProjects(this.first, this.rows);
+    return null;
   }
 
   loadProjects(first: number, rows: number) {
@@ -175,22 +185,6 @@ export class AllProjectsComponent implements OnDestroy {
       return new Date(timestamp.seconds * 1000);
     }
     return timestamp as Date;
-  }
-
-  onProjectAdded(newProject: ProjectPayload) {
-    this.projects.push(newProject);
-    this.visible = false;
-    this.first = 1;
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        first: this.first,
-        rows: this.rows
-      },
-      queryParamsHandling: 'merge',
-    });
-    this.loadProjects(this.first, this.rows);
-    return null;
   }
 
   visible: boolean = false;

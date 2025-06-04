@@ -1,0 +1,15 @@
+:host ::ng-deep .p-float-label input:focus ~ label {
+    top: -1.1rem !important;
+}
+
+:host ::ng-deep .p-float-label .input-mask:focus ~ label {
+    top: -1.1rem !important;
+}
+
+:host ::ng-deep .p-float-label .dropdown:focus ~ label {
+    top: -1.1rem !important;
+}
+
+:host ::ng-deep .p-float-label .textarea:focus ~ label {
+    top: -1.1rem !important;
+}

@@ -13,9 +13,11 @@
 
         <div class="ml-6 text-5xl pr-36 cursor-default text-slate-800 font-semibold font-sans max-w-[516px] md:pr-5 break-words">{{project.name}}</div>
 
-        @if (isAuthecticated) {
-          <div class="absolute top-0 right-[22%] md:right-[0%] lg:right-[15%]">
+        @if (isAuthenticated | async) {
+          <div id="speedDial" class="absolute top-0 right-[22%] md:right-[0%] lg:right-[15%]">
             <p-speedDial 
+              ngSkipHydration
+              id="speedDial"
               [model]="items" 
               direction="down"
               transitionDelay="80"
@@ -33,33 +35,38 @@
 
         @if (project.type === 'ended') {
           <div class="ml-6 cursor-default">
-            <p class="text-lg text-slate-600">{{'Start Date' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.startDate | date: 'MMM yyyy'}}</span></p>
-            <p class="text-lg text-slate-600">{{'End Date' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.endDate | date: 'MMM yyyy'}}</span> </p>
+            <p class="text-lg text-slate-600">{{'Start Date' | translate}}: <span id="start" class="text-lg text-slate-700 font-semibold">{{project.startDate | date: 'MMM yyyy'}}</span></p>
+            <p class="text-lg text-slate-600">{{'End Date' | translate}}: <span id="end" class="text-lg text-slate-700 font-semibold">{{project.endDate | date: 'MMM yyyy'}}</span> </p>
           </div>
         } @else {
           <div class="ml-6 cursor-default">
-            <p class="text-lg text-slate-600">{{'Offered Price' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.offeredPrice}} <span>₾</span></span> </p>
+            <p class="text-lg text-slate-600">{{'Offered Price' | translate}}: <span id="offered" class="text-lg text-slate-700 font-semibold">{{project.offeredPrice}} <span>₾</span></span> </p>
           </div>
         }
 
         <div class="ml-6">
-          <p class="text-lg text-slate-600">{{'Total Flat Space' | translate}}: <span class="text-lg text-slate-700 font-semibold">{{project.flatSpace}} <span>{{'m' | translate }}<sup>2</sup></span></span> </p>
+          <p class="text-lg text-slate-600">{{'Total Flat Space' | translate}}: <span id="flat" class="text-lg text-slate-700 font-semibold">{{project.flatSpace}} <span id="m">{{'m' | translate }}<sup>2</sup></span></span> </p>
         </div>
       </div>
     </div>
 
     <div (click)="navToContact()" class="contact opacity-0 md:self-end ml-7 md:ml-0 self-start md:mr-[350px] lg:mr-[405px]  mb-16 -mt-40">
-      <p-button styleClass="max-w-48 w-48" label="{{'Contact Us' | translate}}" severity="contrast" />
+      <p-button id="contact" styleClass="max-w-48 w-48" label="{{'Contact Us' | translate}}" severity="contrast" />
     </div>
     
   
-    <div class="projectInfoDescription  bg-white border-2 cursor-default  border-slate-200 mx-5 h-auto rounded-2xl p-2">
+    <div class="bg-white border-2 cursor-default  border-slate-200 mx-5 h-auto rounded-2xl p-2">
       <div class="cursor-default">
         {{project.description}}
       </div>
     </div>
   </div>
-
+} @else {
+  <div class="flex justify-center align-top items-center h-[100vh]">
+    <div class="-mt-36">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
 }
 
 <p-dialog 
