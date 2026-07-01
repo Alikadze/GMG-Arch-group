@@ -51,6 +51,7 @@ export class SelectLanguageComponent implements OnInit {
         top: 0,
         behavior: 'smooth'
       });
+      this.translateService.use(lang);
       this.storageService.setItem('language', lang);
     }
   }
