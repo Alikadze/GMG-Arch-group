@@ -8,6 +8,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { prefersReducedMotion } from '../../core/utils/motion';
 
 Swiper.use([Autoplay, Pagination, Navigation]);
 
@@ -78,10 +79,12 @@ export class ProjectCarouselComponent {
 
     this.swiper = new Swiper('.swiper-container', {
       loop: (this.images?.length ?? 0) > 1,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
+      autoplay: prefersReducedMotion()
+        ? false
+        : {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
       pagination: {
         el: '.swiper-pagination',
         clickable: true,

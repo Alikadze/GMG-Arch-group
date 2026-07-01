@@ -1,0 +1,31 @@
+<section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-ink text-white">
+  <div class="absolute inset-0 bg-grid-lines [background-size:46px_46px] opacity-60"></div>
+  <div class="hazard-bar absolute top-0 left-0 w-full"></div>
+
+  <div class="relative z-10 text-center px-6 max-w-2xl">
+    <div class="font-display font-bold leading-none text-accent-500 text-[8rem] md:text-[12rem]">404</div>
+
+    <span class="eyebrow justify-center">{{ 'Page not found' | translate }}</span>
+
+    <h1 class="section-title text-white text-3xl md:text-5xl mt-4">
+      {{ 'This page is still under construction' | translate }}
+    </h1>
+
+    <p class="text-concrete-300 mt-5 text-lg">
+      {{ 'The page you are looking for does not exist or has been moved.' | translate }}
+    </p>
+
+    <div class="mt-10 flex flex-wrap gap-4 justify-center">
+      <button (click)="goHome()" class="btn-accent">
+        <i class="pi pi-home text-sm"></i>
+        {{ 'Home' | translate }}
+      </button>
+      <button (click)="goToProjects()"
+        class="inline-flex items-center gap-2 px-8 py-[0.9rem] font-display uppercase tracking-wider text-white border border-white/40 rounded-sm transition-all duration-300 hover:bg-white hover:text-ink">
+        {{ 'Projects' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="hazard-bar absolute bottom-0 left-0 w-full"></div>
+</section>

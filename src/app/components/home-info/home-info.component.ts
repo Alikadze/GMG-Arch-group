@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { prefersReducedMotion } from '../../core/utils/motion';
 
 @Component({
   selector: 'app-home-info',
@@ -23,7 +24,7 @@ export class HomeInfoComponent implements AfterViewInit {
   platformId = inject(PLATFORM_ID);
 
   ngAfterViewInit(): void {
-    if(isPlatformBrowser(this.platformId)) {
+    if(isPlatformBrowser(this.platformId) && !prefersReducedMotion()) {
       gsap.registerPlugin(ScrollTrigger);
 
       gsap.from(".firstCard", {

@@ -3,6 +3,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { AboutComponent } from './pages/about/about.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -32,11 +33,12 @@ export const routes: Routes = [
         path: 'about',
         component: AboutComponent,
         title: 'GMG Arch group | About'
+      },
+      {
+        path: '**',
+        component: NotFoundComponent,
+        title: 'GMG Arch group | Page Not Found'
       }
     ]
-  },
-  {
-    path: '**',
-    redirectTo: '/'
   }
 ];

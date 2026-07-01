@@ -16,6 +16,7 @@ import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import gsap from 'gsap';
+import { prefersReducedMotion } from '../../../core/utils/motion';
 
 
 @Component({
@@ -171,7 +172,7 @@ export class AllProjectsComponent implements OnDestroy {
   }
 
   private animateCards() {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!isPlatformBrowser(this.platformId) || prefersReducedMotion()) {
       return;
     }
     setTimeout(() => {

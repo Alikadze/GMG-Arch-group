@@ -33,7 +33,7 @@
                   tooltipPosition="bottom"
                 />
                 <p-button
-                  (onClick)="deleteProject()"
+                  (onClick)="confirmDelete($event)"
                   icon="pi pi-trash"
                   [rounded]="true"
                   [outlined]="true"
@@ -129,3 +129,5 @@
     (sent)="onInquirySent()"
   />
 </p-dialog>
+
+<p-confirmDialog styleClass="w-[420px] max-w-[92vw]" [style]="{ borderRadius: '4px' }" />

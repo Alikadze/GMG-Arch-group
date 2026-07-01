@@ -14,6 +14,13 @@ export class AuthFacade {
   private router: Router = inject(Router);
   private authState$ = new BehaviorSubject<boolean>(false);
 
+  constructor() {
+    // Rehydrate the session from localStorage so a refresh keeps the admin logged in.
+    if (this.storageService.getItem('isAuthenticated')) {
+      this.authState$.next(true);
+    }
+  }
+
   get authState(): Observable<boolean> {
     return this.authState$.asObservable();
   }
@@ -36,6 +43,7 @@ export class AuthFacade {
         this.storageService.setItem('token', token);
         this.storageService.setItem('refreshToken', refreshToken);
         this.storageService.setItem('user', user);
+        this.storageService.setItem('isAuthenticated', true);
       })
     );
   }
@@ -44,6 +52,7 @@ export class AuthFacade {
     this.storageService.removeItem('user');
     this.storageService.removeItem('refreshToken');
     this.storageService.removeItem('token');
+    this.storageService.removeItem('isAuthenticated');
     this.authState$.next(false);
     this.router.navigate(['/']);
   }

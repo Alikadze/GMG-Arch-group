@@ -221,8 +221,94 @@ h4,
   letter-spacing: 0.04em;
 }
 
-/* Inputs - subtle brand focus ring */
+/* Inputs - subtle brand focus ring + consistent radius */
 .p-inputtext:enabled:focus {
   box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25) !important;
   border-color: var(--accent) !important;
+}
+
+.p-inputtext,
+.p-dropdown,
+.p-inputnumber-input,
+.p-inputmask {
+  border-radius: 3px;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25) !important;
+  border-color: var(--accent) !important;
+}
+
+/* Dialogs → brand header, square-ish corners */
+.p-dialog {
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd9d0;
+}
+
+.p-dialog .p-dialog-header {
+  background: #16181d;
+  color: #ffffff;
+  padding: 1.1rem 1.5rem;
+}
+
+.p-dialog .p-dialog-header .p-dialog-title {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: #ffffff;
+}
+.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--accent);
+}
+
+.p-dialog .p-dialog-content {
+  padding: 1.5rem;
+}
+
+/* Confirm dialog → danger accept, calm reject */
+.p-confirm-dialog .p-dialog-content {
+  gap: 0.9rem;
+}
+.p-confirm-dialog .p-confirm-dialog-icon {
+  color: var(--accent);
+  font-size: 1.6rem;
+}
+.p-confirm-dialog .p-confirm-dialog-message {
+  margin-left: 0.75rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Accessibility — visible keyboard focus
+--------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+.p-button:focus-visible {
+  outline: 3px solid rgba(249, 115, 22, 0.55) !important;
+  outline-offset: 2px !important;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Respect user's reduced-motion preference (CSS animations/transitions)
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

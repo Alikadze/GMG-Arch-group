@@ -7,10 +7,11 @@ import { AsyncPipe, DatePipe, isPlatformBrowser, NgIf } from '@angular/common';
 import { ProjectCarouselComponent } from "../../../components/project-carousel/project-carousel.component";
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { EditProjectComponent } from '../../../components/edit-project/edit-project.component';
 import { ProjectInquiryComponent } from '../../../components/project-inquiry/project-inquiry.component';
 import { TooltipModule } from 'primeng/tooltip';
@@ -21,6 +22,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { PLATFORM_ID } from '@angular/core';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { prefersReducedMotion } from '../../../core/utils/motion';
 
 @Component({
   selector: 'app-project-with-id',
@@ -39,6 +41,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     EditProjectComponent,
     ProjectInquiryComponent,
     TooltipModule,
+    ConfirmDialogModule,
     AsyncPipe,
     ProgressSpinnerModule
   ],
@@ -49,6 +52,7 @@ export class ProjectWithIdComponent implements OnDestroy {
   projectFacade = inject(ProjectFacade);
   route = inject(ActivatedRoute);
   messageService = inject(MessageService);
+  confirmationService = inject(ConfirmationService);
   router = inject(Router);
   translateService = inject(TranslateService);
   authFacade = inject(AuthFacade);
@@ -59,6 +63,9 @@ export class ProjectWithIdComponent implements OnDestroy {
   // Reveal is triggered from loadProject() once the project data has rendered.
 
   applyGSAPAnimations(): void {
+    if (prefersReducedMotion()) {
+      return;
+    }
     gsap.registerPlugin(ScrollTrigger);
 
     gsap.fromTo(".projectInfoCarousel",
@@ -134,10 +141,6 @@ export class ProjectWithIdComponent implements OnDestroy {
 
   }
 
-  ngAfterViewChecked(): void {
-    ScrollTrigger.refresh(); // Refresh ScrollTrigger after each view check to make sure elements are correctly targeted.
-  }
-
   loadProject(projectId: string): void {
     this.projectFacade.getProjectById(projectId).pipe(
       tap(project => {
@@ -201,6 +204,28 @@ export class ProjectWithIdComponent implements OnDestroy {
       }),
       takeUntil(this.destroy$)
     ).subscribe();
+  }
+
+  confirmDelete(event: Event): void {
+    this.translateService
+      .get(['Delete project', 'Are you sure you want to delete this project?', 'Confirm', 'Cancel'])
+      .pipe(
+        tap((t: any) => {
+          this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            header: t['Delete project'],
+            message: t['Are you sure you want to delete this project?'],
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: t['Confirm'],
+            rejectLabel: t['Cancel'],
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => this.deleteProject(),
+          });
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   deleteProject(): void {
