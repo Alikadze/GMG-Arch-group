@@ -1,14 +1,10 @@
-<div class="-mt-2 fixed z-50 w-[94%] -ml-2 bg-white">
-  <p-divider></p-divider>    
-</div>
-
-<p-toast 
+<p-toast
   life="2000"
   autoZIndex="true"
   key="addProject"
 />
 
-<div class="flex flex-col gap-10 mt-14">
+<div class="flex flex-col gap-10 mt-2">
 
   <p-floatLabel>
     <p-dropdown 
@@ -184,8 +180,8 @@
     </ng-template>
   </p-fileUpload>
 
-  <div class="mt-4 w-full"> 
-    <p-button styleClass="w-full" [loading]="isLoading" label="{{'Submit' | translate}}" (onClick)="onSubmit()" [disabled]="isLoading"></p-button>
+  <div class="mt-4 w-full">
+    <p-button styleClass="w-full justify-center !bg-accent-500 !border-accent-500 !rounded-sm !font-display !uppercase !tracking-wider py-3 hover:!bg-accent-600 hover:!border-accent-600" [loading]="isLoading" label="{{'Submit' | translate}}" (onClick)="onSubmit()" [disabled]="isLoading"></p-button>
   </div>
 
 </div>

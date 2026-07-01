@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IntersectionObserverService } from '../../core/services/intersection-observer.service';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -23,18 +24,22 @@ export class HomeInfoComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if(isPlatformBrowser(this.platformId)) {
+      gsap.registerPlugin(ScrollTrigger);
+
       gsap.from(".firstCard", {
-        x: -600,
+        x: -70,
         opacity: 0,
-        duration: 3,
-        ease: "power4.out"
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".firstCard", start: "top 90%" }
       });
 
       gsap.from(".secondCard", {
-        x: 600,
+        x: 70,
         opacity: 0,
-        duration: 3,
-        ease: "power4.out"
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".secondCard", start: "top 90%" }
       });
     }
   }

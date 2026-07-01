@@ -63,15 +63,16 @@
   </p-floatLabel>
 
   <p-floatLabel>
-    <p-dropdown 
+    <p-dropdown
       [options]="subjects"
       styleClass="w-full !rounded-2xl"
       class="dropdown"
       formControlName="subject"
       variant="filled"
-      optionLabel="label" 
-      inputId="float-label" 
-    /> 
+      optionLabel="label"
+      optionValue="value"
+      inputId="float-label"
+    />
   
     <label class="text-lg -mt-3.5 mb-2" for="float-label">
       {{'Subject' | translate}}
@@ -102,8 +103,7 @@
   
   <p-button
     label="{{'Send Message' | translate}}"
-    severity="contrast"
-    styleClass="w-auto px-8 rounded-3xl transition-colors duration-500 hover:bg-orange-400 hover:border-orange-500"
+    styleClass="w-full justify-center !bg-accent-500 !border-accent-500 !rounded-sm !font-display !uppercase !tracking-wider py-3 transition-colors duration-300 hover:!bg-accent-600 hover:!border-accent-600"
     [loading]="loading"
     (onClick)="submit()"
   />

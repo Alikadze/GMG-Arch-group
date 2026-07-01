@@ -1,5 +1,50 @@
-<div class="h-auto md:h-auto pb-80 md:pb-40 pt-24 px-3 md:px-32 bg-slate-100 relative overflow-x-hidden">
-  <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-28 gap-y-16">
+<div class="h-auto md:h-auto pb-24 bg-concrete-50 relative overflow-x-hidden">
+
+  <!-- Page header band -->
+  <div class="relative bg-ink overflow-hidden">
+    <div class="absolute inset-0 bg-grid-lines [background-size:46px_46px] opacity-60"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-10 py-14 md:py-20 flex items-end justify-between gap-6">
+      <div>
+        <span class="eyebrow">{{'Projects' | translate}}</span>
+        <h1 class="section-title text-white text-4xl md:text-6xl mt-3">{{'Our Projects' | translate}}</h1>
+      </div>
+      @if (isAuth$ | async) {
+        <p-button
+          (onClick)="goToAddProject()"
+          icon="pi pi-plus"
+          label="{{'Add new project' | translate}}"
+          styleClass="!bg-accent-500 !border-accent-500 !rounded-sm !font-display !uppercase !tracking-wider hover:!bg-accent-600"
+        />
+      }
+    </div>
+    <div class="hazard-bar absolute bottom-0 left-0 w-full"></div>
+  </div>
+
+  <!-- Filter toolbar -->
+  <div class="max-w-7xl mx-auto px-4 md:px-10 lg:px-20 pt-12">
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-concrete-300">
+      <div class="flex items-center gap-2 text-ink-500">
+        <i class="pi pi-filter text-accent-500"></i>
+        <span class="font-display uppercase tracking-wider text-sm">{{ 'Filter' | translate }}</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        @for (opt of filterOptions; track opt.value) {
+          <button
+            type="button"
+            (click)="selectFilter(opt.value)"
+            class="px-5 py-2 rounded-sm font-display uppercase tracking-wider text-sm border transition-all duration-300"
+            [class]="selectedFilter === opt.value
+              ? 'bg-accent-500 text-white border-accent-500 shadow-accent'
+              : 'bg-white text-ink-500 border-concrete-300 hover:border-accent-500 hover:text-accent-500'"
+          >
+            {{ opt.label }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-12 px-4 md:px-10 lg:px-20 grid grid-cols-1 md:grid-cols-2 md:gap-x-16 gap-y-16 max-w-7xl mx-auto">
 
 
     @if (areProjectsLoading) {
@@ -61,109 +106,75 @@
     }
 
     @for (project of projects; track project.id) {
-      <div 
-        class="card-container bg-transparent rounded-xl flex flex-col justify-around overflow-hidden group relative cursor-pointer pb-3"
+      <div
+        class="project-card group relative bg-white rounded-sm overflow-hidden shadow-card cursor-pointer transition-all duration-500 hover:shadow-card-hover hover:-translate-y-1.5"
         (click)="navigateToProject(project.id)"
       >
-
-        <div class="absolute left-0 top-0 h-full w-[9px] bg-gray-300 z-30"></div>
-        <!-- Orange line (animated) -->
-        <div class="absolute left-0 bottom-0 h-0 w-[9px] bg-orange-400 transition-all duration-1000 group-hover:h-full z-40"></div>
-
-        <div class="card-image-container overflow-hidden">
-          
-          <img 
+        <!-- Image -->
+        <div class="relative h-64 md:h-72 overflow-hidden">
+          <img
             src="{{project.images[0]}}"
             alt="{{project.name}}"
-            class="card-image !max-h-96 transform transition-transform duration-500 group-hover:scale-105"
+            class="w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-110"
           >
-        </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-transparent"></div>
 
-        <div class="ml-4">
-          @if (project.type === 'offered') {
-            <div class="absolute top-4 right-4">
-              <p-tag
-                styleClass="px-3 py-1 text-sm"
-                severity="info"
-                [rounded]="true"
-                value="{{'Offered' | translate}}"
-              />
-            </div>
-          } @else {
-            <div class="absolute top-4 right-4">
-              <p-tag
-                styleClass="px-3 py-1 text-sm"
-                severity="success"
-                [rounded]="true"
-                value="{{'Ended' | translate}}"
-              />
-            </div>
-          }
-        </div>
-
-        <div class="ml-3 text-slate-800 text-3xl font-bold mt-8 break-words">
-          <h3>{{project.name}}</h3>
-        </div>
-
-        @if (project.type === 'offered') {
-          <div class="ml-3 text-slate-700 my-8">
-            <div>{{'Offered Price' | translate}}: {{project.offeredPrice}}₾</div>
+          <!-- Status badge -->
+          <div class="absolute top-4 left-4">
+            @if (project.type === 'offered') {
+              <span class="inline-flex items-center gap-1.5 font-display uppercase tracking-wider text-xs px-3 py-1.5 rounded-sm bg-accent-500 text-white shadow-accent">
+                <i class="pi pi-tag text-[11px]"></i>{{'Offered' | translate}}
+              </span>
+            } @else {
+              <span class="inline-flex items-center gap-1.5 font-display uppercase tracking-wider text-xs px-3 py-1.5 rounded-sm bg-ink text-white">
+                <i class="pi pi-check text-[11px]"></i>{{'Ended' | translate}}
+              </span>
+            }
           </div>
-        } @else {
 
-          <div class="ml-3 text-slate-700 my-8">
-            <div>{{'Start Date' | translate}}: {{project.startDate | date: 'MMM yyyy'}} </div>
-            <div>{{'End Date' | translate}}: {{project.endDate | date: 'MMM yyyy'}}</div>
+          <!-- Hover arrow -->
+          <div class="absolute bottom-4 right-4 size-12 rounded-full bg-accent-500 flex items-center justify-center translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+            <i class="pi pi-arrow-up-right text-white"></i>
           </div>
-        }
+        </div>
 
-        <div class="ml-3 text-slate-700">
-          {{'Total Flat Space' | translate}}: {{project.flatSpace}} <span class="-ml-0.5">{{'m' | translate }}<sup>2</sup></span> 
+        <!-- Content -->
+        <div class="relative p-6">
+          <span class="absolute left-0 top-0 h-1 w-0 bg-accent-500 transition-all duration-500 group-hover:w-full"></span>
+
+          <h3 class="text-ink text-2xl md:text-3xl font-display uppercase tracking-wide break-words transition-colors duration-300 group-hover:text-accent-500">
+            {{project.name}}
+          </h3>
+
+          <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-ink-500">
+            @if (project.type === 'offered') {
+              <span class="inline-flex items-center gap-2">
+                <i class="pi pi-wallet text-accent-500"></i>
+                <span class="font-semibold text-ink">{{project.offeredPrice}}₾</span>
+              </span>
+            } @else {
+              <span class="inline-flex items-center gap-2">
+                <i class="pi pi-calendar text-accent-500"></i>
+                {{project.startDate | date: 'MMM yyyy'}} &ndash; {{project.endDate | date: 'MMM yyyy'}}
+              </span>
+            }
+            <span class="inline-flex items-center gap-2">
+              <i class="pi pi-th-large text-accent-500"></i>
+              {{project.flatSpace}} {{'m' | translate }}<sup>2</sup>
+            </span>
+          </div>
         </div>
       </div>
     }
   </div>
 
-  <div class="mt-24 flex flex-col-reverse items-end gap-2">  
+  <div class="projects-paginator max-w-7xl mx-auto px-4 md:px-10 lg:px-20 mt-20 flex justify-center">
     <p-paginator
-      styleClass="rounded-2xl"
-      class="w-full"
       (onPageChange)="onPageChange($event)"
       [rows]="rows"
       [first]="first"
       [totalRecords]="totalRecords"
     />
-
-    <div class="">
-      <p-dropdown 
-        [options]="filterOptions"
-        [(ngModel)]="selectedFilter" 
-        (onChange)="onFilterChange()" 
-        styleClass="bg-slate-50"
-        placeholder="{{'Select Filter' | translate}}"
-      />
-    </div>
   </div>
-  
-  @if (isAuth$ | async) {
-    <div class="absolute top-7 right-5">
-      <p-button 
-        (onClick)="showDialog()" 
-        label="{{'Add new project' | translate}}"
-      />
-    </div>
-  }
 
 </div>
-
-<p-dialog 
-  header="{{'Add new project' | translate}}" 
-  [modal]="true" 
-  [(visible)]="visible" 
-  styleClass="w-[600px]"
-  [draggable]="false"
->
-  <app-add-project
-    (projectAdded)="onProjectAdded($event)"
-  />
-</p-dialog>

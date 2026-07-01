@@ -1,4 +1,5 @@
 :host {
+  display: block;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -10,30 +11,56 @@
   transform: translateY(0);
 }
 
+.carousel {
+  border-radius: 4px;
+  box-shadow: 0 24px 60px -18px rgba(22, 24, 29, 0.35);
+}
+
 .swiper-slide {
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: none;
+
+  img {
+    border-radius: 4px;
+  }
 }
 
-// .swiper-container {
-//   @apply w-full max-w-5xl h-64 bg-gray-200;
-// }
+/* Navigation arrows - circular charcoal buttons */
+.swiper-button-prev,
+.swiper-button-next {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(22, 24, 29, 0.55);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  transition: background 0.3s ease, transform 0.3s ease;
 
-.swiper-button-prev, .swiper-button-next {
-  color: #e5e7eb; /* text-gray-200 */
-  transition: color 0.3s ease-in-out;
+  &::after {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  &:hover {
+    background: #f97316;
+    transform: scale(1.06);
+  }
 }
 
-.swiper-button-prev:hover, .swiper-button-next:hover {
-  color: #6b7280; /* hover:text-gray-500 */
-}
-
+/* Pagination bullets */
 .swiper-pagination-bullet {
-  background-color: #e5e7eb; /* bg-gray-200 */
-  opacity: 0.75;
+  background-color: #fff;
+  opacity: 0.6;
+  width: 9px;
+  height: 9px;
+  transition: all 0.3s ease;
 }
+
 .swiper-pagination-bullet-active {
-  background-color: #f59e0b; /* bg-yellow-500 */
+  background-color: #f97316;
+  opacity: 1;
+  width: 26px;
+  border-radius: 6px;
 }

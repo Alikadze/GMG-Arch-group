@@ -1,92 +1,86 @@
 <p-toast life="1500"/>
 
-<div class="w-full mainContainer flex gap-8 items-center justify-between px-10 shadow-md h-[82px] bg-white transition-all duration-300">
-  <div (click)="navigateToHome()" class="cursor-pointer">
-    <img
-      class="size-28 object-contain" 
-      src="assets/images/452377664_988691489496925_3438030518400011853_n-removebg-preview.png" 
-      alt="LOGO"
-    >
-  </div>
+<header class="w-full mainContainer bg-white/90 backdrop-blur-md border-b border-concrete-300 shadow-sm transition-all duration-300">
+  <div class="hazard-bar"></div>
 
-  <div class="hidden md:flex">
-    <ul class="flex gap-x-5">
-      <li 
-        (click)="navigateToHome()" 
-        class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
-        [ngClass]="{'active': isActive('/'), 'hover:text-orange-500': !isActive('/')}"
+  <div class="flex gap-8 items-center justify-between px-6 md:px-10 h-[80px]">
+    <div (click)="navigateToHome()" class="cursor-pointer flex items-center gap-3 shrink-0">
+      <img
+        class="size-24 object-contain"
+        src="assets/images/452377664_988691489496925_3438030518400011853_n-removebg-preview.png"
+        alt="GMG Arch group logo"
       >
-        <a class='font-medium'>
-          {{'Home'| translate}}
-        </a>
-      </li>
-      <li 
-        (click)="navigateToProject()" 
-        id="authed" 
-        class='py-3 px-3 cursor-pointer  text-slate-700 transition-colors duration-300 hover:text-orange-500'
-        [ngClass]="{'active': isActive('/project/all'), 'hover:text-orange-500': !isActive('/project/all')}"
-      >
-        <a class='font-medium '>
-          {{'Projects'| translate}}
-        </a>
-      </li>
-      <li 
-        (click)="navigateToAbout()"
-        class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
-        [ngClass]="{'active': isActive('/about'), 'hover:text-orange-500': !isActive('/about')}"
-
-      >
-        <a class='font-medium '>
-          {{'About'| translate}}
-        </a>
-      </li>
-      <li 
-        (click)="navigateToContact()" 
-        class='py-3 px-3 cursor-pointer text-slate-700 transition-colors duration-300 hover:text-orange-500'
-        [ngClass]="{'active': isActive('/contact'), 'hover:text-orange-500': !isActive('/contact')}"
-      >
-        <a class='font-medium '>
-          {{'Contact'| translate}}
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  
-  <div class="flex gap-4 items-center">
-    
-    <div class="hidden md:block">
-      @if(isAuthenticated | async) {
-        <p-button
-        id="authed"
-        label="{{'Logout'| translate}}"
-        type="button"
-        styleClass="w-28 text-[15px] p-button-outlined p-button-rounded bg-red-500 text-white p-button-sm p-button-secondary transition-colors duration-300 hover:bg-red-600"
-        (onClick)="logout($event)"
-      />
-      } @else {
-        <p-button
-          id="!authed"
-          label="{{'Admin'| translate}}"
-          type="button"
-          styleClass="w-28 text-[15px] p-button-outlined p-button-rounded p-button-sm p-button-secondary transition-colors duration-300 hover:bg-orange-200"
-          (onClick)="navigateToAuth()"
-        />
-      }
-        
     </div>
 
-    <app-select-language></app-select-language>
-  </div>
+    <nav class="hidden md:flex">
+      <ul class="flex gap-x-1">
+        <li
+          (click)="navigateToHome()"
+          class="nav-link"
+          [class.active]="isActive('/')"
+        >
+          <a class="font-display uppercase tracking-wide text-[15px]">{{'Home'| translate}}</a>
+        </li>
+        <li
+          (click)="navigateToProject()"
+          id="authed"
+          class="nav-link"
+          [class.active]="isActive('/project/all')"
+        >
+          <a class="font-display uppercase tracking-wide text-[15px]">{{'Projects'| translate}}</a>
+        </li>
+        <li
+          (click)="navigateToAbout()"
+          class="nav-link"
+          [class.active]="isActive('/about')"
+        >
+          <a class="font-display uppercase tracking-wide text-[15px]">{{'About'| translate}}</a>
+        </li>
+        <li
+          (click)="navigateToContact()"
+          class="nav-link"
+          [class.active]="isActive('/contact')"
+        >
+          <a class="font-display uppercase tracking-wide text-[15px]">{{'Contact'| translate}}</a>
+        </li>
+      </ul>
+    </nav>
 
-  <div class="card flex md:hidden justify-content-center">
-    <p-button (onClick)="menu.toggle($event)" >
-      <i class="pi pi-bars"></i>
-    </p-button>
-    <p-tieredMenu #menu [model]="items" [popup]="true" />
-  </div>
 
-</div>
+    <div class="flex gap-4 items-center">
+
+      <div class="hidden md:block">
+        @if(isAuthenticated | async) {
+          <p-button
+          id="authed"
+          label="{{'Logout'| translate}}"
+          type="button"
+          styleClass="header-btn header-btn--danger"
+          (onClick)="logout($event)"
+        />
+        } @else {
+          <p-button
+            id="!authed"
+            label="{{'Admin'| translate}}"
+            type="button"
+            styleClass="header-btn header-btn--ghost"
+            (onClick)="navigateToAuth()"
+          />
+        }
+
+      </div>
+
+      <app-select-language></app-select-language>
+    </div>
+
+    <div class="card flex md:hidden justify-content-center">
+      <p-button (onClick)="menu.toggle($event)" styleClass="!bg-ink !border-ink hover:!bg-ink-700">
+        <i class="pi pi-bars"></i>
+      </p-button>
+      <p-tieredMenu #menu [model]="items" [popup]="true" />
+    </div>
+  </div>
+</header>
 
 <p-confirmPopup #confirmPopup>
   <ng-template pTemplate="headless" let-message let-test>

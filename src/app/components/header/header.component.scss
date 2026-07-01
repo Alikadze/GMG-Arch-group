@@ -1,8 +1,75 @@
-.active {
-  color: #f97316;
-  font-weight: bold; 
+:host {
+  display: block;
 }
 
-.hover\:text-orange-500:hover {
-  color: #f97316;
+.nav-link {
+  position: relative;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: #2a2f38;
+  transition: color 0.3s ease;
+
+  a {
+    display: block;
+  }
+
+  /* animated underline */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: -0.15rem;
+    height: 3px;
+    background: #f97316;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &:hover {
+    color: #f97316;
+    &::after { transform: scaleX(1); }
+  }
+
+  &.active {
+    color: #16181d;
+    font-weight: 600;
+    &::after { transform: scaleX(1); }
+  }
+}
+
+/* Header button styling (applied via styleClass to p-button) */
+:host ::ng-deep {
+  .header-btn .p-button {
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    padding: 0.55rem 1.4rem;
+    font-size: 14px;
+    transition: all 0.25s ease;
+  }
+
+  .header-btn--ghost .p-button {
+    background: transparent;
+    color: #16181d;
+    border: 1.5px solid #16181d;
+
+    &:hover {
+      background: #16181d;
+      color: #fff;
+    }
+  }
+
+  .header-btn--danger .p-button {
+    background: #ef4444;
+    color: #fff;
+    border: 1.5px solid #ef4444;
+
+    &:hover {
+      background: #dc2626;
+      border-color: #dc2626;
+    }
+  }
 }

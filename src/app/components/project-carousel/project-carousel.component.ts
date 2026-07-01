@@ -42,14 +42,15 @@ export class ProjectCarouselComponent {
 
     this.projectImageService.getProjectImages(this.projectId).pipe(
       tap(images => {
-        if (typeof document !== 'undefined') {
-          this.initializeSwiper();          
-        }
-
+        // Render the slides first, THEN initialize Swiper so it sees every slide.
         this.images = images;
         this.cdr.detectChanges();
+
+        if (typeof document !== 'undefined') {
+          setTimeout(() => this.initializeSwiper(), 0);
+        }
       }),
-      
+
       takeUntil(this.destroy$)
     ).subscribe();
 
@@ -66,12 +67,17 @@ export class ProjectCarouselComponent {
         breakpoint: '560px',
         numVisible: 1
       }
-    ]; 
+    ];
   }
 
   initializeSwiper() {
+    // Re-create cleanly in case images reload for a different project.
+    if (this.swiper) {
+      this.swiper.destroy(true, true);
+    }
+
     this.swiper = new Swiper('.swiper-container', {
-      loop: false,
+      loop: (this.images?.length ?? 0) > 1,
       autoplay: {
         delay: 3000,
         disableOnInteraction: false,
