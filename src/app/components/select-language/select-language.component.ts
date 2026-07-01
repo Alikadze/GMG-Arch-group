@@ -38,7 +38,7 @@ export class SelectLanguageComponent implements OnInit {
       return;
     }
 
-    const defaultLanguage = this.storageService.getItem('language') || 'ka';  
+    const defaultLanguage = this.storageService.getItem('language') || 'ka';
     this.translateService.setDefaultLang(defaultLanguage);
     this.translateService.use(defaultLanguage);
     this.formGroup.get('selectedLanguage')?.setValue(defaultLanguage);
@@ -51,7 +51,6 @@ export class SelectLanguageComponent implements OnInit {
         top: 0,
         behavior: 'smooth'
       });
-      setTimeout(() => {this.translateService.use(lang)}, 1000);
       this.storageService.setItem('language', lang);
     }
   }
