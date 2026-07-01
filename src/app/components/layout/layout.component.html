@@ -1,15 +1,13 @@
-<div class="relative overflow-x-hidden">
+<div class="relative overflow-x-hidden min-h-screen flex flex-col">
   <div class="fixed w-full z-50">
-    <app-header/>
+    <app-header ngSkipHydration/>
   </div>
 
-  <div class="h-auto pt-20">
+  <main class="flex-1 pt-[86px]">
     <router-outlet/>
-  </div>
-  
-  <div class="absolute bottom-0 w-full">
-    <app-footer/>
-  </div>
+  </main>
+
+  <app-footer/>
 </div>
 
-<p-scrollTop styleClass="bg-orange-500 size-11 right-10 transition-colors duration-300 hover:bg-orange-600">
+<p-scrollTop styleClass="!bg-accent-500 !rounded-full size-11 right-10 transition-colors duration-300 hover:!bg-accent-600">

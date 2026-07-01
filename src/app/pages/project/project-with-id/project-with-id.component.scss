@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+/* Make the info card a size container so the title can scale to its width */
+.projectInfo {
+  container-type: inline-size;
+}
+
+/*
+ * The project title scales fluidly to the card width instead of breaking a
+ * long word mid-character. cqi = 1% of the card's inline size, so a longer
+ * title simply gets a smaller font and still fits on its line. break-word is
+ * kept only as a last resort so text can never overflow or be clipped.
+ */
+.project-title {
+  font-size: 2.25rem; /* fallback for browsers without container queries */
+  font-size: clamp(1.5rem, 8cqi, 3rem);
+  line-height: 1.06;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+}

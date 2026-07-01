@@ -7,12 +7,14 @@ import { AsyncPipe, DatePipe, isPlatformBrowser, NgIf } from '@angular/common';
 import { ProjectCarouselComponent } from "../../../components/project-carousel/project-carousel.component";
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { EditProjectComponent } from '../../../components/edit-project/edit-project.component';
-import { SpeedDialModule } from 'primeng/speeddial';
+import { ProjectInquiryComponent } from '../../../components/project-inquiry/project-inquiry.component';
+import { TooltipModule } from 'primeng/tooltip';
 import { AuthFacade } from '../../../core/facades/auth.facade';
 import { filter, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { Title } from '@angular/platform-browser';
@@ -20,6 +22,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { PLATFORM_ID } from '@angular/core';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { prefersReducedMotion } from '../../../core/utils/motion';
 
 @Component({
   selector: 'app-project-with-id',
@@ -36,7 +39,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ButtonModule,
     DialogModule,
     EditProjectComponent,
-    SpeedDialModule,
+    ProjectInquiryComponent,
+    TooltipModule,
+    ConfirmDialogModule,
     AsyncPipe,
     ProgressSpinnerModule
   ],
@@ -47,6 +52,7 @@ export class ProjectWithIdComponent implements OnDestroy {
   projectFacade = inject(ProjectFacade);
   route = inject(ActivatedRoute);
   messageService = inject(MessageService);
+  confirmationService = inject(ConfirmationService);
   router = inject(Router);
   translateService = inject(TranslateService);
   authFacade = inject(AuthFacade);
@@ -54,50 +60,36 @@ export class ProjectWithIdComponent implements OnDestroy {
   platformId = inject(PLATFORM_ID);
 
 
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-
-      setTimeout(() => {
-        this.applyGSAPAnimations();
-      }, 500);
-    }
-  }
+  // Reveal is triggered from loadProject() once the project data has rendered.
 
   applyGSAPAnimations(): void {
+    if (prefersReducedMotion()) {
+      return;
+    }
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from(".projectInfoCarousel", {
-      x: -900,
-      // opacity: 0,
-      duration: 2,
-      ease: "power4.out"
-    });
+    gsap.fromTo(".projectInfoCarousel",
+      { x: -60, opacity: 0 },
+      { x: 0, opacity: 1, duration: 1, ease: "power3.out" }
+    );
 
-    gsap.from(".projectInfo", {
-      x: 900,
-      // opacity: 0,
-      duration: 2,
-      ease: "power4.out"
-    });
-    
-    gsap.from(".contact", {
-      x: 900,
-      // opacity: 0,
-      duration: 2,
-      ease: "power4.out"
-    });
+    gsap.fromTo(".projectInfo",
+      { x: 60, opacity: 0 },
+      { x: 0, opacity: 1, duration: 1, delay: 0.12, ease: "power3.out" }
+    );
 
-    gsap.to(".contact", {
-      opacity: 1,
-    });
+    gsap.fromTo(".contact",
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, delay: 0.5, ease: "power3.out" }
+    );
 
-    gsap.to(".projectInfo", {
-      opacity: 1,
-    });
-
-    gsap.to(".projectInfoCarousel", {
-      opacity: 1,
-    });
+    gsap.fromTo(".projectDescription",
+      { y: 40, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: ".projectDescription", start: "top 88%" }
+      }
+    );
   }
 
   isAuthenticated!: Observable<boolean>;
@@ -106,8 +98,16 @@ export class ProjectWithIdComponent implements OnDestroy {
 
   project: ProjectPayload | undefined;
   visible: boolean = false;
+  inquiryVisible: boolean = false;
   projectId!: string | null;
-  items!: MenuItem[];
+
+  openInquiry(): void {
+    this.inquiryVisible = true;
+  }
+
+  onInquirySent(): void {
+    this.inquiryVisible = false;
+  }
 
   ngOnInit(): void {
 
@@ -139,34 +139,6 @@ export class ProjectWithIdComponent implements OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe();
 
-    setTimeout(() => {
-      this.items = [
-        {
-          icon: 'pi pi-pencil',
-          command: () => {
-            this.showDialog();
-          }
-        },
-        {
-          icon: 'pi pi-trash',
-          command: () => {
-            this.deleteProject();
-          }
-        }
-      ]
-    }, 200);
-    
-
-    // this.router.events.pipe(
-    //   filter(event => event instanceof NavigationEnd),
-    //   takeUntil(this.destroy$)
-    // ).subscribe(() => {
-    //   this.applyGSAPAnimations();
-    // });
-  }
-
-  ngAfterViewChecked(): void {
-    ScrollTrigger.refresh(); // Refresh ScrollTrigger after each view check to make sure elements are correctly targeted.
   }
 
   loadProject(projectId: string): void {
@@ -175,6 +147,11 @@ export class ProjectWithIdComponent implements OnDestroy {
         this.project = project;
         project.startDate = this.convertToDate(project.startDate as Date);
         project.endDate = this.convertToDate(project.endDate as Date);
+
+        if (isPlatformBrowser(this.platformId)) {
+          // Wait for the *ngIf block to render, then reveal.
+          setTimeout(() => this.applyGSAPAnimations(), 80);
+        }
       }),
       takeUntil(this.destroy$)
     ).subscribe();
@@ -186,6 +163,14 @@ export class ProjectWithIdComponent implements OnDestroy {
 
   navToContact() {
     this.router.navigate(['/contact']);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  navToProjects() {
+    this.router.navigate(['/project/all']);
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -219,6 +204,28 @@ export class ProjectWithIdComponent implements OnDestroy {
       }),
       takeUntil(this.destroy$)
     ).subscribe();
+  }
+
+  confirmDelete(event: Event): void {
+    this.translateService
+      .get(['Delete project', 'Are you sure you want to delete this project?', 'Confirm', 'Cancel'])
+      .pipe(
+        tap((t: any) => {
+          this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            header: t['Delete project'],
+            message: t['Are you sure you want to delete this project?'],
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: t['Confirm'],
+            rejectLabel: t['Cancel'],
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => this.deleteProject(),
+          });
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   deleteProject(): void {

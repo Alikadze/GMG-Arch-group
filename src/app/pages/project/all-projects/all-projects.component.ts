@@ -1,7 +1,5 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { AddProjectComponent } from "../../../components/add-project/add-project.component";
 import { ProjectFacade } from '../../../core/facades/project.facade';
 import { ProjectPayload } from '../../../core/interfaces/project';
 import { AsyncPipe, DatePipe } from '@angular/common';
@@ -16,6 +14,9 @@ import { FormsModule } from '@angular/forms';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import gsap from 'gsap';
+import { prefersReducedMotion } from '../../../core/utils/motion';
 
 
 @Component({
@@ -23,8 +24,6 @@ import { PLATFORM_ID } from '@angular/core';
   standalone: true,
   imports: [
     ButtonModule,
-    DialogModule,
-    AddProjectComponent,
     TranslateModule,
     DatePipe,
     PaginatorModule,
@@ -74,6 +73,14 @@ export class AllProjectsComponent implements OnDestroy {
     });
   }
   
+
+  selectFilter(value: string) {
+    if (this.selectedFilter === value) {
+      return;
+    }
+    this.selectedFilter = value;
+    this.onFilterChange();
+  }
 
   onFilterChange() {
     this.first = 0; // Reset to 0-based index
@@ -141,21 +148,9 @@ export class AllProjectsComponent implements OnDestroy {
     this.loadTranslations();
     }
 
-    onProjectAdded(newProject: ProjectPayload) {
-    this.visible = false;
-    this.first = 0; // Reset to first page
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        first: this.first,
-        rows: this.rows,
-        filter: this.selectedFilter // Keep current filter
-      },
-      queryParamsHandling: 'merge',
-    });
-
-    this.loadProjects(this.first, this.rows);
-    return null;
+  goToAddProject() {
+    this.router.navigate(['/project/add']);
+    window.scroll({ top: 0, behavior: 'smooth' });
   }
 
   loadProjects(first: number, rows: number) {
@@ -170,9 +165,26 @@ export class AllProjectsComponent implements OnDestroy {
         }));
         this.totalRecords = response.totalRecords;
         this.areProjectsLoading = false;
+        this.animateCards();
       }),
       takeUntil(this.destroy$)
     ).subscribe();
+  }
+
+  private animateCards() {
+    if (!isPlatformBrowser(this.platformId) || prefersReducedMotion()) {
+      return;
+    }
+    setTimeout(() => {
+      gsap.from('.project-card', {
+        y: 40,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        stagger: 0.09,
+        clearProps: 'all',
+      });
+    }, 50);
   }
 
 
@@ -187,24 +199,13 @@ export class AllProjectsComponent implements OnDestroy {
     return timestamp as Date;
   }
 
-  visible: boolean = false;
-
-  showDialog() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        first: this.rows,
-        rows: this.rows
-      },
-      queryParamsHandling: 'merge',
-    }).then(() => {
-      this.visible = true;
-    });
-  }
-
   navigateToProject(projectId: string | undefined) {
     if (projectId) {
-      this.router.navigate([`/project/${projectId}`]);
+      this.router.navigate([`/project/${projectId}`]).then(() => {
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
     }
   }
 

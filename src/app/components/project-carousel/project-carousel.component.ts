@@ -8,6 +8,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { prefersReducedMotion } from '../../core/utils/motion';
 
 Swiper.use([Autoplay, Pagination, Navigation]);
 
@@ -42,14 +43,15 @@ export class ProjectCarouselComponent {
 
     this.projectImageService.getProjectImages(this.projectId).pipe(
       tap(images => {
-        if (typeof document !== 'undefined') {
-          this.initializeSwiper();          
-        }
-
+        // Render the slides first, THEN initialize Swiper so it sees every slide.
         this.images = images;
         this.cdr.detectChanges();
+
+        if (typeof document !== 'undefined') {
+          setTimeout(() => this.initializeSwiper(), 0);
+        }
       }),
-      
+
       takeUntil(this.destroy$)
     ).subscribe();
 
@@ -66,16 +68,23 @@ export class ProjectCarouselComponent {
         breakpoint: '560px',
         numVisible: 1
       }
-    ]; 
+    ];
   }
 
   initializeSwiper() {
+    // Re-create cleanly in case images reload for a different project.
+    if (this.swiper) {
+      this.swiper.destroy(true, true);
+    }
+
     this.swiper = new Swiper('.swiper-container', {
-      loop: false,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
+      loop: (this.images?.length ?? 0) > 1,
+      autoplay: prefersReducedMotion()
+        ? false
+        : {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
       pagination: {
         el: '.swiper-pagination',
         clickable: true,

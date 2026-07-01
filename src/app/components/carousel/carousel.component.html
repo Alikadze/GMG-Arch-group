@@ -2,7 +2,7 @@
   <div class="carousel swiper-container shadow-none my-8 h-auto md:!h-[550px] !mx-auto w-[95%] relative overflow-hidden rounded-lg">
     <div class="swiper-wrapper">
       <div class="swiper-slide" *ngFor="let image of images">
-        <img [src]="image.src" [alt]="image.alt" class="w-full h-auto rounded-lg shadow-md" />
+        <img [src]="image.src" [alt]="image.alt" loading="lazy" decoding="async" class="w-full h-auto rounded-lg shadow-md" />
       </div>
     </div>
 

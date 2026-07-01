@@ -7,6 +7,7 @@ import gsap from 'gsap';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ScrollTrigger } from 'gsap/all';
+import { prefersReducedMotion } from '../../core/utils/motion';
 
 @Component({
   selector: 'app-featured',
@@ -26,7 +27,7 @@ export class FeaturedComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      if (isPlatformBrowser(this.platformId)) {
+      if (isPlatformBrowser(this.platformId) && !prefersReducedMotion()) {
         gsap.registerPlugin(ScrollTrigger);
         ScrollTrigger.refresh(true);
   

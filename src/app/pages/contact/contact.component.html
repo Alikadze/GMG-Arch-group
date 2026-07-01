@@ -1,80 +1,64 @@
-<div class="w-full relative overflow-x-hidden h-auto pb-96">
-  <img class="absolute top-0 -z-10 w-full blur-sm h-[500px] md:h-[700px]" src="assets/images/small-modern-homes-1200x800.jpeg" alt="HOME PHOTO">
+<div class="w-full relative overflow-x-hidden h-auto pb-24 bg-concrete-50">
 
-  <div class="flex justify-center w-full mt-36 overflow-visible" @slideIn>
-    <div class="flex flex-col items-center gap-7">
-      <div class="font-extrabold text-orange-600">
-        | {{'CONTACT US' | translate}}
-      </div>
+  <!-- ===================== HERO ===================== -->
+  <section class="relative h-[42vh] min-h-[320px] flex items-center justify-center overflow-hidden bg-ink">
+    <img class="absolute inset-0 w-full h-full object-cover opacity-40" src="assets/images/small-modern-homes-1200x800.jpeg" alt="Contact">
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-ink/40"></div>
+    <div class="absolute inset-0 bg-grid-lines [background-size:46px_46px] opacity-60"></div>
 
-      <div class="flex flex-col items-center text-center text-4xl font-extrabold gap-2 text-white">
-        <div>
-          {{'Get In Touch' | translate}}
-        </div>
-
-        <div>
-          {{'With Our Agents' | translate}} 
-        </div>
-      </div>
+    <div class="relative z-20 flex flex-col items-center gap-4 text-center px-6" @slideIn>
+      <span class="eyebrow justify-center">{{'CONTACT US' | translate}}</span>
+      <h1 class="section-title text-white text-4xl md:text-6xl leading-tight">
+        {{'Get In Touch' | translate}} <br class="hidden md:block">
+        <span class="text-accent-500">{{'With Our Agents' | translate}}</span>
+      </h1>
     </div>
-  </div>
+    <div class="hazard-bar absolute bottom-0 left-0 w-full"></div>
+  </section>
 
   @if (mapLoading) {
-    <p-skeleton width="40rem" height="44rem" styleClass="mb-2 z-20" borderRadius="16px" @fadeIn/>
+    <div class="flex justify-center mt-16">
+      <p-skeleton width="40rem" height="44rem" styleClass="mb-2" borderRadius="4px" @fadeIn/>
+    </div>
   }
 
-  <div class="mt-28 flex flex-col xl:flex-row gap-20 justify-center items-center" @slideIn>
-    <div class="flex flex-col gap-5">
-      <div class="rounded-xl overflow-hidden">
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d589.1057203736538!2d41.636333519643415!3d41.646281016507345!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40678615b9146c25%3A0x86255d7f1f787f0c!2zNDgg4YOa4YOj4YOZ4YOQIOGDkOGDoeGDkOGDl-GDmOGDkOGDnOGDmOGDoSDhg6Xhg6Phg6nhg5AsIOGDkeGDkOGDl-GDo-GDm-GDmA!5e1!3m2!1ska!2sge!4v1722020116595!5m2!1ska!2sge" 
-          class="w-full md:mx-0 rounded-xl md:w-[630px]"
-          height="700" 
+  <!-- ===================== MAP + INFO + FORM ===================== -->
+  <div class="max-w-7xl mx-auto px-6 md:px-10 mt-16 md:mt-24 flex flex-col xl:flex-row gap-12 justify-center items-center" @slideIn>
+
+    <div class="flex flex-col gap-6 w-full xl:w-auto">
+      <div class="rounded-sm overflow-hidden shadow-card border border-concrete-300">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d589.1057203736538!2d41.636333519643415!3d41.646281016507345!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40678615b9146c25%3A0x86255d7f1f787f0c!2zNDgg4YOa4YOj4YOZ4YOQIOGDkOGDoeGDkOGDl-GDmOGDkOGDnOGDmOGDoSDhg6Xhg6Phg6nhg5AsIOGDkeGDkOGDl-GDo-GDm-GDmA!5e1!3m2!1ska!2sge!4v1722020116595!5m2!1ska!2sge"
+          class="w-full md:w-[630px] block"
+          height="560"
           (load)="onMapLoad()"
-          style="border: 30px;" 
-          allowfullscreen="" 
-          loading="lazy" 
+          allowfullscreen=""
+          loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
           @fadeIn
         ></iframe>
       </div>
 
-      <div class="grid grid-cols-1 gap-7 md:ml-0 md:flex justify-between mt-16">
-        <div class="shadow shadow-slate-400 w-72 h-28 rounded-2xl flex justify-around items-center px-5 py-3" @slideIn>
-          <div>
-            <i class="pi pi-phone" style="color:orange; font-size: 3rem"></i>
-          </div>
-
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div class="bg-white border-l-4 border-accent-500 shadow-card rounded-sm flex items-center gap-4 px-6 py-5" @slideIn>
+          <i class="pi pi-phone text-accent-500" style="font-size: 2.4rem"></i>
           <div class="flex flex-col">
-            <div class="text-xl font-bold">
-              555-555-5555
-            </div>
-
-            <div class="text-slate-500 font-medium">
-              {{'Phone Number' | translate}}
-            </div>
+            <div class="font-display text-xl text-ink">555-555-5555</div>
+            <div class="text-ink-500 text-sm uppercase tracking-wide">{{'Phone Number' | translate}}</div>
           </div>
         </div>
 
-        <div class="shadow shadow-slate-400 w-72 h-28 rounded-2xl flex justify-around items-center px-5 py-3" @slideIn>
-          <div>
-            <i class="pi pi-envelope" style="color:orange; font-size: 3rem"></i>
-          </div>
-
-          <div class="flex flex-col">
-            <div class="text-xl font-bold">
-              test&commat;gmail.com
-            </div>
-
-            <div class="text-slate-500 font-medium break-words overflow-auto">
-              {{'Business Email' | translate}}
-            </div>
+        <div class="bg-white border-l-4 border-accent-500 shadow-card rounded-sm flex items-center gap-4 px-6 py-5" @slideIn>
+          <i class="pi pi-envelope text-accent-500" style="font-size: 2.4rem"></i>
+          <div class="flex flex-col min-w-0">
+            <div class="font-display text-xl text-ink truncate">test&commat;gmail.com</div>
+            <div class="text-ink-500 text-sm uppercase tracking-wide">{{'Business Email' | translate}}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="w-[400px] md:w-[450px] h-full bg-white shadow shadow-slate-400 rounded-2xl" @slideIn>
+    <div class="w-full md:w-[450px] bg-white shadow-card rounded-sm border-t-4 border-accent-500" @slideIn>
       <app-contact-us-form/>
     </div>
   </div>

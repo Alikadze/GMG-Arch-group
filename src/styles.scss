@@ -13,7 +13,302 @@
 
 @import "primeicons/primeicons.css";
 
-.p-button:focus, .p-button:active {
+/* ---------------------------------------------------------------------------
+   Base typography - Inter for body, Oswald for display headings
+--------------------------------------------------------------------------- */
+:root {
+  --accent: #f97316;
+  --ink: #16181d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background-color: #faf9f7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: 'Oswald', system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eceae4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c4beb1;
+  border-radius: 999px;
+  border: 2px solid #eceae4;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a29a89;
+}
+
+/* ---------------------------------------------------------------------------
+   Reusable design-system utilities
+--------------------------------------------------------------------------- */
+
+/* Eyebrow / section label - the little orange-ticked kicker */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 34px;
+  height: 3px;
+  background: var(--accent);
+  display: inline-block;
+}
+
+/* Section heading */
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+/* Primary accent button (plain HTML buttons) */
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.9rem 2rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 2px;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 12px 30px -8px rgba(249, 115, 22, 0.45);
+}
+
+.btn-accent:hover {
+  background: #ea580c;
+  transform: translateY(-2px);
+}
+
+/* Diagonal hazard-stripe accent bar (construction motif) */
+.hazard-bar {
+  height: 6px;
+  background: repeating-linear-gradient(-45deg,
+      #f97316,
+      #f97316 14px,
+      #16181d 14px,
+      #16181d 28px);
+}
+
+/* ---------------------------------------------------------------------------
+   PrimeNG accent overrides - retheme components to the brand
+--------------------------------------------------------------------------- */
+.p-button:focus,
+.p-button:active {
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* Accordion → concrete/charcoal look */
+.p-accordion .p-accordion-header .p-accordion-header-link {
+  background: #faf9f7;
+  border: 1px solid #ddd9d0;
+  color: #16181d;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.02em;
+  transition: color 0.25s ease, background 0.25s ease;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
+.p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.p-accordion .p-accordion-content {
+  border: 1px solid #ddd9d0;
+  border-top: 0;
+}
+
+/* Paginator active page → accent */
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Projects page paginator — brand-styled boxed buttons */
+.projects-paginator .p-paginator {
+  background: transparent;
+  border: none;
+  padding: 0;
+  gap: 6px;
+}
+
+.projects-paginator .p-paginator .p-paginator-page,
+.projects-paginator .p-paginator .p-paginator-first,
+.projects-paginator .p-paginator .p-paginator-prev,
+.projects-paginator .p-paginator .p-paginator-next,
+.projects-paginator .p-paginator .p-paginator-last {
+  min-width: 2.6rem;
+  height: 2.6rem;
+  margin: 0;
+  border-radius: 2px;
+  border: 1px solid #ddd9d0;
+  background: #ffffff;
+  color: #16181d;
+  font-family: 'Oswald', sans-serif;
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.projects-paginator .p-paginator .p-paginator-page:not(.p-highlight):hover,
+.projects-paginator .p-paginator .p-paginator-first:not(.p-disabled):hover,
+.projects-paginator .p-paginator .p-paginator-prev:not(.p-disabled):hover,
+.projects-paginator .p-paginator .p-paginator-next:not(.p-disabled):hover,
+.projects-paginator .p-paginator .p-paginator-last:not(.p-disabled):hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.projects-paginator .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  border-radius: 2px;
+}
+
+.projects-paginator .p-paginator .p-disabled {
+  opacity: 0.4;
+}
+
+/* Tag radius */
+.p-tag {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Inputs - subtle brand focus ring + consistent radius */
+.p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25) !important;
+  border-color: var(--accent) !important;
+}
+
+.p-inputtext,
+.p-dropdown,
+.p-inputnumber-input,
+.p-inputmask {
+  border-radius: 3px;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25) !important;
+  border-color: var(--accent) !important;
+}
+
+/* Dialogs → brand header, square-ish corners */
+.p-dialog {
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd9d0;
+}
+
+.p-dialog .p-dialog-header {
+  background: #16181d;
+  color: #ffffff;
+  padding: 1.1rem 1.5rem;
+}
+
+.p-dialog .p-dialog-header .p-dialog-title {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: #ffffff;
+}
+.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--accent);
+}
+
+.p-dialog .p-dialog-content {
+  padding: 1.5rem;
+}
+
+/* Confirm dialog → danger accept, calm reject */
+.p-confirm-dialog .p-dialog-content {
+  gap: 0.9rem;
+}
+.p-confirm-dialog .p-confirm-dialog-icon {
+  color: var(--accent);
+  font-size: 1.6rem;
+}
+.p-confirm-dialog .p-confirm-dialog-message {
+  margin-left: 0.75rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Accessibility — visible keyboard focus
+--------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+.p-button:focus-visible {
+  outline: 3px solid rgba(249, 115, 22, 0.55) !important;
+  outline-offset: 2px !important;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Respect user's reduced-motion preference (CSS animations/transitions)
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

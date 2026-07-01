@@ -1,0 +1,23 @@
+<div class="min-h-screen bg-concrete-50 pb-28">
+
+  <!-- Header band -->
+  <div class="relative bg-ink overflow-hidden">
+    <div class="absolute inset-0 bg-grid-lines [background-size:46px_46px] opacity-60"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 md:px-8 py-14 md:py-20">
+      <button (click)="back()" class="flex w-fit items-center gap-2 text-ink-500 hover:text-accent-500 transition-colors duration-300 font-display uppercase tracking-wider text-sm mb-5">
+        <i class="pi pi-arrow-left text-xs"></i>{{'Projects' | translate}}
+      </button>
+      <span class="eyebrow">{{'Admin' | translate}}</span>
+      <h1 class="section-title text-white text-4xl md:text-5xl mt-3">{{'Add new project' | translate}}</h1>
+      <p class="text-concrete-300 mt-4 max-w-lg">{{'Fill in the details below to publish a new project to the portfolio.' | translate}}</p>
+    </div>
+    <div class="hazard-bar absolute bottom-0 left-0 w-full"></div>
+  </div>
+
+  <!-- Form card -->
+  <div class="max-w-3xl mx-auto px-4 md:px-8 -mt-10 relative z-10">
+    <div class="bg-white rounded-sm shadow-card border-t-4 border-accent-500 p-6 md:p-10">
+      <app-add-project (projectAdded)="onAdded()" />
+    </div>
+  </div>
+</div>

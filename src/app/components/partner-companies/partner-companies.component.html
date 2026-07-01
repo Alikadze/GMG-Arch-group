@@ -1,13 +1,36 @@
-<div class="mainContainerCompany !overflow-hidden p-6 mx-4 md:p-10 md:mx-14 mt-60 bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-300 rounded-xl shadow-lg">
-  <div class="text-2xl font-bold mb-6 text-gray-800">
-    <h2>{{'Partner Companies' | translate}}</h2>
+<section class="mainContainerCompany !overflow-hidden bg-concrete-50 py-20 md:py-28">
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="mb-12">
+      <span class="eyebrow">{{'Partner Companies' | translate}}</span>
+      <h2 class="section-title text-ink text-4xl md:text-5xl mt-4">{{'Partner Companies' | translate}}</h2>
+    </div>
+
+    <div class="company grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (company of companies; track $index) {
+        <div class="partner-card group relative flex flex-col bg-white rounded-sm border border-concrete-300 shadow-card overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover">
+          <!-- accent top wipe -->
+          <span class="absolute top-0 left-0 h-1 w-0 bg-accent-500 transition-all duration-500 group-hover:w-full z-10"></span>
+
+          <div class="flex flex-col gap-5 p-7 h-full">
+            <div class="flex items-center gap-4">
+              <div class="size-14 rounded-sm bg-ink flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-accent-500">
+                <i class="pi {{ company.icon }} text-white text-2xl"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="font-display uppercase tracking-wide text-xl text-ink leading-tight break-words">{{ company.name }}</div>
+                <div class="text-accent-600 text-xs font-semibold uppercase tracking-widest mt-1">{{ company.category }}</div>
+              </div>
+            </div>
+
+            <p class="text-ink-500 leading-relaxed text-[15px] flex-1">{{ company.description }}</p>
+
+            <div class="flex items-center gap-2 text-ink-500 text-sm pt-4 border-t border-concrete-200">
+              <i class="pi pi-verified text-accent-500"></i>
+              <span class="uppercase tracking-wide text-xs font-semibold">{{ 'Verified Partner' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
   </div>
-  <div class="company grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    @for (company of companies; track $index) {
-      <div class=" transition-transform duration-[400ms] transform hover:scale-105  hover:bg-orange-200 p-6 border border-orange-300 rounded-lg shadow-lg hover:shadow-xl">
-        <div class="text-xl cursor-default font-semibold text-gray-900 mb-3">{{ company.name }}</div>
-        <div class="text-gray-700 cursor-default">{{ company.description }}</div>
-      </div>
-    }
-  </div>
-</div>
+</section>

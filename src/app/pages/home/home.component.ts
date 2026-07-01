@@ -9,6 +9,7 @@ import gsap from 'gsap';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ScrollTrigger } from 'gsap/all';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -27,6 +28,17 @@ import { ScrollTrigger } from 'gsap/all';
 })
 export class HomeComponent {
   platformId = inject(PLATFORM_ID);
+  router = inject(Router);
+
+  goToProjects() {
+    this.router.navigate(['/project/all']);
+    window.scroll({ top: 0, behavior: 'smooth' });
+  }
+
+  goToContact() {
+    this.router.navigate(['/contact']);
+    window.scroll({ top: 0, behavior: 'smooth' });
+  }
 
   ngOnInit() {
     ScrollTrigger.refresh();

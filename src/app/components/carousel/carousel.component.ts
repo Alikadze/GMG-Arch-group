@@ -7,6 +7,7 @@ import { IntersectionObserverService } from '../../core/services/intersection-ob
 
 import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { prefersReducedMotion } from '../../core/utils/motion';
 
 import { PLATFORM_ID } from '@angular/core';
 import gsap from 'gsap';
@@ -52,10 +53,12 @@ export class CarouselComponent implements OnDestroy, OnInit {
   initializeSwiper() {
     this.swiper = new Swiper('.swiper-container', {
       loop: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
+      autoplay: prefersReducedMotion()
+        ? false
+        : {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
